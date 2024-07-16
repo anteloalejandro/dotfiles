@@ -1,0 +1,32 @@
+* {
+  font-family: Ubuntu, system-ui, sans-serif;
+  // all: unset;
+  color: unset;
+  background: unset;
+  border: unset;
+  border-radius: unset;
+  padding: unset;
+  margin: unset;
+}
+
+@import "style/style";
+
+menu {
+  background: $bg-black;
+  border-radius: $radius;
+  padding: 0.5rem;
+
+  menuitem {
+    padding: 0.25rem;
+    border-radius: $radius;
+    &:focus,
+    &:active,
+    &:hover {
+      background: $dim;
+    }
+  }
+
+  separator {
+    background: $dim;
+  }
+}

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# https://github.com/croyleje/eww-hyprland-workspace/blob/master/get-workspaces
+
+workspaces (){
+  echo $(hyprctl workspaces -j | jq -c '. | map({(.name): true}) | add')
+}
+
+workspaces
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+  workspaces
+done

@@ -1,0 +1,77 @@
+@import "definitions";
+
+.bar-box {
+  background-color: $bg-black;
+  padding: 0.5rem 2rem;
+  border-radius: $radius;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.notification-icon label {
+  background: $bg-black;
+}
+
+.workspaces button {
+  font-size: 60%;
+  padding: 0rem;
+  label {
+    @extend .monospace;
+    background-color: $bg-black;
+    padding: 0.5rem;
+  }
+}
+
+.resources {
+  progressbar {
+    trough {
+      background: $dim;
+      border-radius: $radius;
+      min-width: 3rem;
+      $bar-width: 0.4rem;
+      min-height: $bar-width;
+      progress {
+        border-radius: $radius;
+        background: $fg-white;
+        min-height: $bar-width;
+      }
+    }
+  }
+  .ram-box progress {
+    background: $success;
+  }
+  .cpu-box progress {
+    background: $primary;
+  }
+}
+
+.lockscreen-container {
+  background-image: url("./lockscreen.png");
+  @extend .text-fg;
+}
+
+.lockscreen-box {
+  font-size: 200%;
+  padding: 2rem;
+}
+
+.powermenu-container {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.powermenu-box {
+  button {
+    color: $fg-white;
+    background: $bg-black;
+    padding: 2ex 2em;
+    border-radius: $radius;
+    font-size: 150%;
+    &:hover {
+      background: $error;
+    }
+    label {
+      @extend .monospace;
+    }
+  }
+}

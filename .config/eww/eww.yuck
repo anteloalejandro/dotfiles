@@ -1,0 +1,166 @@
+;; windows
+(defwindow bar
+  :monitor 0
+  :stacking "bottom"
+  :windowtype "dock"
+  :focusable false
+  :exclusive true
+  :geometry (geometry
+    :width "100%"
+    :height "30px"
+    :x "0%" :y "0%"
+    :anchor "top center"
+  )
+  (box :class "container bar-container"
+    (workspaces :halign "start")
+    (tray :halign "center")
+    ;; (label :text window_active :class "bar-box" :halign "end")
+    (resources :halign "end")
+  )
+)
+
+(defwindow lockscreen
+  :monitor 0
+  :stacking "overlay"
+  :windowtype "normal"
+  :focusable true
+  :wm-ignore false
+  :geometry (geometry
+    :width "100%" :height "100%"
+    :x "0%" :y "0%"
+    :anchor "bottom center"
+    )
+  (box :class "container lockscreen-container" (lockscreen_layout))
+)
+
+(defwindow powermenu
+  :monitor 0
+  :stacking "overlay"
+  :windowtype "normal"
+  :focusable false
+  :wm-ignore false
+  :geometry (geometry
+    :width "100%" :height "100%"
+    :x "0%" :y "0%"
+    :anchor "bottom center"
+    )
+  (box :class "container powermenu-container" (powermenu_layout))
+)
+
+;; widgets
+(defwidget tray [halign]
+  (box
+    :class "box bar-box" :halign halign :space-evenly true :spacing 8
+    (box :spacing 8 :space-evenly false
+      (button :onclick "swaync-client -t" :class "text-warning notification-icon" :active {notification_count.count != "0"} {notification_count.count == "0" ? "" : " "})
+      (battery_indicator
+        :status {EWW_BATTERY.BAT0.status}
+        :battery {EWW_BATTERY.BAT0.capacity}))
+    (label :text '|' :halign 'center' :class "text-secondary" :style "font-weight: bold")
+    (systray :halign "start" :spacing 8 :prepend-new false)
+  )
+)
+
+(defwidget workspaces [halign]
+  (box
+    :class "box bar-box workspaces" :halign halign :spacing 1 :space-evenly false
+    (button :onclick "hyprctl dispatch workspace 1" :class {workspace_list["1"] == true ? "text-primary" : "text-secondary"} {workspace_active == "1" ? " " : " "})
+    (button :onclick "hyprctl dispatch workspace 2" :class {workspace_list["2"] == true ? "text-primary" : "text-secondary"} {workspace_active == "2" ? " " : " "})
+    (button :onclick "hyprctl dispatch workspace 3" :class {workspace_list["3"] == true ? "text-primary" : "text-secondary"} {workspace_active == "3" ? " " : " "})
+    (button :onclick "hyprctl dispatch workspace 4" :class {workspace_list["4"] == true ? "text-primary" : "text-secondary"} {workspace_active == "4" ? " " : " "})
+    (button :onclick "hyprctl dispatch workspace 5" :class {workspace_list["5"] == true ? "text-primary" : "text-secondary"} {workspace_active == "5" ? " " : " "})
+  )
+)
+
+(defwidget resources [halign]
+  (box
+    :class "box bar-box resources" :halign halign :space-evenly false :spacing 20
+    (usage :label "  " :percent {EWW_RAM.used_mem_perc} :class "ram-box")
+    (usage :label "  " :percent {EWW_CPU.avg} :class "cpu-box")
+  )
+)
+
+(defwidget lockscreen_layout []
+  (box
+    :class "box lockscreen-box" :orientation "vertical"
+    (box :valign "start" :halign "center"
+      (battery_indicator
+        :status {EWW_BATTERY.BAT0.status}
+        :battery {EWW_BATTERY.BAT0.capacity})
+      (network_indicator :strength wifi_signal)
+    )
+    (box :valign "end"
+      (box :halign "start"
+        (label
+          :class "monospace"
+          :style "font-size: 150%; font-weight: bold"
+          :text "${time.hour}:${time.min}"))
+    )
+  ))
+
+(defwidget powermenu_layout []
+  (box
+    :class "box powermenu-box"
+    :valign "center" :halign "center"
+    :space-evenly false :spacing 20
+    (button :onclick "poweroff" " ")
+    (button :onclick "reboot" " ")
+    (button :onclick "hyprctl dispatch exit" " ")
+  )
+)
+
+;; indicators and such
+(defwidget network_indicator [strength]
+  (box :class "network-box" ;;:tooltip wifi_info
+    (label :text {strength == 'N/A' || strength == '' ? "󰤭 " :
+      strength <= 25 ? "󰤟 " :
+        strength <= 50 ? "󰤢 " :
+          strength <= 75 ? "󰤥 " : "󰤨 "})))
+
+(defwidget battery_indicator [battery status]
+  (box :class "battery-box ${battery <= 7 ? 'text-error' : ''}" :halign "start" :spacing 2 :space-evenly false
+    (label :text "${battery}% ")
+    (label :text {
+        battery <= 7 ? "󰂃" :
+          battery < 15 ? "󰁺" :
+            battery < 25 ? "󰁻" :
+              battery < 35 ? "󰁼" :
+                battery < 45 ? "󰁽" :
+                  battery < 55 ? "󰁾" :
+                    battery < 65 ? "󰁿" :
+                      battery < 75 ?"󰂀" :
+                        battery < 85 ? "󰂁" :
+                          battery < 95 ? "󰂂" : "󰁹"})
+    (label :text {status == 'Discharging' ? " " : ""} :class "monospace" :style "font-size: 50%")))
+
+(defwidget usage [percent label class]
+  (box :class class :orientation "h" :space-evenly false
+    (label :text label :halign "center" :valign "center" :class "monospace")
+    (progress :value percent :halign "center" :valign "center" :orientation "horizontal")
+  )
+)
+
+;; listeners, polls and vars
+
+(defpoll time :interval "5s"
+  :initial '{"hour": "00", "min": "00"}'
+  `date +'{"hour":"%H","min":"%M"}'`)
+
+(defpoll wifi_signal
+  :interval "10s"
+  :initial "N/A"
+  `LANG=us_US nmcli -terse -fields SIGNAL,ACTIVE device wifi \
+    | awk --field-separator ':' '{if ($2 == "yes") print $1}'`)
+
+(deflisten workspace_list
+  :initial '{"1": true}'
+  "scripts/get_workspaces")
+(deflisten workspace_active
+  :initial '1'
+  "scripts/get_active_workspace")
+(deflisten window_active
+  :initial 'hyprland'
+  "scripts/get_active_window")
+(deflisten notification_count
+  :initial '0'
+  "scripts/get_notification_count")

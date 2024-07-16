@@ -1,0 +1,37 @@
+@import "colors";
+@import "variables";
+
+$mainColors: (
+  "fg": $fg,
+  "bg": $bg,
+  "error": $error,
+  "success": $success,
+  "warning": $warning,
+  "primary": $primary,
+  "secondary": $secondary,
+  "dim": $dim,
+);
+
+@each $name, $color in $mainColors {
+  .text-#{$name} {
+    color: $color;
+  }
+  .bg-#{$name} {
+    background-color: $color;
+  }
+  .border-#{$name} {
+    border: $border-style $color;
+  }
+}
+
+.monospace {
+  font-family: "UbuntuMono Nerd Font", "Ubuntu Mono", monospace;
+}
+
+.hidden {
+  font-size: 0px;
+}
+
+.debug {
+  border: 1px solid blue;
+}
