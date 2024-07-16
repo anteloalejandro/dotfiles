@@ -1,0 +1,13 @@
+eww
+hyprpicker
+hyprshot
+image-roll
+iwgtk
+nvidia-prime-rtd3pm
+obsidian-bin
+papirus-folders-git
+pop-gtk-theme-git
+qt5-styleplugins
+qt6gtk2
+tlpui
+ttf-ms-win11-auto
