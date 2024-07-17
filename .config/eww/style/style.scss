@@ -75,3 +75,13 @@
     }
   }
 }
+
+.alerts-box {
+  font-size: 110%;
+  padding: 1em;
+  border: $border-style $error;
+  border-radius: $radius;
+  background-color: $bg-black;
+  color: $error;
+  opacity: 0.5;
+}

@@ -47,15 +47,31 @@
   (box :class "container powermenu-container" (powermenu_layout))
 )
 
+(defwindow alerts
+  :monitor 0
+  :stacking "overlay"
+  :windowtype "normal"
+  :focusable false
+  :wm-ignore true
+  :geometry (geometry
+    :width "100%" :height "25%"
+    :anchor "bottom center")
+  (box
+    :class "alerts-box" :space-evenly false :spacing 12
+    :visible {EWW_BATTERY.BAT0.capacity <= 7 && EWW_BATTERY.BAT0.status == "Discharging"}
+    :halign "center" :valign "center"
+    (battery_indicator)
+    (label :text "LOW BATTERY!!")
+  )
+)
+
 ;; widgets
 (defwidget tray [halign]
   (box
     :class "box bar-box" :halign halign :space-evenly true :spacing 8
     (box :spacing 8 :space-evenly false
       (button :onclick "swaync-client -t" :class "text-warning notification-icon" :active {notification_count.count != "0"} {notification_count.count == "0" ? "" : " "})
-      (battery_indicator
-        :status {EWW_BATTERY.BAT0.status}
-        :battery {EWW_BATTERY.BAT0.capacity}))
+      (battery_indicator))
     (label :text '|' :halign 'center' :class "text-secondary" :style "font-weight: bold")
     (systray :halign "start" :spacing 8 :prepend-new false)
   )
@@ -117,21 +133,21 @@
         strength <= 50 ? "󰤢 " :
           strength <= 75 ? "󰤥 " : "󰤨 "})))
 
-(defwidget battery_indicator [battery status]
-  (box :class "battery-box ${battery <= 7 ? 'text-error' : ''}" :halign "start" :spacing 2 :space-evenly false
-    (label :text "${battery}% ")
+(defwidget battery_indicator []
+  (box :class "battery-box ${EWW_BATTERY.BAT0.capacity <= 7 ? 'text-error' : ''}" :halign "start" :spacing 2 :space-evenly false
+    (label :text "${EWW_BATTERY.BAT0.capacity}% ")
     (label :text {
-        battery <= 7 ? "󰂃" :
-          battery < 15 ? "󰁺" :
-            battery < 25 ? "󰁻" :
-              battery < 35 ? "󰁼" :
-                battery < 45 ? "󰁽" :
-                  battery < 55 ? "󰁾" :
-                    battery < 65 ? "󰁿" :
-                      battery < 75 ?"󰂀" :
-                        battery < 85 ? "󰂁" :
-                          battery < 95 ? "󰂂" : "󰁹"})
-    (label :text {status == 'Discharging' ? " " : ""} :class "monospace" :style "font-size: 50%")))
+        EWW_BATTERY.BAT0.capacity <= 7 ? "󰂃" :
+          EWW_BATTERY.BAT0.capacity < 15 ? "󰁺" :
+            EWW_BATTERY.BAT0.capacity < 25 ? "󰁻" :
+              EWW_BATTERY.BAT0.capacity < 35 ? "󰁼" :
+                EWW_BATTERY.BAT0.capacity < 45 ? "󰁽" :
+                  EWW_BATTERY.BAT0.capacity < 55 ? "󰁾" :
+                    EWW_BATTERY.BAT0.capacity < 65 ? "󰁿" :
+                      EWW_BATTERY.BAT0.capacity < 75 ?"󰂀" :
+                        EWW_BATTERY.BAT0.capacity < 85 ? "󰂁" :
+                          EWW_BATTERY.BAT0.capacity < 95 ? "󰂂" : "󰁹"})
+    (label :text {EWW_BATTERY.BAT0.status == 'Discharging' ? " " : ""} :class "monospace" :style "font-size: 50%")))
 
 (defwidget usage [percent label class]
   (box :class class :orientation "h" :space-evenly false
