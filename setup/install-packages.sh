@@ -26,5 +26,5 @@ makepkg -si
 echo "DONE\n"
 
 echo "installing AUR packages..."
-sudo yay -Sy $(cat 'external-packages.txt')
+yay -Sy $(cat 'external-packages.txt')
 echo "DONE!\n"
