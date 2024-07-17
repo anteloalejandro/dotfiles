@@ -23,7 +23,7 @@ Just cd into the repo and run `./setup/setup.sh`
 ### Dependencies
 
 A list of dependencies, general apps and utilities and some personal favorites
-can be found on [](native-packages.txt) and [](external-packages.txt).
+can be found on [native-packages.txt](native-packages.txt) and [external-packages.txt](external-packages.txt).
 
 Additionally, [Zinit](https://github.com/zdharma-continuum/zinit),
 [TPM](https://github.com/tmux-plugins/tpm) and the AUR package manager `yay` have been installed through git directly, and are required.
