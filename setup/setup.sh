@@ -7,7 +7,6 @@ SETUP_DIR="."
 
 "$SETUP_DIR"/enable-services.sh
 
-# git submodule init
-# git submodule update
-
+git submodule init
+git submodule update
 stow .
