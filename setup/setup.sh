@@ -11,4 +11,6 @@ cd "$SETUP_DIR/.."
 
 git submodule init
 git submodule update
+rm ~/.zshrc
+
 stow .
