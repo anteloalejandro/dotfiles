@@ -14,3 +14,5 @@ git submodule update
 rm ~/.zshrc
 
 stow .
+
+zsh
