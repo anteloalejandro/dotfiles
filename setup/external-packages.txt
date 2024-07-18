@@ -10,6 +10,7 @@ papirus-folders-git
 pop-gtk-theme-git
 qt5-styleplugins
 qt6gtk2
+rofi-calc-git
 tlpui
 ttf-ms-win11-auto
 xcursor-simp1e-dark

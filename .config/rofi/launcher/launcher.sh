@@ -8,4 +8,5 @@ else
     mode=${1}
 fi 
 
-rofi -show ${mode} -theme ${dir}/style.rasi
+rofi -show ${mode} -theme ${dir}/style.rasi \
+     -calc-command "echo '{result}' | wl-copy"

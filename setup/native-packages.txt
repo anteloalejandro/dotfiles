@@ -70,6 +70,7 @@ pipewire-pulse
 polkit-kde-agent
 python-dbus
 python-pip
+qalculate-gtk
 qt5-wayland
 qt5ct
 qt6-wayland
