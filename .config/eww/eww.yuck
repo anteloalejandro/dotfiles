@@ -14,7 +14,6 @@
   (box :class "container bar-container"
     (workspaces :halign "start")
     (tray :halign "center")
-    ;; (label :text window_active :class "bar-box" :halign "end")
     (resources :halign "end")
   )
 )
@@ -68,9 +67,13 @@
 ;; widgets
 (defwidget tray [halign]
   (box
-    :class "box bar-box" :halign halign :space-evenly true :spacing 8
-    (box :spacing 8 :space-evenly false
-      (button :onclick "swaync-client -t" :class "text-warning notification-icon" :active {notification_count.count != "0"} {notification_count.count == "0" ? "" : " "})
+    :class "box bar-box" :halign halign :space-evenly true :spacing 0
+    (box :spacing 8 :space-evenly false :halign "end"
+      (button
+        :onclick "swaync-client -t"
+        :class "text-warning notification-icon"
+        :active {notification_count.count != "0"}
+        {notification_count.count == "0" ? "" : " "})
       (battery_indicator))
     (label :text '|' :halign 'center' :class "text-secondary" :style "font-weight: bold")
     (systray :halign "start" :spacing 8 :prepend-new false)
