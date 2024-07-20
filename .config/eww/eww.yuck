@@ -121,6 +121,7 @@
     :space-evenly false :spacing 20
     (button :onclick "poweroff" " ")
     (button :onclick "reboot" " ")
+    (button :onclick "eww close powermenu && systemctl suspend" "󰤄")
     (button :onclick "hyprctl dispatch exit" " ")
   )
 )
