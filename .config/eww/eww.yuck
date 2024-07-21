@@ -48,7 +48,7 @@
 
 (defwindow alerts
   :monitor 0
-  :stacking "overlay"
+  :stacking "bottom"
   :windowtype "normal"
   :focusable false
   :wm-ignore true
