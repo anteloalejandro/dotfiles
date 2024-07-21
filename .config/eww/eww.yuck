@@ -48,19 +48,23 @@
 
 (defwindow alerts
   :monitor 0
-  :stacking "bottom"
+  :stacking "overlay"
   :windowtype "normal"
-  :focusable false
   :wm-ignore true
   :geometry (geometry
-    :width "100%" :height "25%"
+    :y "10%"
+    :width "220px"
     :anchor "bottom center")
-  (box
-    :class "alerts-box" :space-evenly false :spacing 12
+  (revealer ;; :visible false allows mouse input behind it
+    :reveal {EWW_BATTERY.BAT0.capacity <= 7 && EWW_BATTERY.BAT0.status == "Discharging"}
     :visible {EWW_BATTERY.BAT0.capacity <= 7 && EWW_BATTERY.BAT0.status == "Discharging"}
-    :halign "center" :valign "center"
-    (battery_indicator)
-    (label :text "LOW BATTERY!!")
+    :active false
+    (box
+      :class "alerts-box" :space-evenly false :spacing 12
+      :halign "center" :valign "center"
+      (battery_indicator)
+      (label :text "LOW BATTERY!!")
+    )
   )
 )
 
@@ -87,11 +91,12 @@
 (defwidget workspaces [halign]
   (box
     :class "box bar-box workspaces" :halign halign :spacing 1 :space-evenly false
-    (button :onclick "hyprctl dispatch workspace 1" :class {workspace_list["1"] == true ? "text-primary" : "text-secondary"} {workspace_active == "1" ? " " : " "})
-    (button :onclick "hyprctl dispatch workspace 2" :class {workspace_list["2"] == true ? "text-primary" : "text-secondary"} {workspace_active == "2" ? " " : " "})
-    (button :onclick "hyprctl dispatch workspace 3" :class {workspace_list["3"] == true ? "text-primary" : "text-secondary"} {workspace_active == "3" ? " " : " "})
-    (button :onclick "hyprctl dispatch workspace 4" :class {workspace_list["4"] == true ? "text-primary" : "text-secondary"} {workspace_active == "4" ? " " : " "})
-    (button :onclick "hyprctl dispatch workspace 5" :class {workspace_list["5"] == true ? "text-primary" : "text-secondary"} {workspace_active == "5" ? " " : " "})
+    (for i in "[1,2,3,4,5]"
+      (button
+        :onclick "hyprctl dispatch workspace ${i}"
+        :class {workspace_list["${i}"] == true ? "text-primary" : "text-secondary"}
+        {workspace_active == "${i}" ? " " : " "})
+    )
   )
 )
 
