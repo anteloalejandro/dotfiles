@@ -75,7 +75,11 @@
         :active {notification_count.count != "0"}
         {notification_count.count == "0" ? "" : " "})
       (battery_indicator))
-    (label :text '|' :halign 'center' :class "text-secondary" :style "font-weight: bold")
+    (box
+      (label :text '|' :class "text-secondary" :style "font-weight: bold")
+      (label :text "${time.hour}:${time.min}")
+      (label :text '|' :class "text-secondary" :style "font-weight: bold")
+    )
     (systray :halign "start" :spacing 8 :prepend-new false)
   )
 )
