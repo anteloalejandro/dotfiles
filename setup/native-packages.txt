@@ -8,7 +8,6 @@ bluez-utils
 brightnessctl
 btop
 cliphist
-dunst
 dust
 efibootmgr
 evince
@@ -19,6 +18,7 @@ gcolor3
 git
 glew
 glib2-devel
+gnome-boxes
 grim
 gst-plugin-pipewire
 gtk-engine-murrine
@@ -43,6 +43,7 @@ linux
 linux-firmware
 ly
 man-db
+man-pages
 mesa-utils
 mpv
 nano
