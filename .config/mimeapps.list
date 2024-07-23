@@ -1,0 +1,7 @@
+
+[Default Applications]
+application/pdf=nemo.desktop
+text/plain=nvim.desktop
+image/png=com.github.weclaw1.ImageRoll.desktop
+image/jpeg=com.github.weclaw1.ImageRoll.desktop
+inode/directory=nemo.desktop
