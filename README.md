@@ -47,6 +47,10 @@ sudo systemctl enable NetworkManager       #
 
 _See [the NetworkManager arch wiki page](https://wiki.archlinux.org/title/NetworkManager#Using_iwd_as_the_Wi-Fi_backend)_
 
+### Keyboard layout
+
+By default, the keyboard layout is set to `es_ES` on [hyprland.conf](.config/hypr/hyprland.conf), you may want to change that.
+
 ## Thanks to...
 
 - [pop-os](https://github.com/pop-os) for inspiring the keybindings.
