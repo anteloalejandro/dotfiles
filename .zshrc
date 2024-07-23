@@ -37,8 +37,12 @@ zinit snippet OMZP::colored-man-pages
 
 # Load completions
 autoload -Uz compinit && compinit
-
 zinit cdreplay -q
+
+# Set bash word style
+autoload select-word-style
+select-word-style bash
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -48,6 +52,8 @@ bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
+bindkey '^[[1;5D' backward-word # Ctrl + left
+bindkey '^[[1;5C' forward-word  # Ctrl + right
 
 zle_highlight+=(paste:none)
 
@@ -72,9 +78,13 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 alias ls='exa'
+alias la='exa -a'
+alias lh='exa -d .*'
 alias open='xdg-open'
 alias set-mime='xdg-mime default $(ls /usr/share/applications | fzf) application/pdf'
 alias get-mime="xdg-mime query filetype"
+alias hist='cat ~/.zsh_history | fzf'
+
 # __NV_PRIME_RENDER_OFFLOAD might be 1 or 0 depending on the system.
 alias nvidia-run='__NV_PRIME_RENDER_OFFLOAD=0 __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
