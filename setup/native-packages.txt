@@ -1,4 +1,5 @@
 alsa-utils
+audiofile
 base
 base-devel
 blueman
@@ -16,6 +17,7 @@ firefox
 fzf
 gcolor3
 git
+glew
 glib2-devel
 grim
 gst-plugin-pipewire
@@ -25,6 +27,7 @@ hypridle
 hyprland
 hyprlock
 hyprpaper
+imagemagick
 intel-media-driver
 intel-ucode
 inxi
@@ -32,6 +35,7 @@ iwd
 jq
 kdeconnect
 kitty
+lib32-vulkan-intel
 libpulse
 libreoffice-fresh
 libva-intel-driver
@@ -82,13 +86,17 @@ smartmontools
 socat
 stow
 swaync
+terminus-font
 tldr
 tlp
 tmux
+transmission-gtk
+ttf-liberation
 ttf-ubuntu-font-family
 ttf-ubuntu-mono-nerd
 unzip
 vim
+volumeicon
 vulkan-intel
 waybar
 wget
