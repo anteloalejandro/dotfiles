@@ -58,7 +58,7 @@
   (revealer ;; :visible false allows mouse input behind it
     :reveal {EWW_BATTERY.BAT0.capacity <= 7 && EWW_BATTERY.BAT0.status == "Discharging"}
     :visible {EWW_BATTERY.BAT0.capacity <= 7 && EWW_BATTERY.BAT0.status == "Discharging"}
-    :active false
+    :duration "0ms"
     (box
       :class "alerts-box" :space-evenly false :spacing 12
       :halign "center" :valign "center"
