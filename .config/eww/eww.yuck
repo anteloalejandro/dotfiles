@@ -147,7 +147,10 @@
           strength <= 75 ? "󰤥 " : "󰤨 "})))
 
 (defwidget battery_indicator []
-  (box :class "battery-box ${EWW_BATTERY.BAT0.capacity <= 7 ? 'text-error' : ''}" :halign "start" :spacing 2 :space-evenly false
+  (box
+    :class "battery-box ${EWW_BATTERY.BAT0.capacity <= 7 ? 'text-error' : ''}"
+    :halign "start" :spacing 2 :space-evenly false
+    :tooltip battery_time
     (label :text "${EWW_BATTERY.BAT0.capacity}% ")
     (label :text {
         EWW_BATTERY.BAT0.capacity <= 7 ? "󰂃" :
@@ -180,6 +183,11 @@
   :initial "N/A"
   `LANG=us_US nmcli -terse -fields SIGNAL,ACTIVE device wifi \
     | awk --field-separator ':' '{if ($2 == "yes") print $1}'`)
+
+(defpoll battery_time
+  :interval "5s"
+  :initial "N/A"
+  `upower -i $(upower -e | grep "BAT0") | grep "time to" | tr -s " "`)
 
 (deflisten workspace_list
   :initial '{"1": true}'
