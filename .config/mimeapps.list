@@ -5,3 +5,4 @@ text/plain=nvim.desktop
 image/png=com.github.weclaw1.ImageRoll.desktop
 image/jpeg=com.github.weclaw1.ImageRoll.desktop
 inode/directory=nemo.desktop
+application/x-iso9660-image=org.gnome.FileRoller.desktop
