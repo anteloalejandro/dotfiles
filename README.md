@@ -19,6 +19,7 @@ Tested on a laptop with NVIDIA-Intel hybrid graphics, so graphics drivers issues
 ## Setup
 
 Just cd into the repo and run `./setup/setup.sh`
+, and read the rest of this section if you want to learn what the script does or if you want to [set up the homepage](#setting-up-the-homepage).
 
 ### Dependencies
 
@@ -50,6 +51,38 @@ _See [the NetworkManager arch wiki page](https://wiki.archlinux.org/title/Networ
 ### Keyboard layout
 
 By default, the keyboard layout is set to `es_ES` on [hyprland.conf](.config/hypr/hyprland.conf), you may want to change that.
+
+### Setting up the homepage
+
+This repo comes with the [.homepage](.homepage) submodule, which is a custom browser homepage. Manual setup is required:
+
+First, install a web server, in this case, `nginx` should be installed if the `setup.sh` script was used. For nginx, set a new location like so:
+
+```nginx
+server {
+    listen       localhost:80;
+    server_name  localhost;
+
+    #...
+
+    location / {
+        root   /usr/share/nginx/homepage;
+        # root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    # ...
+}
+```
+
+Then, link (or mount it) `~/.homepage` to `/usr/share/nginx/homepage`.
+
+```bash
+sudo ln -s ~/.homepage /usr/share/nginx/homepage
+```
+
+Finally install the [New Tab Override](https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/) extension
+and set `http://localhost` as the new tab custom URL and configure Firefox to use localhost as the homepage and New Tab Override for new tabs.
 
 ## Thanks to...
 
