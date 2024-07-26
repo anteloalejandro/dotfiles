@@ -84,6 +84,8 @@ alias open='xdg-open'
 alias set-mime='xdg-mime default $(ls /usr/share/applications | fzf) application/pdf'
 alias get-mime="xdg-mime query filetype"
 alias hist='cat ~/.zsh_history | fzf'
+alias icat='kitten icat'
+alias cat='bat'
 
 # __NV_PRIME_RENDER_OFFLOAD might be 1 or 0 depending on the system.
 alias nvidia-run='__NV_PRIME_RENDER_OFFLOAD=0 __GLX_VENDOR_LIBRARY_NAME=nvidia'
