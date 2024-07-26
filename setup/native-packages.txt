@@ -2,6 +2,7 @@ alsa-utils
 audiofile
 base
 base-devel
+bat
 blueman
 bluez
 bluez-utils
@@ -85,6 +86,7 @@ rofi-wayland
 slurp
 smartmontools
 socat
+speedtest-cli
 stow
 swaync
 terminus-font
@@ -95,6 +97,7 @@ transmission-gtk
 ttf-liberation
 ttf-ubuntu-font-family
 ttf-ubuntu-mono-nerd
+unrar
 unzip
 vim
 vkd3d
