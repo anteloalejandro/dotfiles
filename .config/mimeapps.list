@@ -1,8 +1,9 @@
 
 [Default Applications]
-application/pdf=org.gnome.Evince.desktop
+application/pdf=libreoffice-calc.desktop
 text/plain=nvim.desktop
 image/png=com.github.weclaw1.ImageRoll.desktop
 image/jpeg=com.github.weclaw1.ImageRoll.desktop
 inode/directory=nemo.desktop
 application/x-iso9660-image=org.gnome.FileRoller.desktop
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=libreoffice-calc.desktop
