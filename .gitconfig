@@ -3,3 +3,5 @@
 	email = alfasant@protonmail.com
 [credential]
 	helper = store
+[alias]
+	dog = log --decorate --oneline --graph
