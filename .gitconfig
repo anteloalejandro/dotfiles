@@ -5,3 +5,4 @@
 	helper = store
 [alias]
 	dog = log --decorate --oneline --graph
+	amend = commit --amend --no-edit
