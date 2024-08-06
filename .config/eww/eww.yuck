@@ -75,9 +75,8 @@
     (box :spacing 8 :space-evenly false :halign "end"
       (button
         :onclick "swaync-client -t"
-        :class "text-warning notification-icon"
-        :active {notification_count.count != "0"}
-        {notification_count.count == "0" ? "" : " "})
+        :class "${notifications.count == 0 || notifications.dnd ? '' : 'text-warning' } notification-icon monospace"
+        " ")
       (battery_indicator))
     (box
       (label :text '|' :class "text-secondary" :style "font-weight: bold")
@@ -198,6 +197,6 @@
 (deflisten window_active
   :initial 'hyprland'
   "scripts/get_active_window")
-(deflisten notification_count
+(deflisten notifications
   :initial '0'
   "scripts/get_notification_count")

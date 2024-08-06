@@ -24,7 +24,8 @@ $mainColors: (
   }
 }
 
-.monospace {
+.monospace,
+.monospace label {
   font-family: "UbuntuMono Nerd Font", "Ubuntu Mono", monospace;
 }
 
