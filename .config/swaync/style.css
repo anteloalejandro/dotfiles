@@ -12,6 +12,11 @@
 @define-color text-color-disabled rgb(150, 150, 150);
 @define-color bg-selected #458588;
 
+* {
+  outline: none;
+  border-radius: 10px;
+}
+
 .notification-row {
   outline: none;
 }
@@ -49,11 +54,14 @@
 
 .notification-row .notification-background .notification {
   /* The actual notification */
-  border-radius: 12px;
   border: 1px solid @noti-border-color;
-  padding: 0.5rem;
+  padding: 0px;
   transition: background 0.15s ease-in-out;
   background: @noti-bg;
+}
+
+.notification-row .notification-background .notification widget > box > box {
+  padding: 0.5rem;
 }
 
 .notification-row .notification-background .notification.low {
@@ -66,6 +74,8 @@
 
 .notification-row .notification-background .notification.critical {
   /* Critical Priority Notification */
+  border-color: #FB4934;
+  border-width: 2px;
 }
 
 .notification-row .notification-background .notification .notification-action,
@@ -99,7 +109,6 @@
   .notification
   .notification-default-action {
   /* The large action that also displays the notification summary and body */
-  border-radius: 12px;
 }
 
 .notification-row
@@ -117,7 +126,6 @@
   .notification-default-action
   .notification-content {
   background: transparent;
-  border-radius: 12px;
   padding: 0.2rem;
 }
 
@@ -211,7 +219,6 @@
   /* The "extra" optional bottom notification image */
   margin-top: 4px;
   background-color: white;
-  border-radius: 12px;
   -gtk-icon-effect: none;
 }
 
@@ -236,7 +243,6 @@
   color: @text-color;
   caret-color: @text-color;
   border: 1px solid @noti-border-color;
-  border-radius: 12px;
 }
 
 .notification-row
@@ -249,7 +255,6 @@
   margin-left: 4px;
   background: @noti-bg;
   border: 1px solid @noti-border-color;
-  border-radius: 12px;
   color: @text-color;
 }
 
@@ -288,14 +293,12 @@
   .notification
   .notification-action:first-child {
   /* add bottom border radius to eliminate clipping */
-  border-bottom-left-radius: 12px;
 }
 
 .notification-row
   .notification-background
   .notification
   .notification-action:last-child {
-  border-bottom-right-radius: 12px;
   border-right: none;
 }
 
@@ -365,7 +368,6 @@
   /* The Control Center which contains the old notifications + widgets */
   background: @cc-bg;
   color: @text-color;
-  border-radius: 12px;
   padding: 1rem;
 }
 
@@ -432,7 +434,6 @@
   background: @noti-bg;
   border: 1px solid @noti-border-color;
   box-shadow: none;
-  border-radius: 12px;
 }
 
 .widget-title > button:hover {
@@ -448,7 +449,6 @@
 
 .widget-dnd > switch {
   font-size: initial;
-  border-radius: 12px;
   background: @noti-bg;
   border: 1px solid @noti-border-color;
   box-shadow: none;
@@ -460,7 +460,6 @@
 
 .widget-dnd > switch slider {
   background: @noti-bg-hover;
-  border-radius: 12px;
 }
 
 /* Label widget */
@@ -484,7 +483,6 @@
   padding: 16px;
   margin: 16px 20px;
   background-color: @mpris-album-art-overlay;
-  border-radius: 12px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
 }
 
@@ -494,7 +492,6 @@
 }
 
 .widget-mpris .widget-mpris-player .widget-mpris-album-art {
-  border-radius: 12px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
 }
 
@@ -527,17 +524,18 @@
 .widget-buttons-grid {
   padding: 8px;
   margin: 8px;
-  border-radius: 12px;
   background-color: @noti-bg;
 }
 
 .widget-buttons-grid > flowbox > flowboxchild > button {
+  font-family: 'UbuntuMono Nerd Font';
   background: @noti-bg;
-  border-radius: 12px;
+  background-color: @noti-bg-opaque;
 }
 
 .widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
   /* style given to the active toggle button */
+  background-color: @noti-bg-hover;
 }
 
 /* Menubar widget */
@@ -571,28 +569,35 @@
 .widget-volume {
   background-color: @noti-bg;
   padding: 8px;
+  padding-left: 16px;
   margin: 8px;
-  border-radius: 12px;
 }
 
 .widget-volume > box > button {
   background: transparent;
   border: none;
+  box-shadow: none;
+  margin: 0px;
+  padding: 5px;
+  font-size: 1.3em;
 }
 
 .per-app-volume {
   background-color: @noti-bg-alt;
-  padding: 4px 8px 8px 8px;
-  margin: 0px 8px 8px 8px;
-  border-radius: 12px;
+  padding: 4px 8px;
+  margin: 8px;
+}
+
+.per-app-volume revealer list {
+  padding: 1rem;
 }
 
 /* Backlight widget */
 .widget-backlight {
   background-color: @noti-bg;
   padding: 8px;
+  padding-left: 16px;
   margin: 8px;
-  border-radius: 12px;
 }
 
 /* Inhibitors widget */
@@ -608,7 +613,6 @@
   background: @noti-bg;
   border: 1px solid @noti-border-color;
   box-shadow: none;
-  border-radius: 12px;
 }
 
 .widget-inhibitors > button:hover {

@@ -52,7 +52,10 @@
     "title",
     "dnd",
     "notifications",
-    "mpris"
+    "mpris",
+    "volume",
+    "backlight",
+    "buttons-grid"
   ],
   "widget-config": {
     "inhibitors": {
@@ -79,13 +82,59 @@
     "buttons-grid": {
       "actions": [
         {
-          "label": "直",
+          "label": "󰤨 ",
           "type": "toggle",
           "active": true,
           "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && nmcli radio wifi on || nmcli radio wifi off'",
           "update_command": "sh -c '[[ $(nmcli radio wifi) == \"enabled\" ]] && echo true || echo false'"
+        },
+        {
+          "label": "󰕾 ",
+          "type": "toggle",
+          "active": true,
+          "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 || wpctl set-mute @DEFAULT_AUDIO_SINK@ 1'",
+          "update_command": "sh -c '[[ $(wpctl get-volume @DEFAULT_SINK@ | cut -d\" \" -f3) == \"[MUTED]\" ]] && echo false || echo true'"
+        },
+        {
+          "label": "󰂯",
+          "type": "toggle",
+          "active": true,
+          "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && bluetoothctl power on || bluetoothctl power off'",
+          "update_command": "sh -c 'bluetoothctl info 1>/dev/null && echo true || echo false'"
+        },
+        {
+          "label": " ",
+          "type": "normal",
+          "command": "sh -c 'poweroff'"
+        },
+        {
+          "label": " ",
+          "type": "normal",
+          "command": "sh -c 'reboot'"
+        },
+        {
+          "label": "󰤄 ",
+          "type": "normal",
+          "command": "systemctl suspend"
+        },
+        {
+          "label": " ",
+          "type": "normal",
+          "command": "hyprctl dispatch exit"
         }
       ]
+    },
+    "volume": {
+      "label": "󰕾 ",
+      "show-per-app": true,
+      "show-per-app-label": true,
+      "show-per-app-icon": false,
+      "expand-button-label": "󰲸 ",
+      "collapse-button-label": "󰲸 "
+    },
+    "backlight": {
+      "label": "󰃟 ",
+      "min": 1
     }
   }
 }
