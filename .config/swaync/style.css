@@ -527,6 +527,10 @@
   background-color: @noti-bg;
 }
 
+.widget-buttons-grid > flowbox > flowboxchild {
+  min-width: 80px;
+}
+
 .widget-buttons-grid > flowbox > flowboxchild > button {
   font-family: 'UbuntuMono Nerd Font';
   background: @noti-bg;
