@@ -69,7 +69,7 @@ tooltip {
 }
 
 .powermenu-box {
-  button {
+  button:not(.close-btn) {
     color: $fg-white;
     background: $bg-black;
     padding: 2ex 2em;
@@ -80,6 +80,13 @@ tooltip {
     }
     label {
       @extend .monospace;
+    }
+  }
+
+  button.close-btn {
+    color: $secondary;
+    &:hover {
+      color: $fg-white;
     }
   }
 }

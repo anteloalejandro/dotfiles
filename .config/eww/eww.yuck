@@ -134,6 +134,7 @@
     (button :onclick "reboot" " ")
     (button :onclick "eww close powermenu && systemctl suspend" "󰤄")
     (button :onclick "hyprctl dispatch exit" " ")
+    (button :onclick "eww close powermenu" :class "close-btn" " ")
   )
 )
 
