@@ -1,5 +1,6 @@
 bottles
 eww
+hydroxide
 hyprpicker
 hyprshot
 image-roll
