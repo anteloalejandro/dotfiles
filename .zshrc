@@ -85,7 +85,7 @@ alias icat='kitten icat'
 alias cat='bat'
 
 # __NV_PRIME_RENDER_OFFLOAD might be 1 or 0 depending on the system.
-alias nvidia-run='__NV_PRIME_RENDER_OFFLOAD=0 __GLX_VENDOR_LIBRARY_NAME=nvidia'
+alias nvidia-run='__NV_PRIME_RENDER_OFFLOAD=0 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
 # Shell integrations
 eval "$(fzf --zsh)"

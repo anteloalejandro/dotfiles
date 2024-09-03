@@ -2,7 +2,9 @@
 
 A minimal but (hopefully) fully usable archlinux installation with Hyprland as the window manager.
 
-Tested on a laptop with NVIDIA-Intel hybrid graphics, so graphics drivers issues _shouldn't_ be a thing.
+Tested on a laptop with NVIDIA-Intel hybrid graphics,
+and a Asus Zephyrus with NVIDIA-AMD hybrid graphics,
+so graphics drivers issues _shouldn't_ be a thing.
 
 ## Features
 
@@ -15,6 +17,7 @@ Tested on a laptop with NVIDIA-Intel hybrid graphics, so graphics drivers issues
 - Brightness and volume controls through `brightnessctl` and various PipeWire related packages.
 - Smartphone connectivity through `kdeconnect`.
 - Screenshots through `hyprshot`.
+- Integrated/Hybrid GPU mode through `envycontrol`
 
 ## Setup
 
@@ -38,6 +41,7 @@ Other background tasks are enabled on Hyprland itself or are enabled by default.
 sudo systemctl enable ly                   # login
 sudo systemctl enable nvidia-persistenced  # Hybrid graphics
 sudo systemctl enable pipewire-pulse       # Pulseudio compat.
+sudo systemctl enable tlp                  # power saver
 sudo systemctl enable bluetooth            # bluetooth
 
 sudo systemctl disable iwd                 # wifi

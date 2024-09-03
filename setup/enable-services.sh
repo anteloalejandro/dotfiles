@@ -4,6 +4,7 @@ sudo systemctl enable ly                   # login
 sudo systemctl enable nvidia-persistenced  # Hybrid graphics
 sudo systemctl enable pipewire-pulse       # Pulseudio compat.
 sudo systemctl enable bluetooth            # bluetooth
+sudo systemctl enable tlp                  # power saver
 sudo systemctl enable kanata               # keyboard remapper
 
 sudo systemctl disable iwd                 # wifi

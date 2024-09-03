@@ -1,4 +1,5 @@
 bottles
+envycontrol
 eww
 hydroxide
 hyprpicker
