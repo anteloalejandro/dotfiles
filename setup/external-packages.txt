@@ -1,3 +1,4 @@
+asusctl
 bottles
 envycontrol
 eww
@@ -14,6 +15,7 @@ pop-gtk-theme-git
 qt5-styleplugins
 qt6gtk2
 rofi-calc-git
+rog-control-center
 tlpui
 ttf-ms-win11-auto
 xcursor-simp1e-dark
