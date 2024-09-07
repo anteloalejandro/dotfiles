@@ -185,7 +185,7 @@
     | awk --field-separator ':' '{if ($2 == "yes") print $1}'`)
 
 (defpoll battery_time
-  :interval "5s"
+  :interval "30s"
   :initial "N/A"
   `upower -i $(upower -e | grep "BAT0") | grep "time to" | tr -s " "`)
 
