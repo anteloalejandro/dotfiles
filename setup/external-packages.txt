@@ -7,6 +7,7 @@ hyprpicker
 hyprshot
 image-roll
 iwgtk
+libinput-gestures
 nvidia-prime-rtd3pm
 nwg-displays
 obsidian-bin

@@ -13,3 +13,6 @@ sudo systemctl enable NetworkManager       #
 # Set iwd as the backend for NetworkManager
 echo '[device]\nwifi.backend=iwd' | \
     tee -a /etc/NetworkManager/conf.d/wifi_backend.conf &> /dev/null
+
+# Add user to input group be able to use libinput-gestures
+sudo usermod -aG input $USER

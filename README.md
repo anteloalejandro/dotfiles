@@ -18,6 +18,7 @@ so graphics drivers issues _shouldn't_ be a thing.
 - Smartphone connectivity through `kdeconnect`.
 - Screenshots through `hyprshot`.
 - Integrated/Hybrid GPU mode through `envycontrol`
+- Custom gestures through `libinput-gestures`
 
 ## Setup
 
@@ -55,6 +56,14 @@ _See [the NetworkManager arch wiki page](https://wiki.archlinux.org/title/Networ
 ### Keyboard layout
 
 By default, the keyboard layout is set to `es_ES` on [hyprland.conf](.config/hypr/hyprland.conf), you may want to change that.
+
+### Enabling gestures
+
+The user must be part of the `input` group for the gestures to work.
+
+```bash
+sudo usermod -aG input $USER
+```
 
 ### Setting up the homepage
 
