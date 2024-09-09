@@ -17,6 +17,12 @@ tooltip {
   margin-right: 10px;
 }
 
+.box {
+  .divider {
+    color: $secondary;
+  }
+}
+
 .notification-icon label {
   background: $bg-black;
 }

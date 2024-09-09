@@ -12,9 +12,9 @@
     :anchor "top center"
   )
   (box :class "container bar-container"
-    (workspaces :halign "start")
-    (tray :halign "center")
-    (resources :halign "end")
+    (resources :halign "start")
+    (workspaces :halign "center")
+    (tray :halign "end")
   )
 )
 
@@ -71,19 +71,19 @@
 ;; widgets
 (defwidget tray [halign]
   (box
-    :class "box bar-box" :halign halign :space-evenly true :spacing 0
-    (box :spacing 8 :space-evenly false :halign "end"
-      (button
-        :onclick "swaync-client -t"
-        :class "${notifications.count == 0 || notifications.dnd ? '' : 'text-warning' } notification-icon monospace"
-        " ")
-      (battery_indicator))
-    (box
-      (label :text '|' :class "text-secondary" :style "font-weight: bold")
-      (label :text "${time.hour}:${time.min}")
-      (label :text '|' :class "text-secondary" :style "font-weight: bold")
-    )
-    (systray :halign "start" :spacing 8 :prepend-new false)
+    :class "box bar-box tray" :halign halign :space-evenly false :spacing 16
+    (systray :halign "start" :spacing 4 :prepend-new false)
+    (label :text "|" :class "divider")
+    (label :text "${time.hour}:${time.min}")
+    (label :text "|" :class "divider")
+    (battery_indicator)
+    (label :text "|" :class "divider")
+    (button :onclick "eww open powermenu" :class "monospace" " " )
+    (label :text "|" :class "divider")
+    (button
+      :onclick "swaync-client -t"
+      :class "${notifications.count == 0 || notifications.dnd ? '' : 'text-warning' } notification-icon monospace"
+      " ")
   )
 )
 
@@ -102,8 +102,8 @@
 (defwidget resources [halign]
   (box
     :class "box bar-box resources" :halign halign :space-evenly false :spacing 20
-    (usage :label "  " :percent {EWW_RAM.used_mem_perc} :class "ram-box")
     (usage :label "  " :percent {EWW_CPU.avg} :class "cpu-box")
+    (usage :label "  " :percent {EWW_RAM.used_mem_perc} :class "ram-box")
   )
 )
 
