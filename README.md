@@ -97,6 +97,12 @@ sudo ln -s ~/.homepage /usr/share/nginx/homepage
 Finally install the [New Tab Override](https://addons.mozilla.org/en-US/firefox/addon/new-tab-override/) extension
 and set `http://localhost` as the new tab custom URL and configure Firefox to use localhost as the homepage and New Tab Override for new tabs.
 
+## TO-DO
+
+- [ ] Migrate EWW widgets to AGS
+- [ ] Add more resource monitors
+- [ ] Make lockscreen widgets interactable (e.g.: Add a suspend button)
+
 ## Thanks to...
 
 - [pop-os](https://github.com/pop-os) for inspiring the keybindings.
