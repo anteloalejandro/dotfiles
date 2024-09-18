@@ -28,3 +28,12 @@ echo "DONE\n"
 echo "installing AUR packages..."
 yay -Sy $(cat 'external-packages.txt')
 echo "DONE!\n"
+
+echo "installing graphite theme..."
+(
+cd /tmp
+git clone https://github.com/vinceliuice/Graphite-gtk-theme graphite
+cd graphite
+./install.sh --size compact --tweaks rimless normal -c dark -l
+)
+echo "DONE!\n"

@@ -12,7 +12,6 @@ nvidia-prime-rtd3pm
 nwg-displays
 obsidian-bin
 papirus-folders-git
-pop-gtk-theme-git
 qt5-styleplugins
 qt6gtk2
 rofi-calc-git
