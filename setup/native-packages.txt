@@ -1,6 +1,6 @@
 alsa-utils
-audiofile
 amd-ucode
+audiofile
 base
 base-devel
 bat
@@ -51,12 +51,11 @@ man-pages
 mesa-utils
 mpv
 nano
-nemo
-nemo-fileroller
+nautilus
 neofetch
 neovim
-network-manager-applet
 networkmanager
+network-manager-applet
 nginx
 nm-connection-editor
 nodejs
@@ -80,10 +79,10 @@ polkit-kde-agent
 python-dbus
 python-pip
 qalculate-gtk
-qt5-wayland
 qt5ct
-qt6-wayland
+qt5-wayland
 qt6ct
+qt6-wayland
 ripgrep
 rofi-wayland
 slurp
@@ -100,6 +99,7 @@ transmission-gtk
 ttf-liberation
 ttf-ubuntu-font-family
 ttf-ubuntu-mono-nerd
+udiskie
 unrar
 unzip
 vim

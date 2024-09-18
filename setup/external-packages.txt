@@ -18,4 +18,3 @@ rofi-calc-git
 rog-control-center
 tlpui
 ttf-ms-win11-auto
-xcursor-simp1e-dark
