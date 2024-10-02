@@ -24,6 +24,7 @@ gnome-boxes
 grim
 gst-plugin-pipewire
 gtk-engine-murrine
+gvfs-mtp
 htop
 hypridle
 hyprland
@@ -45,6 +46,7 @@ libva-intel-driver
 libva-mesa-driver
 linux
 linux-firmware
+loupe
 ly
 man-db
 man-pages
@@ -108,6 +110,7 @@ volumeicon
 vulkan-intel
 vulkan-radeon
 waybar
+webp-pixbuf-loader
 wget
 wine
 wireless_tools

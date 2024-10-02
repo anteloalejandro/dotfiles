@@ -16,5 +16,6 @@ qt5-styleplugins
 qt6gtk2
 rofi-calc-git
 rog-control-center
+switcheroo-gtk4
 tlpui
 ttf-ms-win11-auto
