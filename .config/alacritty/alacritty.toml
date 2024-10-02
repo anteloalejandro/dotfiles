@@ -1,0 +1,15 @@
+import = [
+  "~/.config/alacritty/gruvbox.toml"
+]
+
+[window]
+padding.x = 8
+padding.y = 8
+dynamic_padding = true
+
+[font]
+size = 15.0
+normal.family = "UbuntuMono Nerd Font"
+
+[mouse]
+hide_when_typing = true
