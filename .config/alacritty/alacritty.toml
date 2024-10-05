@@ -2,6 +2,9 @@ import = [
   "~/.config/alacritty/gruvbox.toml"
 ]
 
+[env]
+term = "xterm-256color"
+
 [window]
 padding.x = 8
 padding.y = 8
