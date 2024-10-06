@@ -70,6 +70,7 @@ nvidia
 nvidia-prime
 nvtop
 nwg-look
+obsidian
 openssh
 papirus-icon-theme
 pavucontrol

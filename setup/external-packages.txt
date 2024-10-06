@@ -10,7 +10,6 @@ iwgtk
 libinput-gestures
 nvidia-prime-rtd3pm
 nwg-displays
-obsidian-bin
 papirus-folders-git
 qt5-styleplugins
 qt6gtk2
