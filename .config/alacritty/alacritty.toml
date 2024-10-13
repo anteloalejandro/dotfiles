@@ -3,7 +3,7 @@ import = [
 ]
 
 [env]
-term = "xterm-256color"
+TERM = "xterm-256color"
 
 [window]
 padding.x = 8
