@@ -27,6 +27,7 @@ echo "DONE\n"
 
 echo "installing AUR packages..."
 yay -Sy $(cat 'external-packages.txt')
+sudo pacman -R gnu-free-fonts # these cause issues in TUI graphs using braille
 echo "DONE!\n"
 
 echo "installing graphite theme..."
