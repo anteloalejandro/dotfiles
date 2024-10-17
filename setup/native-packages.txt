@@ -14,6 +14,7 @@ dust
 efibootmgr
 evince
 eza
+fastfetch
 firefox
 fzf
 gcolor3
@@ -54,7 +55,6 @@ mesa-utils
 mpv
 nano
 nautilus
-neofetch
 neovim
 networkmanager
 network-manager-applet
