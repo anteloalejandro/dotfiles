@@ -18,3 +18,4 @@ rog-control-center
 switcheroo-gtk4
 tlpui
 ttf-ms-win11-auto
+zen-browser-bin
