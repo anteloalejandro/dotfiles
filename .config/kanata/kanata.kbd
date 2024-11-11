@@ -1,2 +1,26 @@
-(defsrc)
-(deflayermap (base-layer))
+(defcfg
+  process-unmapped-keys yes
+  )
+
+(defsrc
+  s d f j k l
+  )
+
+(defvar
+  tap-time 200  ;; Tap-hold replaces the usual hold behaviour
+  hold-time 200 ;; Typing is still instant, no matter the hold time
+  )
+
+(defalias
+  s-mod (tap-hold $tap-time $hold-time s lalt)
+  d-mod (tap-hold $tap-time $hold-time d lsft)
+  f-mod (tap-hold $tap-time $hold-time f lctl)
+  j-mod (tap-hold $tap-time $hold-time j rctl)
+  k-mod (tap-hold $tap-time $hold-time k rsft)
+  l-mod (tap-hold $tap-time $hold-time l ralt)
+  )
+
+(deflayer base
+  @s-mod @d-mod @f-mod
+  @j-mod @k-mod @l-mod
+  )
