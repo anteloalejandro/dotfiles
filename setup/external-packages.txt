@@ -1,10 +1,15 @@
+ags-hyprpanel-git
 asusctl
 bottles
 envycontrol
 eww
 hydroxide
-hyprpicker
+hyprland-qtutils
+hyprpicker-git
+hyprpolkitagent
 hyprshot
+hyprsunset
+hyprsysteminfo
 image-roll
 iwgtk
 libinput-gestures

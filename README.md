@@ -8,8 +8,7 @@ so graphics drivers issues _shouldn't_ be a thing.
 
 ## Features
 
-- Notifications and media controls through `swaync`.
-- Widgets and applets through `eww`.
+- Widgets, applets, notifications, and media controls through `hyprpanel`.
 - Lockscreen/sleep through `hypridle` and `hyprlock`.
 - Wallpapers through `hyprpaper`.
 - `rofi-wayland` as the launcher/runner.
