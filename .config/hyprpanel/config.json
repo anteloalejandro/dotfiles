@@ -458,7 +458,7 @@
   "menus.dashboard.shortcuts.left.shortcut2.command": "",
   "menus.dashboard.shortcuts.left.shortcut2.tooltip": "",
   "menus.dashboard.shortcuts.left.shortcut3.icon": "",
-  "bar.network.label": true,
+  "bar.network.label": false,
   "theme.bar.buttons.workspaces.enableBorder": false,
   "bar.workspaces.show_icons": false,
   "bar.workspaces.show_numbered": false,
@@ -470,5 +470,7 @@
   "theme.bar.buttons.workspaces.numbered_active_highlight_border": "0.2em",
   "theme.bar.buttons.workspaces.numbered_active_highlight_padding": "0.2em",
   "theme.bar.buttons.workspaces.numbered_inactive_padding": "0.2em",
-  "menus.dashboard.powermenu.confirmation": false
+  "menus.dashboard.powermenu.confirmation": false,
+  "theme.bar.buttons.network.enableBorder": false,
+  "bar.bluetooth.label": false
 }
