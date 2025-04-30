@@ -1,6 +1,6 @@
 #!/bin/bash
 
-test "$(hyprctl workspaces -j | jq '. | last')" = "$(hyprctl activeworkspace -j | jq .)"
+test "$(hyprctl workspaces -j | jq '. | sort_by(.id) | last')" = "$(hyprctl activeworkspace -j | jq .)"
 is_last=$?
 
 test "$(hyprctl activeworkspace -j | jq '.windows')" -gt 0
