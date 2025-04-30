@@ -1,4 +1,4 @@
-ags-hyprpanel-git
+aylurs-gtk-shell
 asusctl
 bottles
 envycontrol

@@ -1,1 +1,4 @@
 .config/tmux/plugins/
+
+.config/ags/node_modules/
+.config/ags/@girs/

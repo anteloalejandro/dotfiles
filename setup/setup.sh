@@ -15,4 +15,10 @@ rm ~/.zshrc
 
 stow .
 
+(
+  cd ~/.config/ags
+  npm install
+  ags types
+)
+
 zsh
