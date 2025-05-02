@@ -1,15 +1,15 @@
 import { App } from "astal/gtk3"
-import style from "./style.scss"
-import Bar from "./widget/Bar"
+import bar_style from "./widget/bar/style.scss"
+import Bar from "./widget/bar/Bar"
 
-import osd_style from "./osd/OSD.scss"
-import OSD from "./osd/OSD"
+import osd_style from "./widget/osd/OSD.scss"
+import OSD from "./widget/osd/OSD"
 
-import notification_style from "./notifications/Notification.scss"
-import NotificationPopups from "./notifications/NotificationPopups"
+import notification_style from "./widget/notifications/Notification.scss"
+import NotificationPopups from "./widget/notifications/NotificationPopups"
 
 App.start({
-    css: style,
+    css: bar_style,
     main() {
         App.get_monitors().map(Bar)
     },

@@ -1,0 +1,12 @@
+@use "../../.styles/generated/style.scss" as *;
+
+window.PowerMenu {
+  background-color: rgba(0, 0, 0, 0.8);
+  box button {
+    font-size: 2em;
+    padding: 1em;
+  }
+  box button + button {
+    margin-left: 0.5em;
+  }
+}
