@@ -74,7 +74,7 @@ export default function OSD(monitor: Gdk.Monitor) {
             namespace="osd"
             application={App}
             layer={Astal.Layer.OVERLAY}
-            anchor={Astal.WindowAnchor.RIGHT}
+            anchor={Astal.WindowAnchor.LEFT}
         >
             <eventbox onClick={() => visible.set(false)}>
                 <OnScreenProgress visible={visible} />

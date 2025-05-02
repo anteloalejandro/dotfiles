@@ -1,7 +1,6 @@
-import { Astal, Gtk, Gdk } from "astal/gtk3"
+import { Astal, Gdk } from "astal/gtk3"
 import Notifd from "gi://AstalNotifd"
 import Notification from "./Notification"
-import { type Subscribable } from "astal/binding"
 import { Variable, bind, timeout } from "astal"
 
 // see comment below in constructor
@@ -42,7 +41,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
                 return <Notification
                     setup={() => {
                         if (n.urgency != Notifd.Urgency.CRITICAL)
-                            timeout(TIMEOUT_DELAY, () => del(n.id))
+                            timeout(Math.max(n.expireTimeout, TIMEOUT_DELAY), () => del(n.id))
                     }}
                     onHoverLost={() => {}}
                     notification={n}

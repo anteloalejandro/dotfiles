@@ -9,16 +9,19 @@ const Separator = () => <label className="Separator" label="|" />
 function SysTray() {
   const tray = Tray.get_default()
 
-  return <box className="SysTray">
-    {bind(tray, "items").as(items => items.map(item => (
-      <menubutton
-        tooltipMarkup={bind(item, "tooltipMarkup")}
-        usePopover={false}
-        actionGroup={bind(item, "actionGroup").as(ag => ["dbusmenu", ag])}
-        menuModel={bind(item, "menuModel")}>
-        <icon gicon={bind(item, "gicon")} />
-      </menubutton>
-    )))}
+  return <box visible={bind(tray, "items").as(i => i.length != 0)}>
+    <box className="SysTray">
+      {bind(tray, "items").as(items => items.sort((a, b) => b.id.localeCompare(a.id)).map(item => (
+        <menubutton
+          tooltipMarkup={bind(item, "tooltipMarkup")}
+          usePopover={false}
+          actionGroup={bind(item, "actionGroup").as(ag => ["dbusmenu", ag])}
+          menuModel={bind(item, "menuModel")}>
+          <icon gicon={bind(item, "gicon")} />
+        </menubutton>
+      )))}
+    </box>
+    <Separator />
   </box>
 }
 
@@ -96,8 +99,7 @@ export default function Bar(monitor: Gdk.Monitor) {
         <Workspaces />
       </box>
       <box hexpand halign={Gtk.Align.END} >
-        {/* <SysTray /> */}
-        {/* <label label="|" /> */}
+        <SysTray />
         <BatteryLevel />
         <Separator />
         <Time />

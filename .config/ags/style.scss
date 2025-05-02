@@ -16,13 +16,14 @@ window.Bar {
         margin-bottom: 0;
     }
     & > centerbox > box {
+        min-height: 20px;
         background-color: $bg-dark;
         border-radius: $radius;
-        padding: 0.5em;
+        padding: 0.5em 1em;
     }
 
     .Separator {
-        margin: 0 8px;
+        margin: 0 4px;
         color: color.adjust($fg, $alpha: -0.8)
     }
 
@@ -57,10 +58,32 @@ window.Bar {
     }
 
     .SysTray {
-        margin-right: 8px;
-
+        background-color: $bg;
+        border-radius: 4px;
+        padding: 2px;
         button {
-            padding: 0 4px;
+            background-color: transparent;
+            border-radius: inherit;
+            padding: 0;
+            min-height: 0;
+            min-width: 0;
+            font-size: 0.9em;
+
+            &:hover {
+                background-color: color.change($bg, $whiteness: 40%);
+            }
+        }
+        button + button {
+            margin-left: 8px;
+        }
+        menu {
+            background-color: $bg-dark;
+            border-radius: $radius;
+            font-size: 1rem;
+            menuitem:hover {
+                background-color: $bg;
+                border-radius: $radius;
+            }
         }
     }
 
