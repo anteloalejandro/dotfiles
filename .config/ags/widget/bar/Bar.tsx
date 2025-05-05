@@ -44,18 +44,27 @@ function BatteryLevel() {
 
 function Workspaces() {
   const hypr = Hyprland.get_default()
+  const workspaces = Variable<Array<{ws: Hyprland.Workspace, classes: string[]}>>([])
+
+  hypr.connect('event', () => {
+    workspaces.set(hypr.workspaces.map(ws => {
+      const classes: string[] = []
+      if (hypr.focusedWorkspace === ws) classes.push('focused')
+      if (ws.clients.length == 0) classes.push('empty')
+
+      return { ws, classes }
+    }))
+  })
 
   return <box className="Workspaces">
-    {bind(hypr, "workspaces").as(wss => wss
-      .filter(ws => !(ws.id >= -99 && ws.id <= -2)) // filter out special workspaces
-      .sort((a, b) => a.id - b.id)
-      .map(ws => (
+    {bind(workspaces).as(wss => wss
+      .filter(item => !(item.ws.id >= -99 && item.ws.id <= -2)) // filter out special workspaces
+      .sort((a, b) => a.ws.id - b.ws.id)
+      .map(item => (
         <button
           valign={Gtk.Align.CENTER}
-          className={bind(hypr, "focusedWorkspace").as(
-            fw => ws === fw ? "focused" : ""
-          )}
-          onClicked={() => ws.focus()}
+          className={item.classes.join(' ')}
+          onClicked={() => item.ws.focus()}
         />
       ))
     )}
