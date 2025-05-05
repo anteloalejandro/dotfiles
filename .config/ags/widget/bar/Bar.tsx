@@ -1,5 +1,5 @@
 import { Variable, GLib, bind } from "astal"
-import { Astal, Gtk, Gdk } from "astal/gtk3"
+import { Astal, Gtk, Gdk, hook } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
 import Battery from "gi://AstalBattery"
 import Tray from "gi://AstalTray"
@@ -33,7 +33,11 @@ function BatteryLevel() {
     <label label={bind(bat, "percentage").as(p =>
       `${Math.floor(p * 100)}%`
     )} />
-    <icon icon={bind(bat, "batteryIconName")} />
+    <icon
+      css={bind(bat, "percentage").as(
+        p => p <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
+      )}
+      icon={bind(bat, "batteryIconName")} />
   </box>
 }
 
