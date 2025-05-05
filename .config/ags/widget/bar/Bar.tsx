@@ -31,12 +31,12 @@ function BatteryLevel() {
   const charge = Charge.get_default()
   return <box className="Battery"
     visible={bind(bat, "isPresent")}>
-    <label label={bind(bat, "percentage").as(p =>
-      `${Math.floor(p * 100 * 1/charge.limit)}%`
+    <label label={bind(charge, "percentage").as(p =>
+      `${Math.floor(p * 100)}%`
     )} />
     <icon
-      css={bind(bat, "percentage").as(
-        p => p * (1/charge.limit) <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
+      css={bind(charge, "percentage").as(
+        p => p <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
       )}
       icon={bind(charge, 'icon')} />
   </box>

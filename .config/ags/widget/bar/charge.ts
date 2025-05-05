@@ -39,10 +39,9 @@ export default class Charge extends GObject.Object {
     const sufix = 'symbolic'
     const charge = Number(
       Math.min(
-        this.#bat.get_energy()/this.#bat.get_energy_full()
-          * (1/this.#limit),
-          1
-        ).toFixed(1)
+        this.#bat.get_energy()/this.#bat.get_energy_full() * (1/this.#limit),
+        1
+      ).toFixed(1)
     ) * 100
     const isCharging = this.#bat.get_charging()
 
@@ -59,12 +58,13 @@ export default class Charge extends GObject.Object {
     super()
 
     this.#setLimit(readFile(this.#battery_path + "/charge_control_end_threshold"))
+    this.#setBatteryIcon()
+    this.#setPercentage()
+
     monitorFile(this.#battery_path + "/charge_control_end_threshold", async f => {
       this.#setLimit(await readFileAsync(f))
     })
 
-    this.#setBatteryIcon()
-    this.#setPercentage()
     this.#bat.connect('notify', () => {
       this.#setBatteryIcon()
       this.#setPercentage()
