@@ -6,6 +6,6 @@ App.start({
   css,
   instanceName: "powermenu",
   main() {
-    App.get_monitors().map(PowerMenu)
+    App.get_monitors().map(monitor => PowerMenu(monitor, App))
   }
 })
