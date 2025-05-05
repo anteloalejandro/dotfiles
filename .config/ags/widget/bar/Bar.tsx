@@ -36,7 +36,12 @@ function BatteryLevel() {
     )} />
     <icon
       css={bind(charge, "percentage").as(
-        p => p <= 0.1 ? "color: red;" : ""
+        p => {
+          if (p <= 0.1) return "color: red;"
+          if (p > 1) return "color: greenyellow;"
+
+          return ""
+        }
       )}
       icon={bind(charge, 'icon')} />
   </box>

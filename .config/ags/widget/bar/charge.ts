@@ -44,8 +44,12 @@ export default class Charge extends GObject.Object {
       ).toFixed(1)
     ) * 100
     const isCharging = this.#bat.get_charging()
+    let chargingStr = ''
+    if (isCharging) {
+      chargingStr = charge < 100 ? 'charging-' : 'charged-'
+    }
 
-    this.#icon = `${prefix}-${charge}-${isCharging ? 'charging-' : ''}${sufix}`
+    this.#icon = `${prefix}-${charge}-${chargingStr}${sufix}`
     this.notify('icon')
   }
 
