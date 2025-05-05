@@ -3,6 +3,7 @@ import { Astal, Gtk, Gdk, hook } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
 import Battery from "gi://AstalBattery"
 import Tray from "gi://AstalTray"
+import { batIconName, limit } from "./charge"
 
 const Separator = () => <label className="Separator" label="|" />
 
@@ -27,24 +28,16 @@ function SysTray() {
 
 function BatteryLevel() {
   const bat = Battery.get_default()
-  const limit = Variable(Number(
-    readFile(
-      "/sys/class/power_supply/" +
-        exec(`bash -c "ls /sys/class/power_supply/ | grep 'BAT' | head -1"`)
-        + "/charge_control_end_threshold"
-    )
-  ))
-
   return <box className="Battery"
     visible={bind(bat, "isPresent")}>
     <label label={bind(bat, "percentage").as(p =>
-      `${Math.floor(p * limit.get())}%`
+      `${Math.floor(p * 100 * 1/limit.get())}%`
     )} />
     <icon
       css={bind(bat, "percentage").as(
-        p => p * (limit.get()/100) <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
+        p => p * (1/limit.get()) <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
       )}
-      icon={bind(bat, "batteryIconName")} />
+      icon={bind(batIconName)} />
   </box>
 }
 
