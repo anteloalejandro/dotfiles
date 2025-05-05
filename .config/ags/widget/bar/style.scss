@@ -94,4 +94,10 @@ window.Bar {
   .Battery label {
     padding-right: 4px;
   }
+
+  .NotificationAlert {
+    button {
+      all: unset;
+    }
+  }
 }

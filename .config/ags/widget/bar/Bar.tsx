@@ -94,7 +94,17 @@ function Time({ format = "%H:%M" }) {
   />
 }
 
-export default function Bar(monitor: Gdk.Monitor) {
+function NotificationAlert(show_popups: Variable<boolean>) {
+  return <box className="NotificationAlert">
+    <button onClick={() => show_popups.set(!show_popups.get()) }>
+      <icon icon={bind(show_popups).as(
+        b => b ? "notifications-symbolic" : "notifications-disabled-symbolic"
+      )} />
+    </button>
+  </box>
+}
+
+export default function Bar(monitor: Gdk.Monitor, show_popups: Variable<boolean>) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
 
   return <window
@@ -114,6 +124,8 @@ export default function Bar(monitor: Gdk.Monitor) {
         <BatteryLevel />
         <Separator />
         <Time />
+        <Separator />
+        {NotificationAlert(show_popups)}    
       </box>
     </centerbox>
   </window>

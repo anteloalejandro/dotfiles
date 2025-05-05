@@ -10,11 +10,16 @@ import NotificationPopups from "./widget/notifications/NotificationPopups"
 
 import PowerMenu from "./widget/powermenu/PowerMenu";
 import powermenu_style from "./widget/powermenu/PowerMenu.scss";
+import { Variable } from "astal"
+
+const show_popups = Variable(true)
 
 App.start({
   css: bar_style,
   main() {
-    App.get_monitors().map(Bar)
+    App.get_monitors().map(
+      monitor => Bar(monitor, show_popups)
+    )
   },
 })
 
@@ -28,7 +33,9 @@ App.start({
 App.start({
   css: notification_style,
   main() {
-    App.get_monitors().map(NotificationPopups)
+    App.get_monitors().map(
+      monitor => NotificationPopups(monitor, App, show_popups)
+    )
   }
 })
 
