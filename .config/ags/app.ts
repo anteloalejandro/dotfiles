@@ -8,6 +8,9 @@ import OSD from "./widget/osd/OSD"
 import notification_style from "./widget/notifications/Notification.scss"
 import NotificationPopups from "./widget/notifications/NotificationPopups"
 
+import PowerMenu from "./widget/powermenu/PowerMenu";
+import powermenu_style from "./widget/powermenu/PowerMenu.scss";
+
 App.start({
     css: bar_style,
     main() {
@@ -16,7 +19,6 @@ App.start({
 })
 
 App.start({
-    instanceName: "osd",
     css: osd_style,
     main() {
         App.get_monitors().map(OSD)
@@ -24,9 +26,15 @@ App.start({
 })
 
 App.start({
-    instanceName: "notification_popups",
     css: notification_style,
     main() {
         App.get_monitors().map(NotificationPopups)
     }
+})
+
+App.start({
+  css: powermenu_style,
+  main() {
+    App.get_monitors().map(monitor => PowerMenu(monitor, App))
+  },
 })

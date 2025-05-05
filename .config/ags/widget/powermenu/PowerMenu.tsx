@@ -1,4 +1,4 @@
-import { Binding, execAsync } from "astal"
+import { execAsync } from "astal"
 import { Astal, Gtk, Gdk } from "astal/gtk3"
 
 function cmdButton(icon: string, ...commands: string[]) {
@@ -8,6 +8,7 @@ function cmdButton(icon: string, ...commands: string[]) {
 }
 export default function PowerMenu(monitor: Gdk.Monitor, app: Gtk.Application) {
   return <window
+    visible={false}
     name="powermenu" application={app}
     className="PowerMenu"
     gdkmonitor={monitor}
@@ -20,9 +21,9 @@ export default function PowerMenu(monitor: Gdk.Monitor, app: Gtk.Application) {
     <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
       {cmdButton("system-shutdown-symbolic", "poweroff")}
       {cmdButton("system-reboot-symbolic", "reboot")}
-      {cmdButton("system-suspend-symbolic", "ags quit -i powermenu", "systemctl suspend")}
+      {cmdButton("system-suspend-symbolic", "ags toggle powermenu", "systemctl suspend")}
       {cmdButton("application-exit-symbolic", "hyprct dispatch exit")}
-      {cmdButton("window-close-symbolic", "ags toggle powermenu -i powermenu")}
+      {cmdButton("window-close-symbolic", "ags toggle powermenu")}
     </box>
   </window>
 }
