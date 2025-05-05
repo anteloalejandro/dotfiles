@@ -1,5 +1,5 @@
-import { Variable, GLib, bind, exec, readFile } from "astal"
-import { Astal, Gtk, Gdk, hook } from "astal/gtk3"
+import { Variable, GLib, bind } from "astal"
+import { Astal, Gtk, Gdk } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
 import Battery from "gi://AstalBattery"
 import Tray from "gi://AstalTray"
@@ -36,7 +36,7 @@ function BatteryLevel() {
     )} />
     <icon
       css={bind(charge, "percentage").as(
-        p => p <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
+        p => p <= 0.1 ? "color: red;" : ""
       )}
       icon={bind(charge, 'icon')} />
   </box>
@@ -77,12 +77,9 @@ function FocusedClient() {
   const max_chars = 20;
 
   return <box className="Focused">
-    {focused.as(client => {
-      const ret = (
-        <label label={client ? bind(client, "title") : "Desktop"} maxWidthChars={max_chars} truncate />
-      )
-      return ret
-    })}
+    {focused.as(client => 
+      <label label={client ? bind(client, "title") : "Desktop"} maxWidthChars={max_chars} truncate />
+    )}
   </box>
 }
 
