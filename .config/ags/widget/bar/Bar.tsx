@@ -1,4 +1,4 @@
-import { Variable, GLib, bind } from "astal"
+import { Variable, GLib, bind, exec, readFile } from "astal"
 import { Astal, Gtk, Gdk, hook } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
 import Battery from "gi://AstalBattery"
@@ -27,15 +27,22 @@ function SysTray() {
 
 function BatteryLevel() {
   const bat = Battery.get_default()
+  const limit = Variable(Number(
+    readFile(
+      "/sys/class/power_supply/" +
+        exec(`bash -c "ls /sys/class/power_supply/ | grep 'BAT' | head -1"`)
+        + "/charge_control_end_threshold"
+    )
+  ))
 
   return <box className="Battery"
     visible={bind(bat, "isPresent")}>
     <label label={bind(bat, "percentage").as(p =>
-      `${Math.floor(p * 100)}%`
+      `${Math.floor(p * limit.get())}%`
     )} />
     <icon
       css={bind(bat, "percentage").as(
-        p => p <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
+        p => p * (limit.get()/100) <= 0.1 ? "color: red; -gtk-icon-palette: initial;" : ""
       )}
       icon={bind(bat, "batteryIconName")} />
   </box>
