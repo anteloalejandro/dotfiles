@@ -12,29 +12,31 @@ import PowerMenu from "./widget/powermenu/PowerMenu";
 import powermenu_style from "./widget/powermenu/PowerMenu.scss";
 
 App.start({
-    css: bar_style,
-    main() {
-        App.get_monitors().map(Bar)
-    },
+  css: bar_style,
+  main() {
+    App.get_monitors().map(Bar)
+  },
 })
 
 App.start({
-    css: osd_style,
-    main() {
-        App.get_monitors().map(OSD)
-    },
+  css: osd_style,
+  main() {
+    App.get_monitors().map(OSD)
+  },
 })
 
 App.start({
-    css: notification_style,
-    main() {
-        App.get_monitors().map(NotificationPopups)
-    }
+  css: notification_style,
+  main() {
+    App.get_monitors().map(NotificationPopups)
+  }
 })
 
 App.start({
   css: powermenu_style,
   main() {
-    App.get_monitors().map(monitor => PowerMenu(monitor, App))
+    App.get_monitors().map(
+      monitor => PowerMenu(monitor, App)
+    )
   },
 })

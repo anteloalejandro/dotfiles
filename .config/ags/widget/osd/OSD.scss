@@ -1,45 +1,45 @@
 @use "../../../.styles/generated/style.scss" as *;
 
 window.OSD {
-    font-family: 'Ubuntu Mono';
-    font-size: 1.25rem;
+  font-family: 'Ubuntu Mono';
+  font-size: 1.25rem;
 
-    box.OSD {
-        border-radius: $radius;
-        background-color: $bg-dark;
-        padding: $spacing;
-        margin: $spacing;
-        box-shadow: 3px 3px 7px 0 rgba(0,0,0,.4);
+  box.OSD {
+    border-radius: $radius;
+    background-color: $bg-dark;
+    padding: $spacing;
+    margin: $spacing;
+    box-shadow: 3px 3px 7px 0 rgba(0,0,0,.4);
 
-        min-width: 1.5em;
+    min-width: 1.5em;
 
-        box {
-            margin-top: $spacing;
-            margin-bottom: $spacing;
-        }
+    box {
+      margin-top: $spacing;
+      margin-bottom: $spacing;
+    }
+  }
+
+
+  levelbar {
+    trough {
+      margin: 1 .6rem;
+    }
+    block {
+      min-height: 1rem;
+      border-radius: $radius;
     }
 
-
-    levelbar {
-        trough {
-            margin: 1 .6rem;
-        }
-        block {
-            min-height: 1rem;
-            border-radius: $radius;
-        }
-
-        trough block.filled {
-            background-color: $accent;
-        }
-        &.danger trough block.filled {
-            background-color: coral;
-        }
-        trough block.empty {
-            background-color: $bg;
-        }
-        &.danger trough block.empty {
-            background-color: $accent;
-        }
+    trough block.filled {
+      background-color: $accent;
     }
+    &.danger trough block.filled {
+      background-color: coral;
+    }
+    trough block.empty {
+      background-color: $bg;
+    }
+    &.danger trough block.empty {
+      background-color: $accent;
+    }
+  }
 }
