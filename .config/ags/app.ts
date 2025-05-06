@@ -1,4 +1,5 @@
 import { App } from "astal/gtk3"
+import { Variable } from "astal"
 import bar_style from "./widget/bar/style.scss"
 import Bar from "./widget/bar/Bar"
 
@@ -10,7 +11,9 @@ import NotificationPopups from "./widget/notifications/NotificationPopups"
 
 import PowerMenu from "./widget/powermenu/PowerMenu";
 import powermenu_style from "./widget/powermenu/PowerMenu.scss";
-import { Variable } from "astal"
+
+import Alerts from "./widget/alerts/Alerts"
+import alerts_style from './widget/alerts/Alerts.scss'
 
 const show_popups = Variable(true)
 
@@ -44,4 +47,11 @@ App.start({
   main() {
     App.get_monitors().map(PowerMenu)
   },
+})
+
+App.start({
+  css: alerts_style,
+  main() {
+    App.get_monitors().map(Alerts)
+  }
 })

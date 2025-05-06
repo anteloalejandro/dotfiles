@@ -1,0 +1,41 @@
+@use '../../../.styles/generated/style.scss' as *;
+
+window.Alerts {
+  font-family: 'Ubuntu Mono';
+
+  & > box {
+    margin-bottom: 200px;
+  }
+
+  .PowerProfile {
+    .title {
+      $color: $accent;
+      color: $color;
+      padding-bottom: 2px;
+      margin-bottom: $spacing;
+      border-bottom: 2px solid $color;
+    }
+    .profile {
+      font-size: 1.5em
+    }
+  }
+
+  button + button {
+    margin-top: $spacing;
+  }
+
+  button {
+    all: unset;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.5em;
+    border-radius: $radius;
+    background-color: $bg-dark;
+    color: $fg;
+    opacity: 0.8;
+
+    &.LowBattery {
+      background-color: coral;
+    }
+  }
+}
