@@ -1,0 +1,27 @@
+@use "../../../.styles/generated/style.scss" as *;
+@use './Notification.scss' as *;
+
+window.NotificationPanel {
+  .container {
+    margin: $spacing;
+    padding: $spacing;
+    background-color: $bg-dark;
+    border-radius: $radius;
+
+    & > * + * {
+      margin-top: $spacing;
+    }
+  }
+
+  .notifications_container {
+    min-width: calc($notification-width + ($spacing * 1px) * 2);
+    &.empty icon {
+      font-size: 5rem;
+      color: $bg;
+    }
+  }
+
+  viewport {
+    border: 0px;
+  }
+}
