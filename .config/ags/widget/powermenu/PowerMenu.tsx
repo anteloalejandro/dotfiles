@@ -1,15 +1,15 @@
 import { execAsync } from "astal"
-import { Astal, Gtk, Gdk } from "astal/gtk3"
+import { Astal, Gtk, Gdk, App } from "astal/gtk3"
 
 function cmdButton(icon: string, ...commands: string[]) {
   return <button onClicked={() => commands.forEach(execAsync)} >
     <icon icon={icon} />
   </button>
 }
-export default function PowerMenu(monitor: Gdk.Monitor, app: Gtk.Application) {
+export default function PowerMenu(monitor: Gdk.Monitor) {
   return <window
     visible={false}
-    name="powermenu" application={app}
+    name="powermenu" application={App}
     className="PowerMenu"
     gdkmonitor={monitor}
     anchor={Astal.WindowAnchor.TOP}

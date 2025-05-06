@@ -1,4 +1,4 @@
-import { Astal, Gdk, Gtk } from "astal/gtk3"
+import { App, Astal, Gdk, Gtk } from "astal/gtk3"
 import Notifd from "gi://AstalNotifd"
 import Notification from "./Notification"
 import { Variable, bind, timeout } from "astal"
@@ -19,20 +19,20 @@ function del(id: number) {
   )
 }
 
-notifd.connect("notified", (_, id) => {
-  add(id)
-})
-
-notifd.connect("resolved", (_, id) => {
-  del(id)
-})
-
-export default function NotificationPopups(gdkmonitor: Gdk.Monitor, app: Gtk.Application, visible: Variable<boolean>) {
+export default function NotificationPopups(gdkmonitor: Gdk.Monitor, visible: Variable<boolean>) {
   const { TOP, RIGHT } = Astal.WindowAnchor
+
+  notifd.connect("notified", (_, id) => {
+    if (visible.get()) add(id)
+  })
+
+  notifd.connect("resolved", (_, id) => {
+    del(id)
+  })
 
   return <window
     visible={bind(visible)}
-    name="notification_popups" application={app}
+    name="notification_popups" application={App}
     className="NotificationPopups"
     gdkmonitor={gdkmonitor}
     exclusivity={Astal.Exclusivity.EXCLUSIVE}

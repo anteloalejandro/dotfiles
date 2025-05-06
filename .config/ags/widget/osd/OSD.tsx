@@ -71,8 +71,6 @@ export default function OSD(monitor: Gdk.Monitor) {
     <window
       gdkmonitor={monitor}
       className="OSD"
-      namespace="osd"
-      application={App}
       layer={Astal.Layer.OVERLAY}
       anchor={Astal.WindowAnchor.LEFT}
     >

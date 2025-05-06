@@ -34,7 +34,7 @@ App.start({
   css: notification_style,
   main() {
     App.get_monitors().map(
-      monitor => NotificationPopups(monitor, App, show_popups)
+      monitor => NotificationPopups(monitor, show_popups)
     )
   }
 })
@@ -42,8 +42,6 @@ App.start({
 App.start({
   css: powermenu_style,
   main() {
-    App.get_monitors().map(
-      monitor => PowerMenu(monitor, App)
-    )
+    App.get_monitors().map(PowerMenu)
   },
 })
