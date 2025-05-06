@@ -3,7 +3,7 @@ import { Astal, Gtk, Gdk } from "astal/gtk3"
 import Hyprland from "gi://AstalHyprland"
 import Battery from "gi://AstalBattery"
 import Tray from "gi://AstalTray"
-import Charge from "./charge"
+import Charge from "../../services/charge"
 
 const Separator = () => <label className="Separator" label="|" />
 

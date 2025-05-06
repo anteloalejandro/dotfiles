@@ -1,6 +1,6 @@
-import { AstalIO, bind, monitorFile, readFile, readFileAsync, timeout, Variable } from "astal";
-import { Astal, Gdk, Gtk, Widget } from "astal/gtk3";
-import Charge from "../bar/charge";
+import { AstalIO, bind, monitorFile, readFileAsync, timeout, Variable } from "astal";
+import { Astal, Gdk, Gtk } from "astal/gtk3";
+import Charge from "../../services/charge";
 import Battery from "gi://AstalBattery";
 
 const showPowerProfile = Variable(false)
