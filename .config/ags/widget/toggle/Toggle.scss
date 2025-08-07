@@ -1,0 +1,23 @@
+@use '../../../.styles/generated/style.scss' as *;
+
+button.toggle {
+  all: unset;
+  $size: 1rem;
+  min-width: calc($size * 3);
+  border-radius: $radius;
+  background-color: $bg;
+  padding: calc($spacing / 2);
+  transition: 200ms ease;
+
+  &.active {
+    background-color: $accent;
+  }
+
+  box.indicator {
+    min-width: $size;
+    min-height: $size;
+    border-radius: $radius;
+    background-color: $fg;
+    transition: 200ms ease;
+  }
+}

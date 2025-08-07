@@ -14,10 +14,12 @@ window.NotificationPanel {
   }
 
   .notifications_container {
+    background-color: $bg;
+    border-radius: $radius;
     min-width: calc($notification-width + ($spacing * 1px) * 2);
     &.empty icon {
       font-size: 5rem;
-      color: $bg;
+      color: $bg-dark;
     }
   }
 

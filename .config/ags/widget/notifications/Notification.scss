@@ -18,11 +18,11 @@ window.NotificationPopups {
 eventbox.Notification {
 
   &:first-child>box {
-    margin-top: 1rem;
+    margin-top: $spacing;
   }
 
   &:last-child>box {
-    margin-bottom: 1rem;
+    margin-bottom: $spacing;
   }
 
   // eventboxes can not take margins so we style its inner box instead
@@ -30,7 +30,7 @@ eventbox.Notification {
     min-width: $notification-width;
     border-radius: 13px;
     background-color: $bg-color;
-    margin: .5rem 1rem .5rem 1rem;
+    margin: calc($spacing / 2) $spacing;
     box-shadow: 2px 3px 8px 0 gtkalpha(black, .4);
     border: 1pt solid gtkalpha($fg-color, .03);
   }

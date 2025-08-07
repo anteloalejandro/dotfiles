@@ -2,6 +2,7 @@ import { bind, execAsync, timeout, Variable } from "astal"
 import { Astal, Gtk, Gdk, App, Widget } from "astal/gtk3"
 import Notifd from "gi://AstalNotifd"
 import Notification from "./Notification";
+import { Toggle } from "../toggle/Toggle";
 
 const notifd = Notifd.get_default();
 
@@ -37,10 +38,7 @@ export default function NotificationPanel(monitor: Gdk.Monitor, show_panel: Vari
       <centerbox>
         <label label="Do Not Disturb" halign={Gtk.Align.START} />
         <Gtk.Separator />
-        <switch halign={Gtk.Align.END}
-          active={bind(show_popups).as(b => !b)}
-          onNotifyActivate={() => console.log('hello!')}
-        />
+        <Toggle active={show_popups} invert halign={Gtk.Align.END} />
       </centerbox>
 
       <scrollable

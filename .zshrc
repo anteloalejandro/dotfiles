@@ -83,6 +83,7 @@ alias get-mime="xdg-mime query filetype"
 alias hist='cat ~/.zsh_history | fzf'
 alias icat='kitten icat'
 alias cat='bat'
+alias neofetch='fastfetch -c neofetch.jsonc'
 
 # __NV_PRIME_RENDER_OFFLOAD might be 1 or 0 depending on the system.
 alias nvidia-run='__NV_PRIME_RENDER_OFFLOAD=0 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
@@ -90,6 +91,9 @@ alias nvidia-run='__NV_PRIME_RENDER_OFFLOAD=0 __VK_LAYER_NV_optimus=NVIDIA_only 
 # Switch off/on dedicated GPU
 alias gpu-on='sudo ~/.local/bin/envycontrol -s hybrid --rtd3'
 alias gpu-off='sudo ~/.local/bin/envycontrol -s integrated'
+
+# create wifi hotspot
+alias hotspot='sudo create_ap --freq-band 2.4 wlan0 enp2s0 Arch yoshipayshistaxes --no-virt'
 
 # Shell integrations
 eval "$(fzf --zsh)"
