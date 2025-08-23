@@ -7,6 +7,14 @@ window.BorderTop {
   color: $fg-color;
   font-weight: bold;
 
+  eventbox {
+    all: unset;
+  }
+
+  .h-spacer, .v-spacer {
+    background-color: #181818;
+  }
+
   .border-top-bar {
     background-color: #181818;
     margin-bottom: 8px;
