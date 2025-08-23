@@ -95,6 +95,11 @@ alias gpu-off='sudo ~/.local/bin/envycontrol -s integrated'
 # create wifi hotspot
 alias hotspot='sudo create_ap --freq-band 2.4 wlan0 enp2s0 Arch yoshipayshistaxes --no-virt'
 
+# init node version manager
+if [[ -d "/usr/share/nvm" ]]; then
+   source /usr/share/nvm/init-nvm.sh
+fi
+
 # Shell integrations
 eval "$(fzf --zsh)"
 source "$HOME/.eww-completions.zsh"
