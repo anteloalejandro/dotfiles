@@ -4,19 +4,15 @@ $bg-color: #{"@theme_bg_color"};
 
 window.BorderTop {
   background: transparent;
-  color: $fg-color;
+  color: white;
   font-weight: bold;
 
   eventbox {
     all: unset;
+    padding-bottom: 10px;
   }
 
-  .h-spacer, .v-spacer {
+  .border-top-bar, eventbox {
     background-color: #181818;
-  }
-
-  .border-top-bar {
-    background-color: #181818;
-    margin-bottom: 8px;
   }
 }
