@@ -1,13 +1,10 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { RoundedCorner, CornerOrientation, DynRoundedCorner } from "./corners"
 import { createState } from "gnim"
-import { timeout } from "ags/time"
-import { Empty, EventBox } from "./utils"
+import { EventBox } from "./utils"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
-
   const [ reveal_top, set_reveal_top ] = createState(false);
 
   return (
@@ -35,13 +32,20 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           reveal_child={reveal_top}
           onNotifyChildRevealed={() => print(reveal_top.get())}
         >
-          <box class="border-top-bar" >
-            hello!
+          <box class="border-top-bar" height_request={10} >
+            hello, world!
           </box>
         </revealer>
         <EventBox
+          height_request={8}
           onClicked={() => set_reveal_top(b => !b)}
-        />
+        >
+          <box
+            valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
+            height_request={2} width_request={20}
+            css="border-radius: 8px; background-color: white;"
+          />
+        </EventBox>
       </box>
     </window>
   )

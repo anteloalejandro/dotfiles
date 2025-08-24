@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4";
+import { Accessor } from "gnim";
 
 
 /** empty box that enables sizing of elements that need some content*/
@@ -9,15 +10,18 @@ export function Empty() {
 export type EventBoxProps  = {
   onClicked?: ((source: Gtk.Button) => void);
   children?: JSX.Element | Array<JSX.Element>;
-  class?: string
+  class?: string;
+  height_request?: number | Accessor<number> | undefined;
+  width_request?: number | Accessor<number> | undefined;
 }
 
 export function EventBox(props: EventBoxProps)  {
+  const children = props.children;
+  delete props.children;
   return <button
     cssName="eventbox"
-    class={props.class}
-    onClicked={props.onClicked}
+    {...props}
   >
-    {props.children ?? <Empty />}
+    {children ?? <Empty />}
   </button>
 }

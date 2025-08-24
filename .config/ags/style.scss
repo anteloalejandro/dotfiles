@@ -9,10 +9,25 @@ window.BorderTop {
 
   eventbox {
     all: unset;
-    padding-bottom: 10px;
   }
 
   .border-top-bar, eventbox {
     background-color: #181818;
+  }
+}
+
+window.BorderBottom {
+  background: transparent;
+  color: white;
+  font-weight: bold;
+
+  .border-bottom-bar {
+    background-color: #181818;
+  }
+
+  menubutton,
+  menubutton > button,
+  menu > button > arrow {
+    all: unset;
   }
 }
