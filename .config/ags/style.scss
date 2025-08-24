@@ -31,3 +31,36 @@ window.BorderBottom {
     all: unset;
   }
 }
+
+window.BorderLeft {
+  background: transparent;
+  color: white;
+  font-weight: bold;
+
+  .border-left-bar {
+    background-color: #181818;
+  }
+
+  menubutton,
+  menubutton > button,
+  menu > button > arrow {
+    all: unset;
+  }
+}
+
+
+window.BorderRight {
+  background: transparent;
+  color: white;
+  font-weight: bold;
+
+  .border-right-bar {
+    background-color: #181818;
+  }
+
+  menubutton,
+  menubutton > button,
+  menu > button > arrow {
+    all: unset;
+  }
+}

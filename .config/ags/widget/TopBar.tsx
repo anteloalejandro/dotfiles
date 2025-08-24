@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { createState } from "gnim"
+import { createState, onCleanup } from "gnim"
 import { EventBox } from "./utils"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
@@ -17,13 +17,14 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       anchor={TOP | LEFT | RIGHT}
       application={app}
       $={self => {
-        reveal_top.subscribe(() => {
+        const handle = reveal_top.subscribe(() => {
           if (reveal_top.get() == true) return;
 
           self.set_resizable(true);
           self.set_size_request(self.get_width(), 0);
           self.set_resizable(false);
         })
+        onCleanup(handle);
       }}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>

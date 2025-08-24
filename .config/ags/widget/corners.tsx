@@ -1,6 +1,7 @@
-import { Gdk, Gtk } from "ags/gtk4";
+import { Astal, Gdk, Gtk } from "ags/gtk4";
+import app from "ags/gtk4/app";
 import cairo from "gi://cairo?version=1.0";
-import { Accessor } from "gnim";
+import { Accessor, onCleanup } from "gnim";
 
 /** Orientation of the corner relative to the drawing area */
 export enum CornerOrientation {
@@ -83,43 +84,29 @@ export function RoundedCorner(props: RoundedCornerProps) {
   return drawing;
 }
 
-export function DynRoundedCorner(props: RoundedCornerProps & {vspace: Accessor<number>, hspace: Accessor<number>}) {
-  const { HORIZONTAL, VERTICAL } = Gtk.Orientation;
-  const { TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT } = CornerOrientation;
-  const { vspace, hspace, radius, orientation } = props;
-  props.padding = undefined;
+export function CornerWindow(gdkmonitor: Gdk.Monitor, props: RoundedCornerProps) {
+  const { BOTTOM, LEFT, TOP, RIGHT } = Astal.WindowAnchor
+  const { BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT } = CornerOrientation;
 
-  const setup_hSpacer = (self: Gtk.Box) => {
-    self.add_css_class("h-spacer");
-    self.set_valign(Gtk.Align.START);
-    self.set_size_request(hspace.get(), vspace.get()+radius);
-    hspace.subscribe(() => {
-      self.set_size_request(hspace.get(), self.get_size_request()[1]);
-    })
-    vspace.subscribe(() => {
-      self.set_size_request(self.get_size_request()[0], vspace.get()+radius);
-    })
+  let anchor: Astal.WindowAnchor;
+  switch (props.orientation) {
+    case TOP_LEFT: anchor = TOP | LEFT; break;
+    case TOP_RIGHT: anchor = TOP | RIGHT; break;
+    case BOTTOM_LEFT: anchor = BOTTOM | LEFT; break;
+    case BOTTOM_RIGHT: anchor = BOTTOM | RIGHT; break;
   }
-  const setup_vSpacer = (self: Gtk.Box) => {
-    self.add_css_class("v-spacer");
-    self.set_size_request(self.get_size_request()[0], vspace.get());
-    vspace.subscribe(() => {
-      self.set_size_request(self.get_size_request()[0], vspace.get());
-    })
-  }
-
-  const isTop = orientation == TOP_LEFT || orientation == TOP_RIGHT;
-  const isLeft = orientation == TOP_LEFT || orientation == BOTTOM_LEFT;
 
   return (
-    <box orientation={HORIZONTAL}>
-      { isLeft && <box $={setup_hSpacer} /> }
-      <box orientation={VERTICAL}>
-        { isTop && <box $={setup_vSpacer} /> }
-        <RoundedCorner {...props} />
-        { !isTop && <box $={setup_vSpacer} /> }
-      </box>
-      { !isLeft && <box $={setup_hSpacer} /> }
-    </box>
+    <window
+      visible
+      name={`corner-${props.orientation}`}
+      class="CornerWindow"
+      gdkmonitor={gdkmonitor}
+      exclusivity={Astal.Exclusivity.EXCLUSIVE}
+      anchor={anchor}
+      application={app}
+    >
+      <RoundedCorner {...props} />
+    </window>
   )
 }

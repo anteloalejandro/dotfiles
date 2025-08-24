@@ -3,23 +3,23 @@ import app from "ags/gtk4/app";
 import { createState, onMount } from "gnim";
 import { Empty, EventBox } from "./utils";
 
-export default function BottomBar(gdkmonitor: Gdk.Monitor) {
-  const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
+export default function LeftBar(gdkmonitor: Gdk.Monitor) {
+  const { BOTTOM, RIGHT, TOP } = Astal.WindowAnchor
   return (
     <window
       visible
-      name="border-bottom"
-      class="BorderBottom"
+      name="border-right"
+      class="BorderRight"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      anchor={BOTTOM | LEFT | RIGHT}
+      anchor={TOP | RIGHT | BOTTOM}
       application={app}
-      height_request={8}
+      width_request={8}
     >
       <menubutton>
-        <box class="border-bottom-bar"></box>
+        <box class="border-right-bar"></box>
           <popover
-            position={Gtk.PositionType.TOP}
+            position={Gtk.PositionType.LEFT}
             has_arrow={false}
           >
             <Gtk.Calendar></Gtk.Calendar>
