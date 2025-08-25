@@ -1,7 +1,5 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { createState, onMount } from "gnim";
-import { Empty, EventBox } from "./utils";
 
 export default function BottomBar(gdkmonitor: Gdk.Monitor) {
   const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
@@ -20,9 +18,10 @@ export default function BottomBar(gdkmonitor: Gdk.Monitor) {
         <box class="border-bottom-bar"></box>
           <popover
             position={Gtk.PositionType.TOP}
+            autohide={false}
             has_arrow={false}
           >
-            <Gtk.Calendar></Gtk.Calendar>
+            BOTTOM
           </popover>
       </menubutton>
     </window>

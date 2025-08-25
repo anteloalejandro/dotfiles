@@ -2,7 +2,7 @@
 $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
 
-window.BorderTop {
+window {
   background: transparent;
   color: white;
   font-weight: bold;
@@ -11,56 +11,34 @@ window.BorderTop {
     all: unset;
   }
 
+  menubutton,
+  menubutton > button,
+  menubutton > popover > contents {
+    all: unset;
+  }
+}
+
+window.BorderTop {
   .border-top-bar, eventbox {
     background-color: #181818;
   }
 }
 
 window.BorderBottom {
-  background: transparent;
-  color: white;
-  font-weight: bold;
-
   .border-bottom-bar {
     background-color: #181818;
-  }
-
-  menubutton,
-  menubutton > button,
-  menu > button > arrow {
-    all: unset;
   }
 }
 
 window.BorderLeft {
-  background: transparent;
-  color: white;
-  font-weight: bold;
-
   .border-left-bar {
     background-color: #181818;
-  }
-
-  menubutton,
-  menubutton > button,
-  menu > button > arrow {
-    all: unset;
   }
 }
 
 
 window.BorderRight {
-  background: transparent;
-  color: white;
-  font-weight: bold;
-
   .border-right-bar {
     background-color: #181818;
-  }
-
-  menubutton,
-  menubutton > button,
-  menu > button > arrow {
-    all: unset;
   }
 }

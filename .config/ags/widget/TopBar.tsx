@@ -43,7 +43,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         >
           <box
             valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
-            height_request={2} width_request={20}
+            height_request={3} width_request={20}
             css="border-radius: 8px; background-color: white;"
           />
         </EventBox>
