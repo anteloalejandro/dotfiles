@@ -11,11 +11,11 @@ window {
     all: unset;
   }
 
-  menubutton,
-  menubutton > button,
-  menubutton > popover > contents {
-    all: unset;
-  }
+  // menubutton,
+  // menubutton > button,
+  // menubutton > popover > contents {
+  //   all: unset;
+  // }
 }
 
 window.BorderTop {

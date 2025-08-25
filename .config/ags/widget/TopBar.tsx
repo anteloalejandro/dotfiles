@@ -1,7 +1,85 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { createState, onCleanup } from "gnim"
+import { createBinding, createState, For, onCleanup } from "gnim"
 import { EventBox } from "./utils"
+import Tray from "gi://AstalTray"
+import Hyprland from "gi://AstalHyprland?version=0.1"
+import Apps from "gi://AstalApps?version=0.1"
+import Pango from "gi://Pango?version=1.0"
+
+function SysTray() {
+  const tray = Tray.get_default();
+  const items = createBinding(tray, "items");
+
+  return (
+    <box>
+      <For each={items(xs => xs.sort((a, b) => b.id.localeCompare(a.id)))}>
+        {(item: Tray.TrayItem, _) => {
+          return <menubutton
+            $={self => self.insert_action_group("dbusmenu", item.actionGroup)}
+            tooltip_markup={createBinding(item, "tooltipMarkup")}
+            menu_model={createBinding(item, "menuModel")}>
+            <image gicon={createBinding(item, "gicon")} />
+          </menubutton>
+        }}
+      </For>
+    </box>
+  )
+}
+
+function FocusedClient() {
+  const hyprland = Hyprland.get_default();
+  const apps = new Apps.Apps();
+  const focused = createBinding(hyprland, "focused_client");
+
+  function parse_class_name(s: string) {
+    return s.substring(s.lastIndexOf(".")+1);
+  }
+
+  return (
+    <box>
+      <image icon_name={focused(f => {
+        const class_name = parse_class_name(f.class);
+        const query = apps.fuzzy_query(class_name);
+        for (const q of query) {
+          if (q && q.icon_name != "") return q.icon_name;
+        }
+        return "";
+      })} />
+      <label
+        label={focused(f => `${parse_class_name(f.class)} - ${f.title}`)}
+        max_width_chars={20}
+        ellipsize={Pango.EllipsizeMode.END}
+      />
+    </box>
+  )
+}
+
+function Workspaces() {
+  const hyprland = Hyprland.get_default();
+  const workspaces = createBinding(hyprland, "workspaces");
+  const focused = createBinding(hyprland, "focused_workspace");
+
+  return (
+    <box>
+      <For each={workspaces(wss => wss
+        .filter(ws => !(ws.id >= -99 && ws.id <= -2)) // filter out special wss
+        .sort((a, b) => a.id - b.id)
+      )}>
+        {(ws: Hyprland.Workspace, _) => {
+          return <button
+            class={
+              "workspace-indicator"
+                + (ws.clients.length == 0 ? " empty" : " ")
+                + (ws.id == focused.get().id ? " focused" : "")
+            }
+            onClicked={() => ws.focus()}
+          />
+        }}
+      </For>
+    </box>
+  )
+}
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
@@ -33,9 +111,11 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           reveal_child={reveal_top}
           onNotifyChildRevealed={() => print(reveal_top.get())}
         >
-          <box class="border-top-bar" height_request={10} >
-            hello, world!
-          </box>
+          <centerbox class="border-top-bar" height_request={10} >
+            <FocusedClient $type="start" />
+            <Workspaces $type="center" />
+            <SysTray $type="end" />
+          </centerbox>
         </revealer>
         <EventBox
           height_request={8}

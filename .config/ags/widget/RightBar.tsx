@@ -17,21 +17,7 @@ export default function LeftBar(gdkmonitor: Gdk.Monitor) {
       width_request={8}
       $={self => window_ref = self}
     >
-      <Gtk.PopoverMenu>
-
-      </Gtk.PopoverMenu>
-      <menubutton>
-        <box class="border-right-bar"></box>
-        <popover
-          onRealize={self => {
-            self.set_offset(0, -window_ref.get_height()/2);
-          }}
-          position={Gtk.PositionType.LEFT}
-          has_arrow={false}
-        >
-          RIGHT
-        </popover>
-      </menubutton>
+      <box class="border-right-bar"></box>
     </window>
   )
 }
