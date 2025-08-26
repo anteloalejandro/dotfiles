@@ -6,9 +6,9 @@ import LeftBar from "./widget/LeftBar"
 import RightBar from "./widget/RightBar"
 import { CornerWindow, CornerOrientation } from "./widget/corners"
 import { createState } from "gnim"
-import { Astal, Gdk } from "ags/gtk4"
 import TestWindow from "./widget/TestWindow"
 import { NotificationPopup } from "./widget/NotificationPopup"
+import Osd from "./widget/Osd"
 
 const bottom_popup = createState(false);
 
@@ -30,6 +30,7 @@ app.start({
 
 
       NotificationPopup(monitor);
+      Osd(monitor, createState(false));
       if (index == 0) TestWindow(monitor, bottom_popup);
     })
   },
