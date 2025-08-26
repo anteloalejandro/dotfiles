@@ -8,7 +8,7 @@ import { CornerOrientation, RoundedCorner } from "./corners";
 import { timeout } from "ags/time";
 
 function OsdSlider(props: {visible: State<boolean>}) {
-  const [reveal, set_reveal] = props.visible;
+  const [, set_reveal] = props.visible;
 
   const brightness = Brightness.get_default();
   const speaker = Wp.get_default()?.get_default_speaker();

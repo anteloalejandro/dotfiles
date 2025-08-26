@@ -1,5 +1,5 @@
 import { monitorFile, readFileAsync } from "ags/file";
-import GObject, { getter, property, register, setter } from "ags/gobject";
+import GObject, { getter, register } from "ags/gobject";
 import { exec, execAsync } from "ags/process";
 
 const get = (args: string): number => Number(exec(`brightnessctl ${args}`));

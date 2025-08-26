@@ -1,14 +1,13 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { timeout } from "ags/time";
-import { createState, onCleanup, onMount, State } from "gnim";
+import { State } from "gnim";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { setup_fix_hidden_window, setup_window_resizable } from "./utils";
 
 export default function TestWindow(gdkmonitor: Gdk.Monitor, bottom_popup: State<boolean>) {
   const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
-  const { TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT } = CornerOrientation;
-  const [ reveal, set_reveal ] = bottom_popup;
+  const { BOTTOM_LEFT, BOTTOM_RIGHT } = CornerOrientation;
+  const [ reveal ] = bottom_popup;
   return (
     <window
       visible

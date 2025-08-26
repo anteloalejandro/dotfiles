@@ -1,10 +1,7 @@
 import { Gtk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
-import { EventBox } from "./utils"
 import Pango from "gi://Pango?version=1.0"
 import GLib from "gi://GLib?version=2.0"
-import { onCleanup, State } from "gnim"
-import { timeout } from "ags/time"
 
 const fileExists = (path: string) =>
   GLib.file_test(path, GLib.FileTest.EXISTS)

@@ -1,7 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import cairo from "gi://cairo?version=1.0";
-import { Accessor, onCleanup } from "gnim";
+import { Accessor } from "gnim";
 
 /** Orientation of the corner relative to the drawing area */
 export enum CornerOrientation {

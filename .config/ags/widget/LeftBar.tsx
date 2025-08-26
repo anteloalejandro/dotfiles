@@ -1,4 +1,4 @@
-import { Astal, Gdk, Gtk } from "ags/gtk4";
+import { Astal, Gdk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 
 export default function LeftBar(gdkmonitor: Gdk.Monitor) {
