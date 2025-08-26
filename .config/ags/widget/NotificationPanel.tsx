@@ -7,7 +7,7 @@ import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";
 
 export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean>) {
-  const [reveal, set_reveal] = show_panel;
+  const [ reveal ] = show_panel;
   const notifd = Notifd.get_default();
   const notifications = createBinding(notifd, "notifications");
   const dnd = createBinding(notifd, "dont_disturb");
@@ -72,7 +72,6 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
                   )}>
                     {(n: Notifd.Notification) => <Notification notification={n} /> }
                   </For>
-
                 </box>
               </scrolledwindow>
             </box>

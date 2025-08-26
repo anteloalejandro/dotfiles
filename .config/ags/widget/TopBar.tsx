@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { createBinding, createState, For } from "gnim"
+import { createBinding, For, State } from "gnim"
 import { EventBox, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
@@ -101,9 +101,9 @@ function BatteryIndicator() {
   )
 }
 
-export default function Bar(gdkmonitor: Gdk.Monitor) {
+export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
-  const [ reveal_top, set_reveal_top ] = createState(false);
+  const [ reveal_top, set_reveal_top ] = show_top;
 
   return (
     <window

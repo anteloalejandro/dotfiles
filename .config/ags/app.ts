@@ -10,15 +10,18 @@ import TestWindow from "./widget/TestWindow"
 import { NotificationPopup } from "./widget/NotificationPopup"
 import Osd from "./widget/Osd"
 import Panel from "./widget/NotificationPanel"
+import PowerMenu from "./widget/PowerMenu"
 
+const show_top = createState(true)
 const bottom_popup = createState(false);
 const show_panel = createState(false);
+const show_power = createState(false);
 
 app.start({
   css: style,
   main() {
     app.get_monitors().map((monitor, index) => {
-      TopBar(monitor);
+      TopBar(monitor, show_top);
       BottomBar(monitor, bottom_popup);
       LeftBar(monitor);
       RightBar(monitor);
@@ -35,6 +38,8 @@ app.start({
       Panel(monitor, show_panel);
       Osd(monitor, createState(false));
       if (index == 0) TestWindow(monitor, bottom_popup);
+
+      PowerMenu(monitor, show_power);
     })
   },
 
@@ -47,6 +52,15 @@ app.start({
       case "show_panel":
         show_panel[1](b => !b);
         res(show_panel[0].get());
+        break;
+      case "show_top":
+        show_top[1](b => !b);
+        res(show_top[0].get());
+        break;
+      case "show_power":
+        show_power[1](b => !b);
+        res(show_power[0].get())
+        break;
       default: res("request not found");
     }
   },
