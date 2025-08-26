@@ -8,7 +8,7 @@ import { CornerWindow, CornerOrientation } from "./widget/corners"
 import { createState } from "gnim"
 import { Astal, Gdk } from "ags/gtk4"
 import TestWindow from "./widget/TestWindow"
-import { NotificationPopup } from "./widget/notifications"
+import { NotificationPopup } from "./widget/NotificationPopup"
 
 const bottom_popup = createState(false);
 

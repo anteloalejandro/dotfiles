@@ -1,11 +1,9 @@
-import { Gtk, Astal, Gdk } from "ags/gtk4"
+import { Gtk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
-import { EventBox, setup_fix_hidden_window, setup_window_resizable } from "./utils"
+import { EventBox } from "./utils"
 import Pango from "gi://Pango?version=1.0"
 import GLib from "gi://GLib?version=2.0"
-import { CornerOrientation, RoundedCorner } from "./corners"
-import { createBinding, For, onCleanup, State } from "gnim"
-import app from "ags/gtk4/app"
+import { onCleanup, State } from "gnim"
 import { timeout } from "ags/time"
 
 const fileExists = (path: string) =>
@@ -48,6 +46,7 @@ export function Notification(props: Props) {
           class="app-name"
           halign={START}
           ellipsize={Pango.EllipsizeMode.END}
+          max_width_chars={20}
           label={n.appName || "Unknown"}
         />
         <label
@@ -80,6 +79,7 @@ export function Notification(props: Props) {
             halign={START}
             xalign={0}
             label={n.summary}
+            max_width_chars={30}
             ellipsize={Pango.EllipsizeMode.END}
           />
           {n.body && <label
@@ -111,54 +111,4 @@ export function Notification(props: Props) {
   </box>
 }
 
-export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
-  const { TOP, RIGHT } = Astal.WindowAnchor;
-  const { TOP_RIGHT } = CornerOrientation;
-  const notifd = Notifd.get_default();
-  const notifications = createBinding(notifd, "notifications");
-  const reveal = notifications.as(ns => ns.length > 0);
 
-  return (
-    <window
-      visible
-      name="notification-popup"
-      class="NotificationPopup"
-      application={app}
-      gdkmonitor={gdkmonitor}
-      layer={Astal.Layer.OVERLAY}
-      exclusivity={Astal.Exclusivity.NORMAL}
-      anchor={TOP | RIGHT }
-      $={self => {
-        setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
-        setup_fix_hidden_window(self, reveal);
-      }}
-    >
-      <revealer
-        reveal_child={reveal}
-        transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
-      >
-        <box>
-          <box valign={Gtk.Align.START}>
-            <RoundedCorner radius={8} orientation={TOP_RIGHT} />
-          </box>
-          <box orientation={Gtk.Orientation.VERTICAL}>
-            <box
-              orientation={Gtk.Orientation.VERTICAL}
-              css="border-radius: 0px 8px 0px 8px; background-color: #181818; padding: 1rem;"
-              height_request={100} width_request={200}
-            >
-              <For each={notifications} >
-                {(n, _) =>
-                  <Notification notification={n} />
-                }
-              </For>
-            </box>
-            <box halign={Gtk.Align.END}>
-              <RoundedCorner radius={8} orientation={TOP_RIGHT} />
-            </box>
-          </box>
-        </box>
-      </revealer>
-    </window>
-  )
-}

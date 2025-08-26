@@ -1,0 +1,80 @@
+import app from "ags/gtk4/app";
+import Astal from "gi://Astal?version=4.0";
+import Notifd from "gi://AstalNotifd?version=0.1";
+import Gdk from "gi://Gdk?version=4.0";
+import Gtk from "gi://Gtk?version=4.0";
+import { createState, For } from "gnim";
+import { CornerOrientation, RoundedCorner } from "./corners";
+import { Notification } from "./notifications";
+import { setup_window_resizable, setup_fix_hidden_window } from "./utils";
+import { timeout } from "ags/time";
+
+
+const notifd = Notifd.get_default();
+const [notifications, set_notifications] = createState<Notifd.Notification[]>([]);
+const reveal = notifications.as(ns => ns.length > 0);
+
+notifd.connect('notified', (_, id) => {
+  const notification = notifd.get_notification(id);
+  set_notifications(ns => ns.concat(notification));
+
+  timeout(Math.max(notification.expire_timeout, 5000), () => {
+    set_notifications(ns => ns.filter(n => n.id != id));
+  })
+})
+notifd.connect('resolved', (_, id) => {
+  set_notifications(ns => ns.filter(n => n.id != id));
+})
+
+
+export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
+  const { TOP, RIGHT } = Astal.WindowAnchor;
+  const { TOP_RIGHT } = CornerOrientation;
+
+  return (
+    <window
+      visible
+      name="notification-popup"
+      class="NotificationPopup"
+      application={app}
+      gdkmonitor={gdkmonitor}
+      layer={Astal.Layer.TOP}
+      exclusivity={Astal.Exclusivity.NORMAL}
+      anchor={TOP | RIGHT}
+      $={self => {
+        setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
+        setup_fix_hidden_window(self, reveal);
+      }}
+    >
+      <revealer
+        reveal_child={reveal}
+        transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
+      >
+        <box>
+          <box valign={Gtk.Align.START}>
+            <RoundedCorner radius={8} orientation={TOP_RIGHT} />
+          </box>
+          <box orientation={Gtk.Orientation.VERTICAL}>
+            <box
+              orientation={Gtk.Orientation.VERTICAL}
+              css="border-radius: 0px 8px 0px 8px; background-color: #181818; padding: 1rem;"
+              height_request={100} width_request={200}
+            >
+              <For each={notifications.as(ns => ns.toSorted((a, b) => b.time - a.time).slice(0, 3))}>
+                {(n: Notifd.Notification, _) => <Notification notification={n} />}
+              </For>
+              <label
+                visible={notifications.as(ns => ns.length > 3)}
+                label="..."
+              />
+            </box>
+            <box halign={Gtk.Align.END}>
+              <RoundedCorner radius={8} orientation={TOP_RIGHT} />
+            </box>
+          </box>
+        </box>
+      </revealer>
+    </window>
+  );
+}
+
