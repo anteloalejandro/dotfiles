@@ -1,4 +1,5 @@
 import { Astal, Gtk } from "ags/gtk4";
+import { timeout } from "ags/time";
 import { Accessor, onCleanup } from "gnim";
 
 
@@ -55,6 +56,22 @@ export function setup_window_resizable(
     window.set_resizable(true);
     window.set_size_request(size.x, size.y);
     window.set_resizable(false);
+  })
+  onCleanup(handle);
+}
+
+export function setup_fix_hidden_window(
+  window: Astal.Window,
+  reveal: Accessor<boolean>
+) {
+  const handle = reveal.subscribe(() => {
+    if (reveal.get() == false) {
+      timeout(250, () => {
+        // reset visibility to fix 1px window bug
+        window.set_visible(false)
+        window.set_visible(true)
+      });
+    }
   })
   onCleanup(handle);
 }

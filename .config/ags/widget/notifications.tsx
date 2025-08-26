@@ -1,11 +1,12 @@
 import { Gtk, Astal, Gdk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
-import { EventBox, setup_window_resizable } from "./utils"
+import { EventBox, setup_fix_hidden_window, setup_window_resizable } from "./utils"
 import Pango from "gi://Pango?version=1.0"
 import GLib from "gi://GLib?version=2.0"
 import { CornerOrientation, RoundedCorner } from "./corners"
 import { createBinding, For, onCleanup, State } from "gnim"
 import app from "ags/gtk4/app"
+import { timeout } from "ags/time"
 
 const fileExists = (path: string) =>
   GLib.file_test(path, GLib.FileTest.EXISTS)
@@ -123,13 +124,13 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       name="notification-popup"
       class="NotificationPopup"
       application={app}
-      height_request={0}
       gdkmonitor={gdkmonitor}
       layer={Astal.Layer.OVERLAY}
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={TOP | RIGHT }
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
+        setup_fix_hidden_window(self, reveal);
       }}
     >
       <revealer

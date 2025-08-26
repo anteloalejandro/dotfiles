@@ -38,8 +38,9 @@ function FocusedClient() {
 
   return (
     <box>
-      <image icon_name={focused(f => {
-        const class_name = parse_class_name(f.class);
+      <image icon_name={focused(client => {
+        if (!client) return "";
+        const class_name = parse_class_name(client.class);
         const query = apps.fuzzy_query(class_name);
         for (const q of query) {
           if (q && q.icon_name != "") return q.icon_name;
@@ -47,7 +48,9 @@ function FocusedClient() {
         return "";
       })} />
       <label
-        label={focused(f => `${parse_class_name(f.class)} - ${f.title}`)}
+        label={focused.as(client =>
+          client ? `${parse_class_name(client.class)} - ${client.title}` : "Desktop"
+        ) }
         max_width_chars={20}
         ellipsize={Pango.EllipsizeMode.END}
       />
