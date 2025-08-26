@@ -34,10 +34,10 @@ function OsdSlider(props: {visible: State<boolean>}) {
   }
 
   brightness.connect("notify::kbd", () => {
-    show(brightness.kbd, "display-brightness-symbolic");
+    show(brightness.kbd, "keyboard-brightness-symbolic");
   });
   brightness.connect("notify::screen", () => {
-    show(brightness.screen, "keyboard-brightness-symbolic");
+    show(brightness.screen, "display-brightness-symbolic");
   });
   speaker?.connect("notify::mute", () => {
     show(speaker.volume, speaker.volume_icon);
