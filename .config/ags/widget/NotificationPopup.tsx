@@ -18,9 +18,11 @@ notifd.connect('notified', (_, id) => {
   const notification = notifd.get_notification(id);
   set_notifications(ns => ns.concat(notification));
 
-  timeout(Math.max(notification.expire_timeout, 5000), () => {
-    set_notifications(ns => ns.filter(n => n.id != id));
-  })
+  if (notification.urgency != Notifd.Urgency.CRITICAL) {
+    timeout(Math.max(notification.expire_timeout, 5000), () => {
+      set_notifications(ns => ns.filter(n => n.id != id));
+    });
+  }
 })
 notifd.connect('resolved', (_, id) => {
   set_notifications(ns => ns.filter(n => n.id != id));
