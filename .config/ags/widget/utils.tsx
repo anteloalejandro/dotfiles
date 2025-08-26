@@ -1,5 +1,5 @@
-import { Gtk } from "ags/gtk4";
-import { Accessor } from "gnim";
+import { Astal, Gtk } from "ags/gtk4";
+import { Accessor, onCleanup } from "gnim";
 
 
 /** empty box that enables sizing of elements that need some content*/
@@ -9,6 +9,7 @@ export function Empty() {
 
 export type EventBoxProps  = {
   onClicked?: ((source: Gtk.Button) => void);
+  onHoverLost?: ((source: Gtk.EventControllerMotion) => void)
   children?: JSX.Element | Array<JSX.Element>;
   class?: string;
   height_request?: number | Accessor<number> | undefined;
@@ -18,10 +19,42 @@ export type EventBoxProps  = {
 export function EventBox(props: EventBoxProps)  {
   const children = props.children;
   delete props.children;
+
+
   return <button
     cssName="eventbox"
+    $={self => {
+      const motion = new Gtk.EventControllerMotion();
+      if (props.onHoverLost !== undefined) {
+        self.add_controller(motion);
+        motion.connect("leave", m => {
+          props.onHoverLost!(m);
+          return true;
+        });
+      }
+    }}
     {...props}
   >
     {children ?? <Empty />}
   </button>
+}
+
+export function setup_window_resizable(
+  window: Astal.Window,
+  reveal: Accessor<boolean>,
+  orientation: Gtk.Orientation
+) {
+  const handle = reveal.subscribe(() => {
+    if (reveal.get() == true) return;
+
+    const size = orientation == Gtk.Orientation.VERTICAL
+      ? {x: window.get_width(), y: 0}
+      : {x: 0, y: window.get_height()}
+    ;
+
+    window.set_resizable(true);
+    window.set_size_request(size.x, size.y);
+    window.set_resizable(false);
+  })
+  onCleanup(handle);
 }

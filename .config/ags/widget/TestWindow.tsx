@@ -3,8 +3,9 @@ import app from "ags/gtk4/app";
 import { timeout } from "ags/time";
 import { createState, onCleanup, onMount, State } from "gnim";
 import { CornerOrientation, RoundedCorner } from "./corners";
+import { setup_window_resizable } from "./utils";
 
-export default function TestWindow(bottom_popup: State<boolean>) {
+export default function TestWindow(gdkmonitor: Gdk.Monitor, bottom_popup: State<boolean>) {
   const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
   const { TOP_LEFT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_RIGHT } = CornerOrientation;
   const [ reveal, set_reveal ] = bottom_popup;
@@ -13,21 +14,14 @@ export default function TestWindow(bottom_popup: State<boolean>) {
       visible
       name="test-window"
       class="TestWindow"
-      monitor={0}
+      gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={BOTTOM | LEFT | RIGHT}
       application={app}
       height_request={1}
       // keymode={Astal.Keymode.ON_DEMAND}
       $={self => {
-        const handle = reveal.subscribe(() => {
-          if (reveal.get() == true) return;
-
-          self.set_resizable(true);
-          self.set_size_request(self.get_width(), 0);
-          self.set_resizable(false);
-        })
-        onCleanup(handle);
+        setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
       }}
     >
       <revealer

@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import { createBinding, createState, For, onCleanup } from "gnim"
-import { EventBox } from "./utils"
+import { EventBox, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
 import Apps from "gi://AstalApps?version=0.1"
@@ -66,15 +66,18 @@ function Workspaces() {
         .filter(ws => !(ws.id >= -99 && ws.id <= -2)) // filter out special wss
         .sort((a, b) => a.id - b.id)
       )}>
-        {(ws: Hyprland.Workspace, _) => {
-          return <button
-            class={
-              "workspace-indicator"
-                + (ws.clients.length == 0 ? " empty" : " ")
-                + (ws.id == focused.get().id ? " focused" : "")
-            }
-            onClicked={() => ws.focus()}
-          />
+        {(ws: Hyprland.Workspace, i) => {
+          return (
+            <button
+              class={
+                "workspace-indicator"
+                  + (ws.clients.length == 0 ? " empty" : " ")
+                  + (ws.id == focused.get().id ? " focused" : "")
+              }
+              onClicked={() => ws.focus()}
+              label={i(i => i+1).as(String)}
+            />
+          )
         }}
       </For>
     </box>
@@ -95,14 +98,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       anchor={TOP | LEFT | RIGHT}
       application={app}
       $={self => {
-        const handle = reveal_top.subscribe(() => {
-          if (reveal_top.get() == true) return;
-
-          self.set_resizable(true);
-          self.set_size_request(self.get_width(), 0);
-          self.set_resizable(false);
-        })
-        onCleanup(handle);
+        setup_window_resizable(self, reveal_top, Gtk.Orientation.VERTICAL);
       }}
     >
       <box orientation={Gtk.Orientation.VERTICAL}>

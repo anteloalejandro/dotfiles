@@ -6,18 +6,18 @@ import LeftBar from "./widget/LeftBar"
 import RightBar from "./widget/RightBar"
 import { CornerWindow, CornerOrientation } from "./widget/corners"
 import { createState } from "gnim"
-import { Astal } from "ags/gtk4"
+import { Astal, Gdk } from "ags/gtk4"
 import TestWindow from "./widget/TestWindow"
+import { NotificationPopup } from "./widget/notifications"
 
 const bottom_popup = createState(false);
-let bottom_bar: Astal.Window;
 
 app.start({
   css: style,
   main() {
     app.get_monitors().map(TopBar)
     app.get_monitors().map(m =>
-      bottom_bar = BottomBar(m, bottom_popup) as Astal.Window
+      BottomBar(m, bottom_popup)
     )
     app.get_monitors().map(LeftBar)
     app.get_monitors().map(RightBar)
@@ -29,7 +29,8 @@ app.start({
     app.get_monitors().map(m => CornerWindow(m, {orientation: BOTTOM_LEFT, radius}))
     app.get_monitors().map(m => CornerWindow(m, {orientation: BOTTOM_RIGHT, radius}))
 
-    TestWindow(bottom_popup)
+    TestWindow(app.get_monitors()[0], bottom_popup)
+    app.get_monitors().map(m => NotificationPopup(m, createState(true)))
   },
 
   requestHandler(req, res) {
