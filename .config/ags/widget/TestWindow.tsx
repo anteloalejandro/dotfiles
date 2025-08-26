@@ -18,7 +18,6 @@ export default function TestWindow(gdkmonitor: Gdk.Monitor, bottom_popup: State<
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={BOTTOM | LEFT | RIGHT}
       application={app}
-      height_request={0}
       // keymode={Astal.Keymode.ON_DEMAND}
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
