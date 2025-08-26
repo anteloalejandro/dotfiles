@@ -23,10 +23,10 @@ app.start({
 
       const { BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT } = CornerOrientation;
       const radius = 8;
-      CornerWindow(monitor, {orientation: TOP_LEFT, radius});
-      CornerWindow(monitor, {orientation: TOP_RIGHT, radius});
-      CornerWindow(monitor, {orientation: BOTTOM_LEFT, radius});
-      CornerWindow(monitor, {orientation: BOTTOM_RIGHT, radius});
+      CornerWindow(monitor, {color: "#181818", orientation: TOP_LEFT, radius});
+      CornerWindow(monitor, {color: "#181818", orientation: TOP_RIGHT, radius});
+      CornerWindow(monitor, {color: "#181818", orientation: BOTTOM_LEFT, radius});
+      CornerWindow(monitor, {color: "#181818", orientation: BOTTOM_RIGHT, radius});
 
 
       NotificationPopup(monitor);

@@ -29,9 +29,9 @@ export default function TestWindow(gdkmonitor: Gdk.Monitor, bottom_popup: State<
         transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
       >
         <box>
-          <box valign={Gtk.Align.END}><RoundedCorner orientation={BOTTOM_RIGHT} radius={8} /></box>
+          <box valign={Gtk.Align.END}><RoundedCorner color="#181818" orientation={BOTTOM_RIGHT} radius={8} /></box>
           <box hexpand css="background-color: #181818; padding: 8px; border-radius: 8px 8px 0px 0px;">HELLO</box>
-          <box valign={Gtk.Align.END}><RoundedCorner orientation={BOTTOM_LEFT} radius={8} /></box>
+          <box valign={Gtk.Align.END}><RoundedCorner color="#181818" orientation={BOTTOM_LEFT} radius={8} /></box>
         </box>
       </revealer>
     </window>

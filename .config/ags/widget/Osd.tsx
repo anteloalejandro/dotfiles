@@ -72,6 +72,7 @@ function OsdSlider(props: {visible: State<boolean>}) {
       </box>
       <label
         halign={Gtk.Align.CENTER}
+        width_chars={3}
         label={value(v => String(Math.floor(v * 100)))}
       />
     </box>
@@ -102,7 +103,7 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
       >
         <box orientation={Gtk.Orientation.VERTICAL}>
           <box valign={Gtk.Align.START}>
-            <RoundedCorner radius={8} orientation={CornerOrientation.BOTTOM_LEFT} />
+            <RoundedCorner color="#181818" radius={8} orientation={CornerOrientation.BOTTOM_LEFT} />
           </box>
           <box
             height_request={100}
@@ -119,7 +120,7 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
             <OsdSlider visible={show_osd} />
           </box>
           <box valign={Gtk.Align.START}>
-            <RoundedCorner radius={8} orientation={CornerOrientation.TOP_LEFT} />
+            <RoundedCorner color="#181818" radius={8} orientation={CornerOrientation.TOP_LEFT} />
           </box>
         </box>
       </revealer>

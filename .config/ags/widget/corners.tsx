@@ -12,6 +12,7 @@ export enum CornerOrientation {
 }
 
 export type RoundedCornerProps = {
+  color: string;
   radius: number;
   orientation: CornerOrientation;
   padding?: number;
@@ -31,7 +32,7 @@ export function RoundedCorner(props: RoundedCornerProps) {
     hexpand: false, vexpand: false,
   });
   let c = new Gdk.RGBA()
-  c.parse("#181818");
+  c.parse(props.color);
 
   drawing.set_draw_func((area, cr, _width, _height) => {
     area.set_size_request(size, size);

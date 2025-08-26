@@ -54,7 +54,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       >
         <box>
           <box valign={Gtk.Align.START}>
-            <RoundedCorner radius={8} orientation={TOP_RIGHT} />
+            <RoundedCorner color="#181818" radius={8} orientation={TOP_RIGHT} />
           </box>
           <box orientation={Gtk.Orientation.VERTICAL}>
             <box
@@ -73,7 +73,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
               />
             </box>
             <box halign={Gtk.Align.END}>
-              <RoundedCorner radius={8} orientation={TOP_RIGHT} />
+              <RoundedCorner color="#181818" radius={8} orientation={TOP_RIGHT} />
             </box>
           </box>
         </box>
