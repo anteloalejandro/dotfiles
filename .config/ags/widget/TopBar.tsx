@@ -6,6 +6,7 @@ import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
 import Apps from "gi://AstalApps?version=0.1"
 import Pango from "gi://Pango?version=1.0"
+import Battery from "gi://AstalBattery?version=0.1"
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -87,6 +88,19 @@ function Workspaces() {
   )
 }
 
+function BatteryIndicator() {
+  const bat = Battery.get_default();
+  return (
+    <box>
+      <label label={
+        createBinding(bat, "percentage")
+          .as(p => `${Math.floor(p * 100)}%`)
+      } />
+      <image icon_name={createBinding(bat, "icon_name")} />
+    </box>
+  )
+}
+
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
   const [ reveal_top, set_reveal_top ] = createState(false);
@@ -113,7 +127,10 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <centerbox class="border-top-bar" height_request={10} >
             <FocusedClient $type="start" />
             <Workspaces $type="center" />
-            <SysTray $type="end" />
+            <box $type="end">
+              <SysTray />
+              <BatteryIndicator />
+            </box>
           </centerbox>
         </revealer>
         <EventBox

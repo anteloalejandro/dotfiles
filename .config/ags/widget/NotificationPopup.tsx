@@ -60,7 +60,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
             <box
               orientation={Gtk.Orientation.VERTICAL}
               css="border-radius: 0px 8px 0px 8px; background-color: #181818; padding: 1rem;"
-              height_request={100} width_request={200}
+              height_request={10} width_request={200}
             >
               <box orientation={Gtk.Orientation.VERTICAL}>
                 <For each={notifications.as(ns => ns.toSorted((a, b) => b.time - a.time).slice(0, 3))}>
