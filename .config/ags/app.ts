@@ -9,8 +9,10 @@ import { createState } from "gnim"
 import TestWindow from "./widget/TestWindow"
 import { NotificationPopup } from "./widget/NotificationPopup"
 import Osd from "./widget/Osd"
+import Panel from "./widget/NotificationPanel"
 
 const bottom_popup = createState(false);
+const show_panel = createState(false);
 
 app.start({
   css: style,
@@ -30,6 +32,7 @@ app.start({
 
 
       NotificationPopup(monitor);
+      Panel(monitor, show_panel);
       Osd(monitor, createState(false));
       if (index == 0) TestWindow(monitor, bottom_popup);
     })
@@ -41,6 +44,9 @@ app.start({
         bottom_popup[1](b => !b);
         res(bottom_popup[0].get());
         break;
+      case "show_panel":
+        show_panel[1](b => !b);
+        res(show_panel[0].get());
       default: res("request not found");
     }
   },

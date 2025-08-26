@@ -26,6 +26,7 @@ export default function TestWindow(gdkmonitor: Gdk.Monitor, bottom_popup: State<
       <revealer
         reveal_child={reveal}
         transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
+        height_request={1}
       >
         <box>
           <box valign={Gtk.Align.END}><RoundedCorner color="#181818" orientation={BOTTOM_RIGHT} radius={8} /></box>

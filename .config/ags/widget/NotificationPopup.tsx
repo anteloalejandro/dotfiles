@@ -15,6 +15,7 @@ const [notifications, set_notifications] = createState<Notifd.Notification[]>([]
 const reveal = notifications.as(ns => ns.length > 0);
 
 notifd.connect('notified', (_, id) => {
+  if (notifd.dont_disturb) return;
   const notification = notifd.get_notification(id);
   set_notifications(ns => ns.concat(notification));
 
@@ -51,6 +52,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       <revealer
         reveal_child={reveal}
         transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
+        height_request={1}
       >
         <box>
           <box valign={Gtk.Align.START}>
