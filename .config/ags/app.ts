@@ -15,22 +15,23 @@ const bottom_popup = createState(false);
 app.start({
   css: style,
   main() {
-    app.get_monitors().map(TopBar)
-    app.get_monitors().map(m =>
-      BottomBar(m, bottom_popup)
-    )
-    app.get_monitors().map(LeftBar)
-    app.get_monitors().map(RightBar)
+    app.get_monitors().map((monitor, index) => {
+      TopBar(monitor);
+      BottomBar(monitor, bottom_popup);
+      LeftBar(monitor);
+      RightBar(monitor);
 
-    const { BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT } = CornerOrientation;
-    const radius = 8;
-    app.get_monitors().map(m => CornerWindow(m, {orientation: TOP_LEFT, radius}))
-    app.get_monitors().map(m => CornerWindow(m, {orientation: TOP_RIGHT, radius}))
-    app.get_monitors().map(m => CornerWindow(m, {orientation: BOTTOM_LEFT, radius}))
-    app.get_monitors().map(m => CornerWindow(m, {orientation: BOTTOM_RIGHT, radius}))
+      const { BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT } = CornerOrientation;
+      const radius = 8;
+      CornerWindow(monitor, {orientation: TOP_LEFT, radius});
+      CornerWindow(monitor, {orientation: TOP_RIGHT, radius});
+      CornerWindow(monitor, {orientation: BOTTOM_LEFT, radius});
+      CornerWindow(monitor, {orientation: BOTTOM_RIGHT, radius});
 
-    TestWindow(app.get_monitors()[0], bottom_popup)
-    app.get_monitors().map(m => NotificationPopup(m, createState(true)))
+
+      NotificationPopup(monitor);
+      if (index == 0) TestWindow(monitor, bottom_popup);
+    })
   },
 
   requestHandler(req, res) {

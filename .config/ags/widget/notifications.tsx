@@ -110,9 +110,9 @@ export function Notification(props: Props) {
   </box>
 }
 
-export function NotificationPopup(gdkmonitor: Gdk.Monitor, show_notifications: State<boolean>) {
-  const {TOP, RIGHT, LEFT} = Astal.WindowAnchor;
-  const {BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT} = CornerOrientation;
+export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
+  const { TOP, RIGHT } = Astal.WindowAnchor;
+  const { TOP_RIGHT } = CornerOrientation;
   const notifd = Notifd.get_default();
   const notifications = createBinding(notifd, "notifications");
   const reveal = notifications.as(ns => ns.length > 0);
