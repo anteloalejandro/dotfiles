@@ -7,6 +7,7 @@ import Hyprland from "gi://AstalHyprland?version=0.1"
 import Apps from "gi://AstalApps?version=0.1"
 import Pango from "gi://Pango?version=1.0"
 import Battery from "gi://AstalBattery?version=0.1"
+import Vars from '../Vars';
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -134,12 +135,12 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
           </centerbox>
         </revealer>
         <EventBox
-          height_request={8}
+          height_request={Vars['spacing']}
           onClicked={() => set_reveal_top(b => !b)}
         >
           <box
             valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
-            height_request={3} width_request={20}
+            height_request={Vars['half-spacing']} width_request={2*Vars['spacing']}
             css="border-radius: 8px; background-color: white;"
           />
         </EventBox>

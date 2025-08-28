@@ -1,3 +1,6 @@
+@use 'style/vars' as *;
+@use 'style/BorderTop.scss';
+
 // https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
 $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
@@ -16,29 +19,4 @@ window {
   // menubutton > popover > contents {
   //   all: unset;
   // }
-}
-
-window.BorderTop {
-  .border-top-bar, eventbox {
-    background-color: #181818;
-  }
-}
-
-window.BorderBottom {
-  .border-bottom-bar {
-    background-color: #181818;
-  }
-}
-
-window.BorderLeft {
-  .border-left-bar {
-    background-color: #181818;
-  }
-}
-
-
-window.BorderRight {
-  .border-right-bar {
-    background-color: #181818;
-  }
 }

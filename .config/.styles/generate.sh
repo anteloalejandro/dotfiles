@@ -20,7 +20,7 @@ while read line; do
   value=$(echo $line | cut -d':' -f2 | tr -d ' ')
 
   echo "\$$name = $value" >> 'generated/style.hyprland.conf'
-  echo "\$$name: $value;" >> 'generated/style.scss'
+  echo "\$$name: ${value}px;" >> 'generated/style.scss'
 done < 'variables'
 
 hyprctl reload

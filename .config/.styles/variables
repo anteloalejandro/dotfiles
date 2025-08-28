@@ -1,3 +1,4 @@
 radius: 10
+radius-outer: 5
 spacing: 10
 half-spacing: 5
