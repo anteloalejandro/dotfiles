@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'style/vars' as *;
 @use 'style/BorderTop';
 @use 'style/Panel';
@@ -9,13 +10,11 @@
 $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
 
-* { box-sizing: border-box; }
-
 window {
   background: transparent;
   color: $fg;
   font-weight: bold;
-  font-family: 'Ubuntu Mono'
+  font-family: 'Ubuntu Mono';
 
   eventbox {
     all: unset;
@@ -35,7 +34,7 @@ window {
       background-color: $bg-hl;
     }
     &:active {
-      background-color: lighten($bg-hl, $amount: 10%);
+      background-color: color.adjust($bg-hl, $lightness: 10%);
     }
   }
 

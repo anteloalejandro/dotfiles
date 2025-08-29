@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'vars' as *;
 
 window.BorderTop {
@@ -9,6 +10,6 @@ window.BorderTop {
 
   .reveal-trigger {
     border-radius: $radius;
-    background-color: transparentize($fg, $amount: 0.6);
+    background-color: color.adjust($fg, $alpha: -0.6);
   }
 }
