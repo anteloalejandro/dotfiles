@@ -3,9 +3,25 @@
 
 window.BorderTop {
   background-color: $bg;
+  padding-left: $spacing;
+  padding-right: $spacing;
 
   .border-top-bar {
     padding-top: $spacing;
+  }
+
+  .focused-client {
+    font-style: italic;
+    border-radius: $radius-inner;
+    padding-left: $spacing;
+    padding-right: $spacing;
+    background-color: $bg-alt;
+
+    image {
+      // filter: sepia(100%) hue-rotate(250deg) contrast(150%);
+      filter: grayscale(100%);
+      -gtk-icon-size: $spacing * 2;
+    }
   }
 
   .reveal-trigger {
@@ -15,7 +31,7 @@ window.BorderTop {
 
   .workspace-indicator {
     $size: 5px;
-    $empty: color.adjust($accent, $saturation: -90);
+    $empty: color.adjust($accent, $saturation: -90%);
     all: unset;
     background-color: transparent;
     border: 2px solid $accent;

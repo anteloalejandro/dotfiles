@@ -39,7 +39,7 @@ function FocusedClient() {
   }
 
   return (
-    <box>
+    <box spacing={Vars.spacing/2} class="focused-client">
       <image icon_name={focused(client => {
         if (!client) return "";
         const class_name = parse_class_name(client.class);
@@ -128,7 +128,10 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
           onNotifyChildRevealed={() => print(reveal_top.get())}
         >
           <centerbox class="border-top-bar" height_request={10} >
-            <FocusedClient $type="start" />
+            <box spacing={Vars.spacing} $type="start">
+              <button icon_name="utilities-system-monitor-symbolic" />
+              <FocusedClient />
+            </box>
             <Workspaces $type="center" />
             <box $type="end">
               <SysTray />
