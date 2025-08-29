@@ -66,7 +66,9 @@ function Workspaces() {
   const focused = createBinding(hyprland, "focused_workspace");
 
   return (
-    <box>
+    <box
+      spacing={5}
+    >
       <For each={workspaces(wss => wss
         .filter(ws => !(ws.id >= -99 && ws.id <= -2)) // filter out special wss
         .sort((a, b) => a.id - b.id)
@@ -74,13 +76,13 @@ function Workspaces() {
         {(ws: Hyprland.Workspace, i) => {
           return (
             <button
-              class={
+              class={focused.as(f =>
                 "workspace-indicator"
                   + (ws.clients.length == 0 ? " empty" : " ")
-                  + (ws.id == focused.get().id ? " focused" : "")
-              }
+                  + (ws.id == f.id ? " focused" : "")
+              )}
               onClicked={() => ws.focus()}
-              label={i(i => i+1).as(String)}
+              valign={Gtk.Align.CENTER}
             />
           )
         }}

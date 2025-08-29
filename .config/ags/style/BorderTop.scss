@@ -12,4 +12,28 @@ window.BorderTop {
     border-radius: $radius;
     background-color: color.adjust($fg, $alpha: -0.6);
   }
+
+  .workspace-indicator {
+    $size: 5px;
+    $empty: color.adjust($accent, $saturation: -90);
+    all: unset;
+    background-color: transparent;
+    border: 2px solid $accent;
+    min-height: $size;
+    min-width: $size;
+    border-radius: $size;
+
+    transition: min-width 250ms ease-out;
+
+    &.empty {
+      border-color: $empty;
+    }
+    &.focused {
+      background-color: $accent;
+      min-width: $size * 2;
+    }
+    &.focused.empty {
+      background-color: $empty;
+    }
+  }
 }
