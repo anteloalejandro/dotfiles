@@ -2,6 +2,7 @@ import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import cairo from "gi://cairo?version=1.0";
 import { Accessor } from "gnim";
+import Vars from "../Vars";
 
 /** Orientation of the corner relative to the drawing area */
 export enum CornerOrientation {
@@ -12,8 +13,8 @@ export enum CornerOrientation {
 }
 
 export type RoundedCornerProps = {
-  color: string;
-  radius: number;
+  color?: string;
+  radius?: number;
   orientation: CornerOrientation;
   padding?: number;
 }
@@ -23,7 +24,8 @@ export type RoundedCornerProps = {
  * The total size is `radius + padding`.
  * */
 export function RoundedCorner(props: RoundedCornerProps) {
-  const r = props.radius; // corner radius
+  const color = props.color ?? Vars.bg as string;
+  const r = props.radius ?? Vars.radius as number; // corner radius
   const padding = props.padding ?? 0;
   const size = r + padding;
 
@@ -32,7 +34,7 @@ export function RoundedCorner(props: RoundedCornerProps) {
     hexpand: false, vexpand: false,
   });
   let c = new Gdk.RGBA()
-  c.parse(props.color);
+  c.parse(color);
 
   drawing.set_draw_func((area, cr, _width, _height) => {
     area.set_size_request(size, size);

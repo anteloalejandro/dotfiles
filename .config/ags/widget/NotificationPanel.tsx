@@ -5,6 +5,7 @@ import { setup_fix_hidden_window, setup_window_resizable } from "./utils";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";
+import Vars from "../Vars";
 
 export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean>) {
   const [ reveal ] = show_panel;
@@ -32,16 +33,16 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
       >
         <box orientation={Gtk.Orientation.VERTICAL}>
           <box halign={Gtk.Align.END}>
-            <RoundedCorner color="#181818" radius={8} orientation={CornerOrientation.BOTTOM_RIGHT} />
+            <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
           </box>
           <box>
             <box valign={Gtk.Align.END}>
-              <RoundedCorner color="#181818" radius={8} orientation={CornerOrientation.BOTTOM_RIGHT} />
+              <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
             </box>
             <box
               class="panel-content"
               orientation={Gtk.Orientation.VERTICAL}
-              css="background-color: #181818; border-radius: 8px 0px 8px 0px; padding: 1rem;"
+              css={`background-color: ${Vars.bg}; border-radius: ${Vars.radius}px 0px ${Vars.radius}px 0px; padding: ${Vars.spacing}px;`}
               height_request={gdkmonitor.geometry.height*0.8}
               width_request={400}
             >

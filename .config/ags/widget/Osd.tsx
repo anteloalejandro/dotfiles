@@ -103,7 +103,7 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
       >
         <box orientation={Gtk.Orientation.VERTICAL}>
           <box valign={Gtk.Align.START}>
-            <RoundedCorner color="#181818" radius={8} orientation={CornerOrientation.BOTTOM_LEFT} />
+            <RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} />
           </box>
           <box
             height_request={100}
@@ -120,7 +120,7 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
             <OsdSlider visible={show_osd} />
           </box>
           <box valign={Gtk.Align.START}>
-            <RoundedCorner color="#181818" radius={8} orientation={CornerOrientation.TOP_LEFT} />
+            <RoundedCorner orientation={CornerOrientation.TOP_LEFT} />
           </box>
         </box>
       </revealer>

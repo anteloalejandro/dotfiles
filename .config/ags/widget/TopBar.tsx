@@ -135,13 +135,13 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
           </centerbox>
         </revealer>
         <EventBox
-          height_request={Vars['spacing']}
+          height_request={Vars.spacing}
           onClicked={() => set_reveal_top(b => !b)}
         >
           <box
             valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
             height_request={Vars['half-spacing']} width_request={2*Vars['spacing']}
-            css="border-radius: 8px; background-color: white;"
+            css={`border-radius: ${Vars.radius}px; background-color: ${Vars.fg};`}
           />
         </EventBox>
       </box>
