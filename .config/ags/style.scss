@@ -9,10 +9,13 @@
 $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
 
+* { box-sizing: border-box; }
+
 window {
   background: transparent;
-  color: white;
+  color: $fg;
   font-weight: bold;
+  font-family: 'Ubuntu Mono'
 
   eventbox {
     all: unset;
@@ -20,6 +23,20 @@ window {
 
   &.border {
     background-color: $bg;
+  }
+
+  button {
+    all: inherit;
+    padding: 0.5rem;
+    background-color: $bg-alt;
+    border-radius: $radius-inner;
+    transition: background-color 100ms ease;
+    &:hover, &:focus {
+      background-color: $bg-hl;
+    }
+    &:active {
+      background-color: lighten($bg-hl, $amount: 10%);
+    }
   }
 
   // menubutton,

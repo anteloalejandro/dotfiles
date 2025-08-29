@@ -3,8 +3,12 @@
 window.BorderTop {
   background-color: $bg;
 
+  .border-top-bar {
+    padding-top: $spacing;
+  }
+
   .reveal-trigger {
     border-radius: $radius;
-    background-color: $fg;
+    background-color: transparentize($fg, $amount: 0.6);
   }
 }

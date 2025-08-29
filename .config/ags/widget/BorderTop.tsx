@@ -141,7 +141,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
           <box
             class="reveal-trigger"
             valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
-            height_request={Vars['half-spacing']} width_request={2*Vars['spacing']}
+            height_request={Vars.spacing/2} width_request={2*Vars.spacing}
           />
         </EventBox>
       </box>

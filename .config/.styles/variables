@@ -1,4 +1,4 @@
-radius: 10
-radius-outer: 5
-spacing: 10
-half-spacing: 5
+radius: 8
+radius-inner: 4
+spacing: 8
+half-spacing: 4
