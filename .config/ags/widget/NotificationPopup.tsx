@@ -60,8 +60,8 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
           </box>
           <box orientation={Gtk.Orientation.VERTICAL}>
             <box
+              class="popup-container"
               orientation={Gtk.Orientation.VERTICAL}
-              css="border-radius: 0px 8px 0px 8px; background-color: #181818; padding: 1rem;"
               height_request={10} width_request={200}
             >
               <box orientation={Gtk.Orientation.VERTICAL}>

@@ -11,7 +11,7 @@ export default function BottomBar(gdkmonitor: Gdk.Monitor, bottom_popup: State<b
     <window
       visible
       name="border-bottom"
-      class="BorderBottom"
+      class="BorderBottom border"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={BOTTOM | LEFT | RIGHT}

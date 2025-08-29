@@ -1,0 +1,9 @@
+@use 'vars' as *;
+
+window.Osd {
+  .osd-container {
+    background-color: $bg;
+    border-radius: 0px $radius $radius 0px;
+    padding: 1rem;
+  }
+}

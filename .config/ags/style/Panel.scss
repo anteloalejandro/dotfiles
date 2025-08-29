@@ -1,0 +1,13 @@
+@use 'vars' as *;
+
+window.Panel {
+  .panel-container {
+    background-color: $bg;
+    border-radius: $radius 0px $radius 0px;
+    padding: $spacing;
+  }
+
+  .notifications {
+    padding: $radius; border-radius: $radius; background-color: $bg-alt;
+  }
+}

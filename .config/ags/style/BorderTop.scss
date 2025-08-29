@@ -2,4 +2,9 @@
 
 window.BorderTop {
   background-color: $bg;
+
+  .reveal-trigger {
+    border-radius: $radius;
+    background-color: $fg;
+  }
 }

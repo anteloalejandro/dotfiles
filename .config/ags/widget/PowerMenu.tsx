@@ -16,7 +16,6 @@ export default function PowerMenu(gdkmonitor: Gdk.Monitor, show_power: State<boo
       layer={Astal.Layer.OVERLAY}
       keymode={Astal.Keymode.EXCLUSIVE}
       anchor={BOTTOM | TOP | LEFT | RIGHT}
-      css="background-color: rgba(0,0,0, 0.4);"
     >
       <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
         <button

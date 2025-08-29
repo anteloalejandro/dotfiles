@@ -40,9 +40,8 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
               <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
             </box>
             <box
-              class="panel-content"
+              class="panel-container"
               orientation={Gtk.Orientation.VERTICAL}
-              css={`background-color: ${Vars.bg}; border-radius: ${Vars.radius}px 0px ${Vars.radius}px 0px; padding: ${Vars.spacing}px;`}
               height_request={gdkmonitor.geometry.height*0.8}
               width_request={400}
             >
@@ -60,13 +59,13 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
                 }
               }} />
               <scrolledwindow
-                class="notification-wrapper"
+                class="notifications-wrapper"
                 // height_request={gdkmonitor.geometry.height*0.6}
                 vexpand
               >
                 <box
+                  class="notifications"
                   orientation={Gtk.Orientation.VERTICAL}
-                  css="padding: 8px; border-radius: 8px; background-color: #222;"
                 >
                   <For each={notifications(ns =>
                     ns.toSorted((a, b) => b.time - a.time)

@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import style from "./style.scss"
-import TopBar from "./widget/TopBar"
+import TopBar from "./widget/BorderTop"
 import BottomBar from "./widget/BottomBar"
 import LeftBar from "./widget/LeftBar"
 import RightBar from "./widget/RightBar"
@@ -9,7 +9,7 @@ import { createState } from "gnim"
 import TestWindow from "./widget/TestWindow"
 import { NotificationPopup } from "./widget/NotificationPopup"
 import Osd from "./widget/Osd"
-import Panel from "./widget/NotificationPanel"
+import Panel from "./widget/Panel"
 import PowerMenu from "./widget/PowerMenu"
 
 const show_top = createState(true)

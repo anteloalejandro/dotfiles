@@ -106,9 +106,9 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
             <RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} />
           </box>
           <box
+            class="osd-container"
             height_request={100}
             width_request={20}
-            css="background-color: #181818; border-radius: 0px 8px 8px 0px; padding: 1rem;"
             $={self => {
               const controller = new Gtk.GestureClick();
               self.add_controller(controller);

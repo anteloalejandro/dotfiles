@@ -139,9 +139,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
           onClicked={() => set_reveal_top(b => !b)}
         >
           <box
+            class="reveal-trigger"
             valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
             height_request={Vars['half-spacing']} width_request={2*Vars['spacing']}
-            css={`border-radius: ${Vars.radius}px; background-color: ${Vars.fg};`}
           />
         </EventBox>
       </box>

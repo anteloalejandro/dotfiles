@@ -8,7 +8,7 @@ export default function LeftBar(gdkmonitor: Gdk.Monitor) {
     <window
       visible
       name="border-right"
-      class="BorderRight"
+      class="BorderRight border"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | RIGHT | BOTTOM}

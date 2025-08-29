@@ -1,0 +1,10 @@
+@use 'vars' as *;
+
+window.NotificationPopup {
+
+  .popup-container {
+    border-radius: 0px $radius 0px $radius;
+    background-color: $bg;
+    padding: 1rem;
+  }
+}
