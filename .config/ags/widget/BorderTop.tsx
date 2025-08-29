@@ -73,7 +73,7 @@ function Workspaces() {
         .filter(ws => !(ws.id >= -99 && ws.id <= -2)) // filter out special wss
         .sort((a, b) => a.id - b.id)
       )}>
-        {(ws: Hyprland.Workspace, i) => {
+        {(ws: Hyprland.Workspace) => {
           return (
             <button
               class={focused.as(f =>

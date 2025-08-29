@@ -6,6 +6,7 @@ import Brightness from "../service/brightness";
 import Wp from "gi://AstalWp?version=0.1";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { timeout } from "ags/time";
+import Vars from "../Vars";
 
 function OsdSlider(props: {visible: State<boolean>}) {
   const [, set_reveal] = props.visible;
@@ -47,14 +48,15 @@ function OsdSlider(props: {visible: State<boolean>}) {
   });
 
   return (
-    <box class="Osd-slide" orientation={Gtk.Orientation.VERTICAL}>
+    <box class="Osd-slide" orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing}>
       <image icon_name={icon} />
       <box halign={Gtk.Align.CENTER}>
-        <overlay>
+        <overlay
+          valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
+          heightRequest={100}
+        >
           <levelbar
             orientation={Gtk.Orientation.VERTICAL}
-            valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
-            heightRequest={100}
             inverted
             value={value(v => Math.min(v, 1))}
           />
@@ -62,8 +64,6 @@ function OsdSlider(props: {visible: State<boolean>}) {
             $type="overlay"
             class="danger"
             orientation={Gtk.Orientation.VERTICAL}
-            valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}
-            heightRequest={100}
             inverted
             visible={value(v => v > 1)}
             value={value(v => Math.min(Math.max(v-1, 0), 1))} 
@@ -108,7 +108,7 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
           <box
             class="osd-container"
             height_request={100}
-            width_request={20}
+            width_request={2*Vars.spacing}
             $={self => {
               const controller = new Gtk.GestureClick();
               self.add_controller(controller);

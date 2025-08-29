@@ -6,4 +6,23 @@ window.Osd {
     border-radius: 0px $radius $radius 0px;
     padding: 1rem;
   }
+
+  levelbar {
+    block {
+      border-radius: $radius;
+    }
+
+    trough block.filled {
+      background-color: $accent;
+    }
+    &.danger trough block.filled {
+      background-color: coral;
+    }
+    trough block.empty {
+      background-color: $bg-hl;
+    }
+    &.danger trough block.empty {
+      background-color: $accent;
+    }
+  }
 }
