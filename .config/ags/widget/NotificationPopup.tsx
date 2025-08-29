@@ -31,8 +31,7 @@ notifd.connect('resolved', (_, id) => {
 
 
 export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
-  const { TOP, RIGHT } = Astal.WindowAnchor;
-  const { TOP_RIGHT } = CornerOrientation;
+  const { BOTTOM, RIGHT } = Astal.WindowAnchor;
 
   return (
     <window
@@ -43,7 +42,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       gdkmonitor={gdkmonitor}
       layer={Astal.Layer.TOP}
       exclusivity={Astal.Exclusivity.NORMAL}
-      anchor={TOP | RIGHT}
+      anchor={BOTTOM | RIGHT}
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
         setup_fix_hidden_window(self, reveal);
@@ -55,10 +54,13 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
         height_request={1}
       >
         <box>
-          <box valign={Gtk.Align.START}>
-            <RoundedCorner orientation={TOP_RIGHT} />
+          <box valign={Gtk.Align.END}>
+            <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
           </box>
           <box orientation={Gtk.Orientation.VERTICAL}>
+            <box halign={Gtk.Align.END}>
+              <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
+            </box>
             <box
               class="popup-container"
               orientation={Gtk.Orientation.VERTICAL}
@@ -73,9 +75,6 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
                 visible={notifications.as(ns => ns.length > 3)}
                 label="..."
               />
-            </box>
-            <box halign={Gtk.Align.END}>
-              <RoundedCorner orientation={TOP_RIGHT} />
             </box>
           </box>
         </box>

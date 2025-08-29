@@ -3,7 +3,7 @@
 window.Panel {
   .panel-container {
     background-color: $bg;
-    border-radius: $radius 0px $radius 0px;
+    border-radius: 0px $radius $radius 0px;
     padding: $spacing;
   }
 

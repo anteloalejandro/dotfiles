@@ -5,9 +5,9 @@ import { setup_fix_hidden_window, setup_window_resizable } from "./utils";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";
-import Vars from "../Vars";
 
 export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean>) {
+  const {RIGHT, BOTTOM, TOP} = Astal.WindowAnchor;
   const [ reveal ] = show_panel;
   const notifd = Notifd.get_default();
   const notifications = createBinding(notifd, "notifications");
@@ -20,7 +20,7 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
       class="Panel"
       layer={Astal.Layer.OVERLAY}
       exclusivity={Astal.Exclusivity.NORMAL}
-      anchor={Astal.WindowAnchor.RIGHT | Astal.WindowAnchor.BOTTOM}
+      anchor={RIGHT | BOTTOM | TOP}
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.HORIZONTAL);
         setup_fix_hidden_window(self, reveal);
@@ -31,50 +31,46 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
         transition_type={Gtk.RevealerTransitionType.SLIDE_LEFT}
         width_request={1}
       >
-        <box orientation={Gtk.Orientation.VERTICAL}>
-          <box halign={Gtk.Align.END}>
-            <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
-          </box>
-          <box>
-            <box valign={Gtk.Align.END}>
-              <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
-            </box>
-            <box
-              class="panel-container"
-              orientation={Gtk.Orientation.VERTICAL}
-              height_request={gdkmonitor.geometry.height*0.8}
-              width_request={400}
+        <box>
+          <centerbox orientation={Gtk.Orientation.VERTICAL}>
+            <RoundedCorner $type="start" orientation={CornerOrientation.TOP_RIGHT} />
+            <RoundedCorner $type="end" orientation={CornerOrientation.BOTTOM_RIGHT} />
+          </centerbox>
+          <box
+            class="panel-container"
+            orientation={Gtk.Orientation.VERTICAL}
+            height_request={gdkmonitor.geometry.height*0.8}
+            width_request={400}
+          >
+            <centerbox>
+              <label $type="start" label="Do not Disturb" />
+              <switch $type="end" active={dnd}
+                onNotifyActive={({active}) => {
+                  notifd.set_dont_disturb(active);
+                }}
+              />
+            </centerbox>
+            <button label="Clear All" onClicked={() => {
+              for (const n of notifd.notifications) {
+                n.dismiss();
+              }
+            }} />
+            <scrolledwindow
+              class="notifications-wrapper"
+              // height_request={gdkmonitor.geometry.height*0.6}
+              vexpand
             >
-              <centerbox>
-                <label $type="start" label="Do not Disturb" />
-                <switch $type="end" active={dnd}
-                  onNotifyActive={({active}) => {
-                    notifd.set_dont_disturb(active);
-                  }}
-                />
-              </centerbox>
-              <button label="Clear All" onClicked={() => {
-                for (const n of notifd.notifications) {
-                  n.dismiss();
-                }
-              }} />
-              <scrolledwindow
-                class="notifications-wrapper"
-                // height_request={gdkmonitor.geometry.height*0.6}
-                vexpand
+              <box
+                class="notifications"
+                orientation={Gtk.Orientation.VERTICAL}
               >
-                <box
-                  class="notifications"
-                  orientation={Gtk.Orientation.VERTICAL}
-                >
-                  <For each={notifications(ns =>
-                    ns.toSorted((a, b) => b.time - a.time)
-                  )}>
-                    {(n: Notifd.Notification) => <Notification notification={n} /> }
-                  </For>
-                </box>
-              </scrolledwindow>
-            </box>
+                <For each={notifications(ns =>
+                  ns.toSorted((a, b) => b.time - a.time)
+                )}>
+                  {(n: Notifd.Notification) => <Notification notification={n} /> }
+                </For>
+              </box>
+            </scrolledwindow>
           </box>
         </box>
       </revealer>

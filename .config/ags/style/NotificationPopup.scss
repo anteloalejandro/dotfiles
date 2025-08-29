@@ -3,7 +3,7 @@
 window.NotificationPopup {
 
   .popup-container {
-    border-radius: 0px $radius 0px $radius;
+    border-radius: $radius 0px $radius 0px;
     background-color: $bg;
     padding: 1rem;
   }
