@@ -1,5 +1,6 @@
 import { Astal, Gdk } from "ags/gtk4";
 import app from "ags/gtk4/app";
+import Vars from "../Vars";
 
 export default function LeftBar(gdkmonitor: Gdk.Monitor) {
   const { BOTTOM, RIGHT, TOP } = Astal.WindowAnchor
@@ -13,7 +14,7 @@ export default function LeftBar(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | RIGHT | BOTTOM}
       application={app}
-      width_request={8}
+      width_request={Vars.spacing}
       $={self => window_ref = self}
     >
       <box class="border-right-bar"></box>
