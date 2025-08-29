@@ -8,6 +8,8 @@ import Apps from "gi://AstalApps?version=0.1"
 import Pango from "gi://Pango?version=1.0"
 import Battery from "gi://AstalBattery?version=0.1"
 import Vars from '../Vars';
+import { createPoll, interval } from "ags/time"
+import GLib from "gi://GLib?version=2.0"
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -41,8 +43,8 @@ function FocusedClient() {
   return (
     <box spacing={Vars.spacing/2} class="focused-client">
       <image icon_name={focused(client => {
-        if (!client) return "";
-        const class_name = parse_class_name(client.class);
+        if (!client) return "desktop-symbolic";
+        const class_name = parse_class_name(client.initial_class);
         const query = apps.fuzzy_query(class_name);
         for (const q of query) {
           if (q && q.icon_name != "") return q.icon_name;
@@ -136,6 +138,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
             <box $type="end">
               <SysTray />
               <BatteryIndicator />
+              <label class="time" label={createPoll("", 1000,
+                () => GLib.DateTime.new_now_local().format("%H:%M")!
+              )} />
             </box>
           </centerbox>
         </revealer>
