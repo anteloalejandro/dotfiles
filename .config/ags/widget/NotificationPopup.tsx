@@ -8,6 +8,7 @@ import { CornerOrientation, RoundedCorner } from "./corners";
 import { Notification } from "./notifications";
 import { setup_window_resizable, setup_fix_hidden_window } from "./utils";
 import { timeout } from "ags/time";
+import { exec, execAsync } from "ags/process";
 
 
 const notifd = Notifd.get_default();
@@ -71,8 +72,10 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
                   {(n: Notifd.Notification, _) => <Notification notification={n} />}
                 </For>
               </box>
-              <label
+              <button
                 visible={notifications.as(ns => ns.length > 3)}
+                onClicked={() => { execAsync('ags request show_panel') }}
+                halign={Gtk.Align.CENTER}
                 label="..."
               />
             </box>

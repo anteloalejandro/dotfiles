@@ -5,6 +5,7 @@
 @use 'style/NotificationPopup';
 @use 'style/Osd';
 @use 'style/PowerMenu';
+@use 'style/Notification';
 
 // https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
 $fg-color: #{"@theme_fg_color"};
@@ -36,6 +37,10 @@ window {
     &:active {
       background-color: color.adjust($bg-hl, $lightness: 10%);
     }
+  }
+
+  separator {
+    background-color: $bg-hl;
   }
 
   // menubutton,

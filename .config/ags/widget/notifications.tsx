@@ -2,6 +2,7 @@ import { Gtk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
 import Pango from "gi://Pango?version=1.0"
 import GLib from "gi://GLib?version=2.0"
+import Vars from "../Vars"
 
 const fileExists = (path: string) =>
   GLib.file_test(path, GLib.FileTest.EXISTS)
@@ -23,17 +24,19 @@ const urgency = (n: Notifd.Notification) => {
 
 type Props = {
   notification: Notifd.Notification;
+  show_date?: boolean;
 }
 
 export function Notification(props: Props) {
   const { notification: n } = props
   const { START, CENTER, END } = Gtk.Align
+  const show_date = props.show_date ?? false;
 
   return <box
     class={`Notification ${urgency(n)}`}
   >
-    <box orientation={Gtk.Orientation.VERTICAL}>
-      <box class="header">
+    <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing}>
+      <box class="header" spacing={Vars.spacing}>
         {(n.appIcon || n.desktopEntry) && <image
           class="app-icon"
           visible={Boolean(n.appIcon || n.desktopEntry)}
@@ -50,33 +53,26 @@ export function Notification(props: Props) {
           class="time"
           hexpand
           halign={END}
-          label={time(n.time)}
+          label={time(n.time, show_date ? "%d/%m - %H:%M" : "%H:%M")}
         />
         <button onClicked={() => n.dismiss()}>
           <image icon_name="window-close-symbolic" />
         </button>
       </box>
       <Gtk.Separator visible />
-      <box class="content">
-        {n.image && fileExists(n.image) && <box
+      <box class="content" spacing={Vars.spacing}>
+        {n.image && fileExists(n.image) && <image
           valign={START}
           class="image"
-          css={`background-image: url('${n.image}')`}
+          icon_name={n.image}
         />}
-        {n.image && <box
-          hexpand={false}
-          vexpand={false}
-          valign={START}
-          class="icon-image">
-          <image icon_name={n.image} vexpand hexpand halign={CENTER} valign={CENTER} />
-        </box>}
-        <box orientation={Gtk.Orientation.VERTICAL}>
+        <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing}>
           <label
             class="summary"
             halign={START}
             xalign={0}
             label={n.summary}
-            max_width_chars={30}
+            max_width_chars={40}
             ellipsize={Pango.EllipsizeMode.END}
           />
           {n.body && <label
@@ -86,6 +82,7 @@ export function Notification(props: Props) {
             halign={START}
             xalign={0}
             justify={Gtk.Justification.FILL}
+            wrap_mode={Pango.WrapMode.WORD_CHAR}
             label={n.body}
           />}
         </box>

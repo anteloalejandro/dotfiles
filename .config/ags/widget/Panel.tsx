@@ -5,6 +5,7 @@ import { setup_fix_hidden_window, setup_window_resizable } from "./utils";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";
+import Vars from "../Vars";
 
 export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean>) {
   const {RIGHT, BOTTOM, TOP} = Astal.WindowAnchor;
@@ -38,6 +39,7 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
           </centerbox>
           <box
             class="panel-container"
+            spacing={2*Vars.spacing} 
             orientation={Gtk.Orientation.VERTICAL}
             height_request={gdkmonitor.geometry.height*0.8}
             width_request={400}
@@ -62,12 +64,13 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
             >
               <box
                 class="notifications"
+                spacing={Vars.spacing}
                 orientation={Gtk.Orientation.VERTICAL}
               >
                 <For each={notifications(ns =>
                   ns.toSorted((a, b) => b.time - a.time)
                 )}>
-                  {(n: Notifd.Notification) => <Notification notification={n} /> }
+                  {(n: Notifd.Notification) => <Notification notification={n} show_date /> }
                 </For>
               </box>
             </scrolledwindow>
