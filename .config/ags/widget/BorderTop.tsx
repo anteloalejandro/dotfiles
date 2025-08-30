@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { createBinding, For, State } from "gnim"
+import { Accessor, createBinding, createConnection, For, State } from "gnim"
 import { EventBox, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
@@ -8,7 +8,7 @@ import Apps from "gi://AstalApps?version=0.1"
 import Pango from "gi://Pango?version=1.0"
 import Battery from "gi://AstalBattery?version=0.1"
 import Vars from '../Vars';
-import { createPoll, interval } from "ags/time"
+import { createPoll } from "ags/time"
 import GLib from "gi://GLib?version=2.0"
 
 function SysTray() {
@@ -34,27 +34,35 @@ function SysTray() {
 function FocusedClient() {
   const hyprland = Hyprland.get_default();
   const apps = new Apps.Apps();
-  const focused = createBinding(hyprland, "focused_client");
+
+  const focused = createConnection(
+    hyprland.focused_client,
+    [hyprland, "notify", () => hyprland.focused_client]
+  );
 
   function parse_class_name(s: string) {
-    return s?.substring(s.lastIndexOf(".")+1);
+    return s.substring(s.lastIndexOf(".")+1);
   }
 
   return (
     <box spacing={Vars.spacing/2} class="focused-client">
-      <image icon_name={focused(client => {
+      <image icon_name={focused.as(client => {
         if (!client) return "desktop-symbolic";
+        if (!client.initial_class) return "";
         const class_name = parse_class_name(client.initial_class);
         const query = apps.fuzzy_query(class_name);
         for (const q of query) {
           if (q && q.icon_name != "") return q.icon_name;
         }
         return "";
-      })} />
+      })}
+      />
       <label
-        label={focused.as(client =>
-          client ? `${parse_class_name(client.class)} - ${client.title}` : "Desktop"
-        ) }
+        label={focused.as(client => {
+          if (!client) return "Desktop";
+          if (!client.class) return "";
+          return `${parse_class_name(client.class)} - ${client.title}`;
+        })}
         max_width_chars={20}
         ellipsize={Pango.EllipsizeMode.END}
       />

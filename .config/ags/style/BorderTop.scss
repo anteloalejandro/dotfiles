@@ -3,11 +3,12 @@
 
 window.BorderTop {
   background-color: $bg;
-  padding-left: $spacing;
-  padding-right: $spacing;
 
   .border-top-bar {
+    margin-left: $spacing;
+    margin-right: $spacing;
     padding-top: $spacing;
+    background-color: $bg;
   }
 
   .focused-client {

@@ -40,6 +40,10 @@ export function EventBox(props: EventBoxProps)  {
   </button>
 }
 
+/**
+ * WARN: DO NOT put padding on the window itself, as it affects the result of
+ * `get_width()` and `get_height()`, but `set_size_request()` does not account for it
+ */
 export function setup_window_resizable(
   window: Astal.Window,
   reveal: Accessor<boolean>,
