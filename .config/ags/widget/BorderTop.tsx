@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { Accessor, createBinding, createConnection, createExternal, createState, For, State } from "gnim"
+import { Accessor, createBinding, createConnection, For } from "gnim"
 import { EventBox, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"

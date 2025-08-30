@@ -21,9 +21,7 @@ box.Notification {
 
   .content {
 
-    image {
-      min-width: 100px;
-      min-height: 100px;
+    .image {
       background-size: cover;
       background-position: center;
     }

@@ -3,6 +3,7 @@ import Notifd from "gi://AstalNotifd"
 import Pango from "gi://Pango?version=1.0"
 import GLib from "gi://GLib?version=2.0"
 import Vars from "../Vars"
+import Apps from "gi://AstalApps?version=0.1"
 
 const fileExists = (path: string) =>
   GLib.file_test(path, GLib.FileTest.EXISTS)
@@ -28,9 +29,20 @@ type Props = {
 }
 
 export function Notification(props: Props) {
-  const { notification: n } = props
-  const { START, CENTER, END } = Gtk.Align
+  const { notification: n } = props;
+  const { START, CENTER, END } = Gtk.Align;
   const show_date = props.show_date ?? false;
+
+  const apps = new Apps.Apps();
+  const name = n.app_name || n.desktop_entry || n.app_icon;
+  const query = apps.fuzzy_query(name);
+  let icon = n.app_icon || n.desktop_entry;
+  for (const q of query) {
+    if (q && q.icon_name != "") {
+      icon = q.icon_name;
+      break;
+    }
+  }
 
   return <box
     class={`Notification ${urgency(n)}`}
@@ -39,8 +51,8 @@ export function Notification(props: Props) {
       <box class="header" spacing={Vars.spacing}>
         {(n.appIcon || n.desktopEntry) && <image
           class="app-icon"
-          visible={Boolean(n.appIcon || n.desktopEntry)}
-          icon_name={n.appIcon || n.desktopEntry}
+          visible={Boolean(icon)}
+          icon_name={icon}
         />}
         <label
           class="app-name"
@@ -62,9 +74,11 @@ export function Notification(props: Props) {
       <Gtk.Separator visible />
       <box class="content" spacing={Vars.spacing}>
         {n.image && fileExists(n.image) && <image
-          valign={START}
+          height_request={100}
+          width_request={100}
+          halign={START}
           class="image"
-          icon_name={n.image}
+          file={n.image}
         />}
         <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing}>
           <label
