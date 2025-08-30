@@ -10,6 +10,7 @@ import Battery from "gi://AstalBattery?version=0.1"
 import Vars from '../Vars';
 import { createPoll } from "ags/time"
 import GLib from "gi://GLib?version=2.0"
+import UiState from "../UiState"
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -127,9 +128,9 @@ function BatteryIndicator() {
   )
 }
 
-export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
+export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
-  const [ reveal_top, set_reveal_top ] = show_top;
+  const [ reveal_top, set_reveal_top ] = UiState.show_top;
 
   return (
     <window
@@ -148,7 +149,6 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
         <revealer
           transition_type={Gtk.RevealerTransitionType.SLIDE_DOWN}
           reveal_child={reveal_top}
-          onNotifyChildRevealed={() => print(reveal_top.get())}
         >
           <centerbox class="border-top-bar" height_request={10} >
             <box spacing={Vars.spacing} $type="start">

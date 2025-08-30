@@ -6,10 +6,11 @@ import { CornerOrientation, RoundedCorner } from "./corners";
 import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";
 import Vars from "../Vars";
+import UiState from "../UiState";
 
-export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean>) {
+export default function Panel(gdkmonitor: Gdk.Monitor) {
   const {RIGHT, BOTTOM, TOP} = Astal.WindowAnchor;
-  const [ reveal ] = show_panel;
+  const [ reveal ] = UiState.show_panel;
   const notifd = Notifd.get_default();
   const notifications = createBinding(notifd, "notifications");
   const dnd = createBinding(notifd, "dont_disturb");

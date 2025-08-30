@@ -11,18 +11,16 @@ import { NotificationPopup } from "./widget/NotificationPopup"
 import Osd from "./widget/Osd"
 import Panel from "./widget/Panel"
 import PowerMenu from "./widget/PowerMenu"
+import UiState from './UiState'
 
-const show_top = createState(true)
-const bottom_popup = createState(false);
-const show_panel = createState(false);
-const show_power = createState(false);
+const { show_top, bottom_popup, show_panel, show_power } = UiState;
 
 app.start({
   css: style,
   main() {
     app.get_monitors().map((monitor, index) => {
-      TopBar(monitor, show_top);
-      BottomBar(monitor, bottom_popup);
+      TopBar(monitor);
+      BottomBar(monitor);
       LeftBar(monitor);
       RightBar(monitor);
 
@@ -34,11 +32,11 @@ app.start({
 
 
       NotificationPopup(monitor);
-      Panel(monitor, show_panel);
+      Panel(monitor);
       Osd(monitor, createState(false));
-      if (index == 0) TestWindow(monitor, bottom_popup);
+      if (index == 0) TestWindow(monitor);
 
-      PowerMenu(monitor, show_power);
+      PowerMenu(monitor);
     })
   },
 

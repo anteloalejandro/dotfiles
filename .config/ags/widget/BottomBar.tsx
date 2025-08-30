@@ -1,12 +1,10 @@
-import { Astal, Gdk, Gtk } from "ags/gtk4";
+import { Astal, Gdk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { timeout } from "ags/time";
-import { createState, onMount, State } from "gnim";
 import Vars from "../Vars";
+import UiState from "../UiState";
 
-export default function BottomBar(gdkmonitor: Gdk.Monitor, bottom_popup: State<boolean>) {
-  const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
-  const [ popup_visible, set_popup_visible ] = bottom_popup;
+export default function BottomBar(gdkmonitor: Gdk.Monitor) {
+  const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
   return (
     <window
       visible
@@ -17,7 +15,6 @@ export default function BottomBar(gdkmonitor: Gdk.Monitor, bottom_popup: State<b
       anchor={BOTTOM | LEFT | RIGHT}
       application={app}
       height_request={Vars.spacing}
-      // keymode={Astal.Keymode.ON_DEMAND}
     >
       <box class="border-bottom-bar"></box>
     </window>

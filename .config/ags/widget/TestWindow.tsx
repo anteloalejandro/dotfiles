@@ -3,11 +3,12 @@ import app from "ags/gtk4/app";
 import { State } from "gnim";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { setup_fix_hidden_window, setup_window_resizable } from "./utils";
+import UiState from "../UiState";
 
-export default function TestWindow(gdkmonitor: Gdk.Monitor, bottom_popup: State<boolean>) {
+export default function TestWindow(gdkmonitor: Gdk.Monitor) {
   const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
   const { BOTTOM_LEFT, BOTTOM_RIGHT } = CornerOrientation;
-  const [ reveal ] = bottom_popup;
+  const [ reveal ] = UiState.bottom_popup;
   return (
     <window
       visible

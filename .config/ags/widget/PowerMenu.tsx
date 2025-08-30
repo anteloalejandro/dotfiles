@@ -2,9 +2,10 @@ import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { exec } from "ags/process";
 import { State } from "gnim";
+import UiState from "../UiState";
 
-export default function PowerMenu(gdkmonitor: Gdk.Monitor, show_power: State<boolean>) {
-  const [ visible, set_visible ] = show_power;
+export default function PowerMenu(gdkmonitor: Gdk.Monitor) {
+  const [ visible, set_visible ] = UiState.show_power;
   const {BOTTOM, LEFT, RIGHT, TOP} = Astal.WindowAnchor;
   return (
     <window
