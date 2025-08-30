@@ -89,6 +89,11 @@ function Workspaces() {
   const workspaces = createBinding(hyprland, "workspaces");
   const focused = createBinding(hyprland, "focused_workspace");
 
+  const focus_change_signal = createConnection(
+    false,
+    [hyprland, "notify", (_, current) => !current]
+  );
+
   return (
     <box
       spacing={5}
@@ -100,10 +105,10 @@ function Workspaces() {
         {(ws: Hyprland.Workspace) => {
           return (
             <button
-              class={focused.as(f =>
+              class={focus_change_signal.as(() =>
                 "workspace-indicator"
                   + (ws.clients.length == 0 ? " empty" : " ")
-                  + (ws.id == f.id ? " focused" : "")
+                  + (ws.id == hyprland.focused_workspace.id ? " focused" : "")
               )}
               onClicked={() => ws.focus()}
               valign={Gtk.Align.CENTER}
