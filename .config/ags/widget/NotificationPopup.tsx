@@ -45,14 +45,14 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={BOTTOM | RIGHT}
       $={self => {
-        setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
+        setup_window_resizable(self, reveal, Gtk.Orientation.HORIZONTAL);
         setup_fix_hidden_window(self, reveal);
       }}
     >
       <revealer
         reveal_child={reveal}
-        transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
-        height_request={1}
+        transition_type={Gtk.RevealerTransitionType.SLIDE_LEFT}
+        width_request={1}
       >
         <box>
           <box valign={Gtk.Align.END}>
@@ -65,7 +65,8 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
             <box
               class="popup-container"
               orientation={Gtk.Orientation.VERTICAL}
-              height_request={10} width_request={200}
+              height_request={100} width_request={200}
+              valign={Gtk.Align.END}
             >
               <box orientation={Gtk.Orientation.VERTICAL}>
                 <For each={notifications.as(ns => ns.toSorted((a, b) => b.time - a.time).slice(0, 3))}>

@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { Accessor, createBinding, createConnection, For, State } from "gnim"
+import { Accessor, createBinding, createConnection, createExternal, createState, For, State } from "gnim"
 import { EventBox, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
@@ -36,17 +36,17 @@ function FocusedClient() {
   const apps = new Apps.Apps();
 
   const focused = createConnection(
-    hyprland.focused_client,
-    [hyprland, "notify", () => hyprland.focused_client]
+    hyprland.focused_client.title,
+    [hyprland, "notify", () => hyprland.focused_client?.title]
   );
-
   function parse_class_name(s: string) {
     return s.substring(s.lastIndexOf(".")+1);
   }
 
   return (
     <box spacing={Vars.spacing/2} class="focused-client">
-      <image icon_name={focused.as(client => {
+      <image icon_name={focused.as(() => {
+        const client = hyprland.focused_client;
         if (!client) return "desktop-symbolic";
         if (!client.initial_class) return "";
         const class_name = parse_class_name(client.initial_class);
@@ -58,7 +58,8 @@ function FocusedClient() {
       })}
       />
       <label
-        label={focused.as(client => {
+        label={focused.as(() => {
+          const client = hyprland.focused_client;
           if (!client) return "Desktop";
           if (!client.class) return "";
           return `${parse_class_name(client.class)} - ${client.title}`;
