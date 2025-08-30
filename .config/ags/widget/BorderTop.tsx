@@ -167,6 +167,9 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
               <label class="time" label={createPoll("", 1000,
                 () => GLib.DateTime.new_now_local().format("%H:%M")!
               )} />
+              <button class="powermenu-btn" icon_name="system-shutdown-symbolic"
+                onClicked={() => UiState.show_power[1](b => !b)}
+              />
             </box>
           </centerbox>
         </revealer>
