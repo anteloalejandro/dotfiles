@@ -9,6 +9,7 @@ import { Notification } from "./notifications";
 import { setup_window_resizable, setup_fix_hidden_window } from "./utils";
 import { timeout } from "ags/time";
 import { execAsync } from "ags/process";
+import UiState from "../UiState";
 
 
 const notifd = Notifd.get_default();
@@ -16,7 +17,7 @@ const [notifications, set_notifications] = createState<Notifd.Notification[]>([]
 const reveal = notifications.as(ns => ns.length > 0);
 
 notifd.connect('notified', (_, id) => {
-  if (notifd.dont_disturb) return;
+  if (notifd.dont_disturb || UiState.show_panel[0].get()) return;
   const notification = notifd.get_notification(id);
   set_notifications(ns => ns.concat(notification));
 
@@ -58,7 +59,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
           <box valign={Gtk.Align.END}>
             <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
           </box>
-          <box orientation={Gtk.Orientation.VERTICAL}>
+          <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.END}>
             <box halign={Gtk.Align.END}>
               <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
             </box>
@@ -67,9 +68,12 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
               orientation={Gtk.Orientation.VERTICAL}
               height_request={100} width_request={200}
               valign={Gtk.Align.END}
+              vexpand
             >
-              <box orientation={Gtk.Orientation.VERTICAL}>
-                <For each={notifications.as(ns => ns.toSorted((a, b) => b.time - a.time).slice(0, 3))}>
+              <box
+                orientation={Gtk.Orientation.VERTICAL}
+              >
+                <For each={notifications.as(ns => ns.sort((a, b) => a.time - b.time).slice(0, 3))}>
                   {(n: Notifd.Notification, _) => <Notification notification={n} />}
                 </For>
               </box>
