@@ -37,7 +37,7 @@ function FocusedClient() {
   const focused = createBinding(hyprland, "focused_client");
 
   function parse_class_name(s: string) {
-    return s.substring(s.lastIndexOf(".")+1);
+    return s?.substring(s.lastIndexOf(".")+1);
   }
 
   return (

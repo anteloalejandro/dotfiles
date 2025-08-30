@@ -8,7 +8,7 @@ import { CornerOrientation, RoundedCorner } from "./corners";
 import { Notification } from "./notifications";
 import { setup_window_resizable, setup_fix_hidden_window } from "./utils";
 import { timeout } from "ags/time";
-import { exec, execAsync } from "ags/process";
+import { execAsync } from "ags/process";
 
 
 const notifd = Notifd.get_default();

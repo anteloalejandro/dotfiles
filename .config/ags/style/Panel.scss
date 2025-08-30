@@ -10,4 +10,23 @@ window.Panel {
   .notifications {
     padding: $radius; border-radius: $radius; background-color: $bg-alt;
   }
+
+  .clear-all {
+    border-radius: $radius;
+  }
+
+  switch {
+    background-color: $bg-alt;
+    color: $fg;
+    border-radius: $radius;
+    &.active {
+      background-color: $accent;
+    }
+
+    slider {
+      box-shadow: unset;
+      border-radius: $radius;
+    }
+  }
+
 }

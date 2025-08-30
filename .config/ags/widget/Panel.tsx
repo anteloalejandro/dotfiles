@@ -47,12 +47,13 @@ export default function Panel(gdkmonitor: Gdk.Monitor, show_panel: State<boolean
             <centerbox>
               <label $type="start" label="Do not Disturb" />
               <switch $type="end" active={dnd}
+                class={dnd.as(b => b ? "active" : "inactive")}
                 onNotifyActive={({active}) => {
                   notifd.set_dont_disturb(active);
                 }}
               />
             </centerbox>
-            <button label="Clear All" onClicked={() => {
+            <button class="clear-all" label="Clear All" onClicked={() => {
               for (const n of notifd.notifications) {
                 n.dismiss();
               }
