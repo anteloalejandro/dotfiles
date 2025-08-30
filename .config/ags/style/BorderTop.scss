@@ -7,7 +7,7 @@ window.BorderTop {
   .border-top-bar {
     margin-left: $spacing;
     margin-right: $spacing;
-    padding-top: $spacing;
+    margin-top: $spacing;
     background-color: $bg;
   }
 
@@ -17,6 +17,13 @@ window.BorderTop {
     padding-left: $spacing;
     padding-right: $spacing;
     background-color: $bg-alt;
+
+    border: 1px solid $bg-alt;
+    transition: border 200ms ease;
+
+    &.fullscreen {
+      border-color: $accent;
+    }
 
     image {
       // filter: sepia(100%) hue-rotate(250deg) contrast(150%);

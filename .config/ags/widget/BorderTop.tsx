@@ -35,17 +35,29 @@ function FocusedClient() {
   const hyprland = Hyprland.get_default();
   const apps = new Apps.Apps();
 
-  const focused = createConnection(
-    hyprland.focused_client.title,
-    [hyprland, "notify", () => hyprland.focused_client?.title]
+  const focus_change_signal = createConnection(
+    false,
+    [hyprland, "notify", (_, current) => !current]
   );
   function parse_class_name(s: string) {
     return s.substring(s.lastIndexOf(".")+1);
   }
 
+  const fullscreen = createConnection(
+    hyprland.focused_client.fullscreen > 0,
+    [hyprland, "event", () => hyprland.focused_client.fullscreen > 0],
+  )
+
   return (
-    <box spacing={Vars.spacing/2} class="focused-client">
-      <image icon_name={focused.as(() => {
+    <box
+      spacing={Vars.spacing/2}
+      class={fullscreen.as(b => {
+        const classes = ["focused-client"];
+        if (b) classes.push("fullscreen");
+        return classes.join(' ');
+      })}
+    >
+      <image icon_name={focus_change_signal.as(() => {
         const client = hyprland.focused_client;
         if (!client) return "desktop-symbolic";
         if (!client.initial_class) return "";
@@ -58,7 +70,7 @@ function FocusedClient() {
       })}
       />
       <label
-        label={focused.as(() => {
+        label={focus_change_signal.as(() => {
           const client = hyprland.focused_client;
           if (!client) return "Desktop";
           if (!client.class) return "";
@@ -144,7 +156,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor, show_top: State<boolean>) {
               <FocusedClient />
             </box>
             <Workspaces $type="center" />
-            <box $type="end">
+            <box $type="end" spacing={Vars.radius}>
               <SysTray />
               <BatteryIndicator />
               <label class="time" label={createPoll("", 1000,
