@@ -10,7 +10,8 @@ export function Empty() {
 
 export type EventBoxProps  = {
   onClicked?: ((source: Gtk.Button) => void);
-  onHoverLost?: ((source: Gtk.EventControllerMotion) => void)
+  onHover?: ((source: Gtk.Button, controller: Gtk.EventControllerMotion) => void)
+  onHoverLost?: ((source: Gtk.Button, controller: Gtk.EventControllerMotion) => void)
   children?: JSX.Element | Array<JSX.Element>;
   class?: string;
   height_request?: number | Accessor<number> | undefined;
@@ -19,22 +20,24 @@ export type EventBoxProps  = {
 
 export function EventBox(props: EventBoxProps)  {
   const children = props.children;
-  delete props.children;
-
 
   return <button
     cssName="eventbox"
     $={self => {
       const motion = new Gtk.EventControllerMotion();
-      if (props.onHoverLost !== undefined) {
-        self.add_controller(motion);
-        motion.connect("leave", m => {
-          props.onHoverLost!(m);
-          return true;
-        });
-      }
+      self.add_controller(motion);
+
+      props.onHoverLost && motion.connect("leave", m => {
+        props.onHoverLost!(self, m);
+      });
+      props.onHover && motion.connect("enter", m => {
+        props.onHover!(self, m)
+      });
     }}
-    {...props}
+    class={props.class}    
+    height_request={props.height_request}    
+    width_request={props.width_request}
+    onClicked={props.onClicked}
   >
     {children ?? <Empty />}
   </button>
