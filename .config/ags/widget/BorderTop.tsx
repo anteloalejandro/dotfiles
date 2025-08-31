@@ -46,7 +46,10 @@ function FocusedClient() {
 
   const fullscreen = createConnection(
     hyprland.focused_client.fullscreen > 0,
-    [hyprland, "event", () => hyprland.focused_client.fullscreen > 0],
+    [hyprland, "event", () => {
+      if (!hyprland || !hyprland.focused_client) return false
+      return hyprland.focused_client.fullscreen > 0
+    }],
   )
 
   return (
