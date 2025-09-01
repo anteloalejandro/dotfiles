@@ -5,6 +5,12 @@ window.Runner {
     background-color: #181818;
     padding: $spacing;
     border-radius: $radius $radius 0px 0px;
+
+    .item {
+      &.selected {
+        font-style: italic;
+      }
+    }
   }
 }
 

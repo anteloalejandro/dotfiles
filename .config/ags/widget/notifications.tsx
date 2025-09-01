@@ -35,7 +35,7 @@ export function Notification(props: Props) {
 
   const apps = new Apps.Apps();
   const name = n.app_name || n.desktop_entry || n.app_icon;
-  const query = apps.fuzzy_query(name);
+  const query = apps.exact_query(name);
   let icon = n.app_icon || n.desktop_entry;
   for (const q of query) {
     if (q && q.icon_name != "") {
