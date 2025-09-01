@@ -32,6 +32,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
         setup_hide_on_escape(self, set_reveal, key_controller);
         key_controller.connect('key-pressed', (_, keyval, _keycode, state) => {
           const len = app_list.get().length;
+          keyval = Gdk.keyval_to_upper(keyval); // Gdk.KEY_ enums are in uppercase
 
           if (
             keyval == Gdk.KEY_Up
