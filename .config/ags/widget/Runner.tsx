@@ -22,12 +22,28 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={Astal.WindowAnchor.BOTTOM}
       application={app}
-      keymode={Astal.Keymode.ON_DEMAND}
+      keymode={Astal.Keymode.EXCLUSIVE}
       resizable
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
         setup_fix_hidden_window(self, reveal);
-        setup_hide_on_escape(self, set_reveal);
+
+        const key_controller = new Gtk.EventControllerKey();
+        setup_hide_on_escape(self, set_reveal, key_controller);
+        key_controller.connect('key-pressed', (_, keyval, _keycode, state) => {
+          const len = app_list.get().length;
+          if (
+            keyval == Gdk.KEY_Up
+              || (keyval == Gdk.KEY_K && state == Gdk.ModifierType.CONTROL_MASK)
+          )
+            set_selected(n => n+1 >= len ? n : n+1);
+          
+          if (
+            keyval == Gdk.KEY_Down
+              || (keyval == Gdk.KEY_J && state == Gdk.ModifierType.CONTROL_MASK)
+          )
+            set_selected(n => n-1 < 0 ? 0 : n-1);
+        })
       }}
     >
       <revealer
@@ -48,17 +64,15 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
               orientation={Gtk.Orientation.VERTICAL}
               valign={Gtk.Align.END}
             >
-              <For each={app_list} >
-                {(app, i) => 
+              <For each={app_list.as(xs => xs.reverse())} >
+                {(app: Apps.Application, i) => 
                   <label
-                    $={self => {
-                    }}
                     label={app.name}
                     class={selected.as(n => {
-                      const list = app_list.get();
+                      const len = app_list.get().length;
                       const idx = i.get();
-                      const match = list.length-1 - n;
-                      return match == idx ? "item selected" : "item"
+                      const pos = len-1 - n;
+                      return pos == idx ? "item selected" : "item"
                     })}
                   />
                 }
@@ -82,8 +96,13 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
               valign={Gtk.Align.END}
               placeholder_text={"Search..."} text=""
               onNotifyText={self => {
-                if (self.text.length < 2) return;
-                set_app_list(apps.fuzzy_query(self.text).reverse().slice(0, 10));
+                if (self.text.length < 2) {
+                  set_app_list([]);
+                  return;
+                }
+                const list = apps.fuzzy_query(self.text).slice(0, 10);
+                set_app_list(list);
+                set_selected(0);
               }}
             />
           </box>

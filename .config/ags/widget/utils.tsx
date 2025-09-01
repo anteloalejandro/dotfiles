@@ -90,7 +90,7 @@ export function setup_hide_on_escape(
 ) {
   key_controller ??= new Gtk.EventControllerKey();
   window.add_controller(key_controller);
-  key_controller.connect('key-pressed', (_, keyval, keycode, state) => {
+  key_controller.connect('key-pressed', (_, keyval) => {
     if (keyval == Gdk.KEY_Escape) set_reveal(false);
   })
 }
