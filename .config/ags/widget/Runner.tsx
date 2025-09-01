@@ -32,6 +32,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
         setup_hide_on_escape(self, set_reveal, key_controller);
         key_controller.connect('key-pressed', (_, keyval, _keycode, state) => {
           const len = app_list.get().length;
+
           if (
             keyval == Gdk.KEY_Up
               || (keyval == Gdk.KEY_K && state == Gdk.ModifierType.CONTROL_MASK)
@@ -64,17 +65,17 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
               orientation={Gtk.Orientation.VERTICAL}
               valign={Gtk.Align.END}
             >
-              <For each={app_list.as(xs => xs.reverse())} >
+              <For each={app_list.as(xs => xs.toReversed())} >
                 {(app: Apps.Application, i) => 
-                  <label
-                    label={app.name}
+                  <box
                     class={selected.as(n => {
-                      const len = app_list.get().length;
                       const idx = i.get();
-                      const pos = len-1 - n;
+                      const pos = app_list.get().length-1 - n;
                       return pos == idx ? "item selected" : "item"
                     })}
-                  />
+                  >
+                    {app.name}
+                  </box>
                 }
               </For>
             </box>
@@ -86,6 +87,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                   } else {
                     timeout(250, () => {
                       self.text = "";
+                      set_selected(0);
                       set_app_list([]);
                     })
                   }
@@ -100,9 +102,14 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                   set_app_list([]);
                   return;
                 }
-                const list = apps.fuzzy_query(self.text).slice(0, 10);
-                set_app_list(list);
+                set_app_list(apps.fuzzy_query(self.text).slice(0, 10));
+                set_selected(-1); // reset
                 set_selected(0);
+              }}
+              onActivate={() => {
+                const list = app_list.get();
+                if (list.length) list[selected.get()].launch();
+                set_reveal(false);
               }}
             />
           </box>
