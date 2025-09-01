@@ -1,14 +1,26 @@
 @use 'vars' as *;
+@use 'sass:color';
 
 window.Runner {
   .runner-container {
-    background-color: #181818;
+    background-color: $bg;
+    color: $fg;
     padding: $spacing;
     border-radius: $radius $radius 0px 0px;
 
     .item {
+      padding: $spacing;
+      border-radius: $radius-inner;
       &.selected {
-        font-style: italic;
+        background-color: $bg-alt;
+      }
+
+      .app-name {
+        font-size: 1.1em;
+      }
+      .app-description {
+        font-size: 0.9em;
+        color: color.adjust($fg, $lightness: -20%);
       }
     }
   }

@@ -1,11 +1,13 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { CornerOrientation, RoundedCorner } from "./corners";
-import { setup_fix_hidden_window, setup_hide_on_escape, setup_window_resizable } from "./utils";
+import { fileExists, setup_fix_hidden_window, setup_hide_on_escape, setup_window_resizable } from "./utils";
 import UiState from "../UiState";
 import { timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";
 import { createState, For, onCleanup } from "gnim";
+import Vars from "../Vars";
+import Pango from "gi://Pango?version=1.0";
 
 export default function Runner(gdkmonitor: Gdk.Monitor) {
   const [ reveal, set_reveal ] = UiState.show_runner;
@@ -60,11 +62,13 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
             class="runner-container"
             orientation={Gtk.Orientation.VERTICAL}
             valign={Gtk.Align.END}
+            spacing={Vars.spacing}
           >
             <box
               class="matches app-matches"
               orientation={Gtk.Orientation.VERTICAL}
               valign={Gtk.Align.END}
+              spacing={Vars.spacing}
             >
               <For each={app_list.as(xs => xs.toReversed())} >
                 {(app: Apps.Application, i) => 
@@ -74,8 +78,37 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                       const pos = app_list.get().length-1 - n;
                       return pos == idx ? "item selected" : "item"
                     })}
+                    spacing={Vars.spacing}
                   >
-                    {app.name}
+                    <image
+                      class="app-icon"
+                      file={fileExists(app.icon_name) ? app.icon_name : undefined}
+                      icon_name={!fileExists(app.icon_name) ? app.icon_name : undefined}
+                      pixel_size={Vars.spacing * 4}
+                    />
+                    <box
+                      class="app-data"
+                      orientation={Gtk.Orientation.VERTICAL}
+                      homogeneous
+                    >
+                      <label
+                        class="app-name"
+                        label={app.name}
+                        halign={Gtk.Align.START}
+                      />
+                      <label
+                        class="app-description"
+                        visible={
+                          Boolean(app.description)
+                            && (app.description != "")
+                            && (app.name != app.description)
+                        }
+                        label={app.description}
+                        halign={Gtk.Align.START}
+                        max_width_chars={60}
+                        ellipsize={Pango.EllipsizeMode.END}
+                      />
+                    </box>
                   </box>
                 }
               </For>
@@ -103,7 +136,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                   set_app_list([]);
                   return;
                 }
-                set_app_list(apps.fuzzy_query(self.text).slice(0, 10));
+                set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
                 set_selected(-1); // reset
                 set_selected(0);
               }}

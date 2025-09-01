@@ -1,6 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import { timeout } from "ags/time";
 import { Accessor, onCleanup, Setter } from "gnim";
+import GLib from "gi://GLib?version=2.0"
 
 
 /** empty box that enables sizing of elements that need some content*/
@@ -93,4 +94,15 @@ export function setup_hide_on_escape(
   key_controller.connect('key-pressed', (_, keyval) => {
     if (keyval == Gdk.KEY_Escape) set_reveal(false);
   })
+}
+
+export function fileExists(path?: string) {
+  if (!path) return false;
+  return GLib.file_test(path, GLib.FileTest.EXISTS);
+}
+
+export function time_fmt(time: number, format = "%H:%M") {
+  return GLib.DateTime
+    .new_from_unix_local(time)
+    .format(format)!
 }

@@ -1,16 +1,9 @@
 import { Gtk } from "ags/gtk4"
 import Notifd from "gi://AstalNotifd"
 import Pango from "gi://Pango?version=1.0"
-import GLib from "gi://GLib?version=2.0"
 import Vars from "../Vars"
 import Apps from "gi://AstalApps?version=0.1"
-
-const fileExists = (path: string) =>
-  GLib.file_test(path, GLib.FileTest.EXISTS)
-
-const time = (time: number, format = "%H:%M") => GLib.DateTime
-  .new_from_unix_local(time)
-  .format(format)!
+import { fileExists, time_fmt } from "./utils"
 
 const urgency = (n: Notifd.Notification) => {
   const { LOW, NORMAL, CRITICAL } = Notifd.Urgency
@@ -65,7 +58,7 @@ export function Notification(props: Props) {
           class="time"
           hexpand
           halign={END}
-          label={time(n.time, show_date ? "%d/%m - %H:%M" : "%H:%M")}
+          label={time_fmt(n.time, show_date ? "%d/%m - %H:%M" : "%H:%M")}
         />
         <button onClicked={() => n.dismiss()}>
           <image icon_name="window-close-symbolic" />
