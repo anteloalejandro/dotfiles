@@ -1,0 +1,10 @@
+@use 'vars' as *;
+
+window.Runner {
+  .runner-container {
+    background-color: #181818;
+    padding: $spacing;
+    border-radius: $radius $radius 0px 0px;
+  }
+}
+

@@ -6,6 +6,7 @@
 @use 'style/Osd';
 @use 'style/PowerMenu';
 @use 'style/Notification';
+@use 'style/Runner';
 
 // https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
 $fg-color: #{"@theme_fg_color"};

@@ -1,6 +1,6 @@
-import { Astal, Gtk } from "ags/gtk4";
+import { Astal, Gdk, Gtk } from "ags/gtk4";
 import { timeout } from "ags/time";
-import { Accessor, onCleanup } from "gnim";
+import { Accessor, onCleanup, Setter } from "gnim";
 
 
 /** empty box that enables sizing of elements that need some content*/
@@ -81,4 +81,16 @@ export function setup_fix_hidden_window(
     }
   })
   onCleanup(handle);
+}
+
+export function setup_hide_on_escape(
+  window: Astal.Window,
+  set_reveal: Setter<boolean>,
+  key_controller?: Gtk.EventControllerKey
+) {
+  key_controller ??= new Gtk.EventControllerKey();
+  window.add_controller(key_controller);
+  key_controller.connect('key-pressed', (_, keyval, keycode, state) => {
+    if (keyval == Gdk.KEY_Escape) set_reveal(false);
+  })
 }

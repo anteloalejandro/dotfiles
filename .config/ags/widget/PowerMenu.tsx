@@ -3,6 +3,7 @@ import app from "ags/gtk4/app";
 import { exec } from "ags/process";
 import { State } from "gnim";
 import UiState from "../UiState";
+import { setup_hide_on_escape } from "./utils";
 
 export default function PowerMenu(gdkmonitor: Gdk.Monitor) {
   const [ visible, set_visible ] = UiState.show_power;
@@ -17,6 +18,9 @@ export default function PowerMenu(gdkmonitor: Gdk.Monitor) {
       layer={Astal.Layer.OVERLAY}
       keymode={Astal.Keymode.EXCLUSIVE}
       anchor={BOTTOM | TOP | LEFT | RIGHT}
+      $={self => {
+        setup_hide_on_escape(self, set_visible);
+      }}
     >
       <box valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
         <button

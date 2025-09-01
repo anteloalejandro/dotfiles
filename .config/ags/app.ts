@@ -6,14 +6,14 @@ import LeftBar from "./widget/LeftBar"
 import RightBar from "./widget/RightBar"
 import { CornerWindow, CornerOrientation } from "./widget/corners"
 import { createState } from "gnim"
-import TestWindow from "./widget/TestWindow"
+import Runner from "./widget/Runner"
 import { NotificationPopup } from "./widget/NotificationPopup"
 import Osd from "./widget/Osd"
 import Panel from "./widget/Panel"
 import PowerMenu from "./widget/PowerMenu"
 import UiState from './UiState'
 
-const { show_top, bottom_popup, show_panel, show_power } = UiState;
+const { show_top, show_runner: bottom_popup, show_panel, show_power, show_runner } = UiState;
 
 app.start({
   css: style,
@@ -34,7 +34,7 @@ app.start({
       NotificationPopup(monitor);
       Panel(monitor);
       Osd(monitor, createState(false));
-      if (index == 0) TestWindow(monitor);
+      if (index == 0) Runner(monitor);
 
       PowerMenu(monitor);
     })
@@ -57,6 +57,10 @@ app.start({
       case "show_power":
         show_power[1](b => !b);
         res(show_power[0].get())
+        break;
+      case "show_runner":
+        show_runner[1](b => !b);
+        res(show_runner[0].get())
         break;
       default: res("request not found");
     }
