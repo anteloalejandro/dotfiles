@@ -14,6 +14,7 @@ export default function Resources(gdkmonitor: Gdk.Monitor) {
     <window
       visible 
       application={app}
+      gdkmonitor={gdkmonitor}
       name="resources"
       class="Resources"
       layer={Astal.Layer.TOP}
