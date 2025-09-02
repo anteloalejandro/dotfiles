@@ -5,15 +5,31 @@ import { fileExists, setup_fix_hidden_window, setup_hide_on_escape, setup_window
 import UiState from "../UiState";
 import { timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";
-import { createState, For, onCleanup } from "gnim";
+import { Accessor, createState, For, onCleanup, State } from "gnim";
 import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
+
+
+type Mode = {
+  bang: string
+  icon_name?: string,
+  label?: string,
+}
+
+const modes: Mode[] = [
+  { bang: "", label: "󱓞" },
+  { bang: ">", icon_name: "utilities-terminal-symbolic" },
+  { bang: "=", icon_name: "accessories-calculator-symbolic" },
+  { bang: "?", icon_name: "applications-internet-symbolic" },
+  // { bang: "games", label: " " }
+];
 
 export default function Runner(gdkmonitor: Gdk.Monitor) {
   const [ reveal, set_reveal ] = UiState.show_runner;
   const apps  = new Apps.Apps();
   const [ app_list, set_app_list ] = createState<Apps.Application[]>([])
   const [ selected, set_selected ] = createState(0);
+  const [ mode, set_mode ]: State<Mode> = createState(modes[0]);
 
   return (
     <window
@@ -113,40 +129,60 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                 }
               </For>
             </box>
-            <entry
-              $={self => {
-                const handle = reveal.subscribe(() => {
-                  if (reveal.get()) {
-                    self.grab_focus();
-                  } else {
-                    timeout(250, () => {
-                      self.text = "";
-                      set_selected(0);
-                      set_app_list([]);
-                    })
+            <box spacing={Vars.spacing} class="search-box">
+              <entry
+                $={self => {
+                  const handle = reveal.subscribe(() => {
+                    if (reveal.get()) {
+                      self.grab_focus();
+                    } else {
+                      timeout(250, () => {
+                        self.text = "";
+                        set_selected(0);
+                        set_app_list([]);
+                      })
+                    }
+                  })
+                  onCleanup(handle);
+
+                  const key_controller = new Gtk.EventControllerKey();
+                  self.add_controller(key_controller)
+                  key_controller.connect('key-pressed', (_, keyval) => {
+                    if (keyval == Gdk.KEY_Tab) return true; // disable tab navigation
+                  })
+                }}
+                hexpand
+                valign={Gtk.Align.END}
+                placeholder_text={"Search..."} text=""
+                primary_icon_name="search-symbolic"
+                onNotifyText={self => {
+                  if (self.text.length < 2) {
+                    set_app_list([]);
+                    return;
                   }
-                })
-                onCleanup(handle);
-              }}
-              hexpand
-              valign={Gtk.Align.END}
-              placeholder_text={"Search..."} text=""
-              onNotifyText={self => {
-                if (self.text.length < 2) {
-                  set_app_list([]);
-                  return;
-                }
-                set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
-                set_selected(-1); // reset
-                set_selected(0);
-              }}
-              onActivate={() => {
-                const list = app_list.get();
-                if (list.length) list[selected.get()].launch();
-                set_reveal(false);
-              }}
-              primary_icon_name="search-symbolic"
-            />
+                  set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
+                  set_selected(-1); // reset
+                  set_selected(0);
+                }}
+                onActivate={() => {
+                  const list = app_list.get();
+                  if (list.length) {
+                    list[selected.get()].launch();
+                  }
+                  set_reveal(false);
+                }}
+              />
+              <box class="search-modes">
+                {modes.map(m => 
+                  <button
+                    label={m.label}
+                    icon_name={m.icon_name}
+                    width_request={40}
+                    class={mode.as(mode => mode == m ? "active" : "")}
+                  />
+                )}
+              </box>
+            </box>
           </box>
           <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} /></box>
         </box>
@@ -154,3 +190,4 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
     </window>
   )
 }
+

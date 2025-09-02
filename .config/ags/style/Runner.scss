@@ -24,13 +24,33 @@ window.Runner {
       }
     }
 
-    entry {
-      all: unset;
-      background-color: $bg-hl;
-      border-radius: $radius-inner;
-      padding: $spacing;
-      &:focus-within {
-        border: 1px solid $accent;
+    .search-box {
+      entry {
+        all: unset;
+        background-color: $bg-hl;
+        border-radius: $radius-inner;
+        padding: $spacing;
+        &:focus-within {
+          border: 1px solid $accent;
+        }
+      }
+
+      .search-modes {
+        button {
+          font-size: 1.3em;
+          background-color: transparent;
+          text-align: center;
+          color: color.adjust($fg, $lightness: -50%);
+          transition: color 250ms ease;
+
+          &:hover {
+            color: color.adjust($fg, $lightness: -30%);
+          }
+
+          .selected {
+            color: $fg;
+          }
+        }
       }
     }
   }
