@@ -1,3 +1,27 @@
+@use 'vars' as *;
+@use 'sass:color';
+
 window.PowerMenu {
-  background-color: rgba(0,0,0, 0.4);
+
+  .background {
+    background-color: rgba(0, 0, 0, 0.9);
+    filter: blur(10px);
+  }
+
+  button {
+    font-size: 5rem;
+    -gtk-icon-size: 1em;
+    margin-left: 1em;
+    padding: 1em;
+    border-radius: $radius * 5;
+
+    &:hover, &:focus {
+      background-color: coral;
+    }
+
+    &:nth-child(1) {
+      margin-left: 0px;
+    }
+  }
+
 }
