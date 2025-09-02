@@ -58,7 +58,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
         <box>
           <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} /></box>
           <box
-            width_request={500}
+            width_request={550}
             class="runner-container"
             orientation={Gtk.Orientation.VERTICAL}
             valign={Gtk.Align.END}
@@ -145,6 +145,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                 if (list.length) list[selected.get()].launch();
                 set_reveal(false);
               }}
+              primary_icon_name="search-symbolic"
             />
           </box>
           <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} /></box>
