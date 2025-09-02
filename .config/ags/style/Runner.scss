@@ -47,7 +47,7 @@ window.Runner {
             color: color.adjust($fg, $lightness: -30%);
           }
 
-          .selected {
+          &.selected {
             color: $fg;
           }
         }

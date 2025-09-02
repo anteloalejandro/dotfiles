@@ -8,6 +8,7 @@ import Apps from "gi://AstalApps?version=0.1";
 import { Accessor, createState, For, onCleanup, State } from "gnim";
 import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
+import { exec } from "ags/process";
 
 
 type Mode = {
@@ -18,8 +19,8 @@ type Mode = {
 
 const modes: Mode[] = [
   { bang: "", label: "󱓞" },
-  { bang: ">", icon_name: "utilities-terminal-symbolic" },
-  { bang: "=", icon_name: "accessories-calculator-symbolic" },
+  // { bang: ">", icon_name: "utilities-terminal-symbolic" },
+  // { bang: "=", icon_name: "accessories-calculator-symbolic" },
   { bang: "?", icon_name: "applications-internet-symbolic" },
   // { bang: "games", label: " " }
 ];
@@ -153,21 +154,34 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                 }}
                 hexpand
                 valign={Gtk.Align.END}
-                placeholder_text={"Search..."} text=""
+                placeholder_text={"Search..."}
+                text=""
                 primary_icon_name="search-symbolic"
                 onNotifyText={self => {
                   if (self.text.length < 2) {
                     set_app_list([]);
+                    set_mode(modes.slice(1).find(m => self.text.startsWith(m.bang)) ?? modes[0]);
                     return;
                   }
-                  set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
+
+                  if (mode.get().bang == "")
+                    set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
+
                   set_selected(-1); // reset
                   set_selected(0);
                 }}
-                onActivate={() => {
+                onActivate={self => {
                   const list = app_list.get();
-                  if (list.length) {
-                    list[selected.get()].launch();
+                  console.log(mode.get())
+                  switch (mode.get().bang) {
+                    case "": // case "games":
+                      print(list);
+                      list.length && list[selected.get()].launch();
+                      break;
+                    case "?":
+                      const search = "https://duckduckgo.com/?q=" + self.text.substring(1).trim();
+                      exec(["zen-browser", search]);
+                      break;
                   }
                   set_reveal(false);
                 }}
@@ -177,8 +191,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                   <button
                     label={m.label}
                     icon_name={m.icon_name}
-                    width_request={40}
-                    class={mode.as(mode => mode == m ? "active" : "")}
+                    class={mode.as(mode => mode.bang == m.bang ? "selected" : "")}
                   />
                 )}
               </box>
