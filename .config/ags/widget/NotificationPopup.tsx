@@ -6,7 +6,7 @@ import Gtk from "gi://Gtk?version=4.0";
 import { createState, For } from "gnim";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { Notification } from "./notifications";
-import { setup_window_resizable, setup_fix_hidden_window } from "./utils";
+import { setup_window_resizable, setup_fix_hidden_window, setup_listen_fullscreen } from "./utils";
 import { timeout } from "ags/time";
 import { execAsync } from "ags/process";
 import UiState from "../UiState";
@@ -48,6 +48,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.HORIZONTAL);
         setup_fix_hidden_window(self, reveal);
+        setup_listen_fullscreen(self);
       }}
     >
       <revealer

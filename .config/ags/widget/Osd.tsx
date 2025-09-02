@@ -1,6 +1,6 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { setup_fix_hidden_window, setup_window_resizable } from "./utils";
+import { fullscreen, setup_fix_hidden_window, setup_listen_fullscreen, setup_window_resizable } from "./utils";
 import { Accessor, createState, State } from "gnim";
 import Brightness from "../service/brightness";
 import Wp from "gi://AstalWp?version=0.1";
@@ -94,6 +94,7 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
       $={self => {
         setup_window_resizable(self, reveal, Gtk.Orientation.HORIZONTAL);
         setup_fix_hidden_window(self, reveal);
+        setup_listen_fullscreen(self);
       }}
     >
       <revealer

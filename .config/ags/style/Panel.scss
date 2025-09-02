@@ -30,3 +30,13 @@ window.Panel {
   }
 
 }
+
+window.Panel.fullscreen-client {
+  .panel-container {
+    border-radius: $radius;
+  }
+  
+  corner { 
+    opacity: 0;
+  }
+}

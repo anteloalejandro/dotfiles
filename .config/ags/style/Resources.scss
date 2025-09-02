@@ -4,7 +4,7 @@ window.Resources {
   .resources-container {
     background-color: $bg;
     padding: $spacing;
-    border-radius: 0px 0px $radius 0px;
+    border-radius: $radius 0px $radius 0px;
   }
   levelbar {
     block {

@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import { Accessor, createBinding, createConnection, createState, For } from "gnim"
-import { EventBox, setup_window_resizable } from "./utils"
+import { EventBox, fullscreen, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
 import Apps from "gi://AstalApps?version=0.1"
@@ -45,13 +45,6 @@ function FocusedClient() {
   function parse_class_name(s: string) {
     return s.substring(s.lastIndexOf(".")+1);
   }
-
-  const fullscreen = createConnection(
-    false,
-    [hyprland, "event", () => 
-      hyprland && hyprland.focused_client && hyprland.focused_client.fullscreen > 0,
-    ],
-  )
 
   return (
     <box

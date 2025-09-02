@@ -1,8 +1,9 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import { createPoll, interval, timeout } from "ags/time";
-import { Accessor, createState, onCleanup, Setter } from "gnim";
+import { Accessor, createConnection, createState, onCleanup, Setter } from "gnim";
 import GLib from "gi://GLib?version=2.0"
 import { execAsync } from "ags/process";
+import AstalHyprland from "gi://AstalHyprland?version=0.1";
 
 
 /** empty box that enables sizing of elements that need some content*/
@@ -119,3 +120,21 @@ export const mem = createPoll({used: 0, total: 0}, 5000, async () => {
   return { used: Number(values[2]), total: Number(values[1]) }
 })
 
+const hyprland = AstalHyprland.get_default();
+export const fullscreen = createConnection(
+  0,
+  [hyprland, "event", () => {
+    if (!hyprland || !hyprland.focused_client) return 0;
+    return hyprland.focused_client.fullscreen;
+  }],
+)
+
+export function setup_listen_fullscreen(window: Astal.Window) {
+  const class_name = "fullscreen-client";
+  fullscreen.subscribe(() => {
+    fullscreen.get() >= 2
+      ? window.add_css_class(class_name)
+      : window.remove_css_class(class_name)
+    ;
+  })
+}

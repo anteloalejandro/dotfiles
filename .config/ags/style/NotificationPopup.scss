@@ -8,3 +8,12 @@ window.NotificationPopup {
     padding: 1rem;
   }
 }
+
+window.NotificationPopup.fullscreen-client {
+  .popup-container {
+    border-radius: $radius;
+  }
+  corner {
+    opacity: 0;
+  }
+}
