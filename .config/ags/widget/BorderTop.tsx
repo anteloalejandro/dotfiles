@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { Accessor, createBinding, createConnection, For } from "gnim"
+import { Accessor, createBinding, createConnection, createState, For } from "gnim"
 import { EventBox, setup_window_resizable } from "./utils"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
@@ -11,6 +11,12 @@ import Vars from '../Vars';
 import { createPoll } from "ags/time"
 import GLib from "gi://GLib?version=2.0"
 import UiState from "../UiState"
+
+const [hypr_event, set_hypr_event] = createState("");
+Hyprland.get_default().connect('event', (_, field, value) => {
+  // console.log({field, value})
+  set_hypr_event(() => field + ";" + value);
+})
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -36,16 +42,12 @@ function FocusedClient() {
   const hyprland = Hyprland.get_default();
   const apps = new Apps.Apps();
 
-  const focus_change_signal = createConnection(
-    false,
-    [hyprland, "notify", (_, current) => !current]
-  );
   function parse_class_name(s: string) {
     return s.substring(s.lastIndexOf(".")+1);
   }
 
   const fullscreen = createConnection(
-    hyprland && hyprland.focused_client && hyprland.focused_client.fullscreen > 0,
+    false,
     [hyprland, "event", () => 
       hyprland && hyprland.focused_client && hyprland.focused_client.fullscreen > 0,
     ],
@@ -60,7 +62,7 @@ function FocusedClient() {
         return classes.join(' ');
       })}
     >
-      <image icon_name={focus_change_signal.as(() => {
+      <image icon_name={hypr_event.as(() => {
         const client = hyprland.focused_client;
         if (!client) return "desktop-symbolic";
         if (!client.initial_class) return "";
@@ -73,7 +75,7 @@ function FocusedClient() {
       })}
       />
       <label
-        label={focus_change_signal.as(() => {
+        label={hypr_event.as(() => {
           const client = hyprland.focused_client;
           if (!client) return "Desktop";
           if (!client.class) return "";
@@ -89,12 +91,6 @@ function FocusedClient() {
 function Workspaces() {
   const hyprland = Hyprland.get_default();
   const workspaces = createBinding(hyprland, "workspaces");
-  const focused = createBinding(hyprland, "focused_workspace");
-
-  const focus_change_signal = createConnection(
-    false,
-    [hyprland, "notify", (_, current) => !current]
-  );
 
   return (
     <box
@@ -107,7 +103,7 @@ function Workspaces() {
         {(ws: Hyprland.Workspace) => {
           return (
             <button
-              class={focus_change_signal.as(() =>
+              class={hypr_event.as(() =>
                 "workspace-indicator"
                   + (ws.clients.length == 0 ? " empty" : " ")
                   + (ws.id == hyprland.focused_workspace.id ? " focused" : "")
