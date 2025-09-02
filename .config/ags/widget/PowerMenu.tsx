@@ -10,6 +10,7 @@ export default function PowerMenu(gdkmonitor: Gdk.Monitor) {
   const {BOTTOM, LEFT, RIGHT, TOP} = Astal.WindowAnchor;
   return (
     <window
+      namespace="power-menu"
       visible={visible} application={app}
       name="power-menu"
       class="PowerMenu"
@@ -22,47 +23,44 @@ export default function PowerMenu(gdkmonitor: Gdk.Monitor) {
         setup_hide_on_escape(self, set_visible);
       }}
     >
-      <overlay>
-        <box class="background" hexpand vexpand />
-        <box $type="overlay" valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
-          <button
-            $={self => {
-              visible.subscribe(() => {
-                if (visible.get()) self.grab_focus();
-              })
-            }}
-            icon_name="system-shutdown-symbolic"
-            onClicked={() => {
-              exec("poweroff");
-            }}
-          />
-          <button
-            icon_name="system-reboot-symbolic"
-            onClicked={() => {
-              exec("reboot");
-            }}
-          />
-          <button
-            icon_name="system-suspend-symbolic"
-            onClicked={() => {
-              set_visible(false);
-              exec(["systemctl", "suspend"]);
-            }}
-          />
-          <button
-            icon_name="application-exit-symbolic"
-            onClicked={() => {
-              exec(["hyprctl", "dispatch", "exit"]);
-            }}
-          />
-          <button
-            icon_name="window-close-symbolic"
-            onClicked={() => {
-              set_visible(false);
-            }}
-          />
-        </box>
-      </overlay>
+      <box $type="overlay" valign={Gtk.Align.CENTER} halign={Gtk.Align.CENTER}>
+        <button
+          $={self => {
+            visible.subscribe(() => {
+              if (visible.get()) self.grab_focus();
+            })
+          }}
+          icon_name="system-shutdown-symbolic"
+          onClicked={() => {
+            exec("poweroff");
+          }}
+        />
+        <button
+          icon_name="system-reboot-symbolic"
+          onClicked={() => {
+            exec("reboot");
+          }}
+        />
+        <button
+          icon_name="system-suspend-symbolic"
+          onClicked={() => {
+            set_visible(false);
+            exec(["systemctl", "suspend"]);
+          }}
+        />
+        <button
+          icon_name="application-exit-symbolic"
+          onClicked={() => {
+            exec(["hyprctl", "dispatch", "exit"]);
+          }}
+        />
+        <button
+          icon_name="window-close-symbolic"
+          onClicked={() => {
+            set_visible(false);
+          }}
+        />
+      </box>
     </window>
   )
 }
