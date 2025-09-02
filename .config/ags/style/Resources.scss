@@ -6,4 +6,37 @@ window.Resources {
     padding: $spacing;
     border-radius: 0px 0px $radius 0px;
   }
+  levelbar {
+    block {
+      border-radius: $radius-inner;
+
+      &.empty {
+        background-color: $bg-alt;
+      }
+
+      &.filled {
+        background-color: $accent;
+        transition: background-color 250ms ease;
+      }
+      &.filled.high {
+        background-color: darkorange;
+      }
+      &.filled.full {
+        background-color: coral;
+      }
+    }
+
+    // trough block.filled {
+    //   background-color: $accent;
+    // }
+    // &.danger trough block.filled {
+    //   background-color: coral;
+    // }
+    // trough block.empty {
+    //   background-color: $bg-hl;
+    // }
+    // &.danger trough block.empty {
+    //   background-color: $accent;
+    // }
+  }
 }

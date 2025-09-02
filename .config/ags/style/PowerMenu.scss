@@ -10,6 +10,8 @@ window.PowerMenu {
     margin-left: 1em;
     padding: 1em;
     border-radius: $radius * 5;
+    transition: background-color 250ms ease;
+    box-shadow: 0px 0px 0.5em black;
 
     &:hover, &:focus {
       background-color: coral;

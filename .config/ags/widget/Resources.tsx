@@ -34,24 +34,27 @@ export default function Resources(gdkmonitor: Gdk.Monitor) {
             <box
               class="resources-container"
               orientation={Gtk.Orientation.VERTICAL}
+              spacing={Vars.spacing}
             >
-              <box orientation={Gtk.Orientation.VERTICAL}>
-                <slider
-                  sensitive={false}
-                  value={cpu_usage}
-                  min={0} max={1}
-                />
-                <label label={cpu_usage.as(String)} />
+              <box spacing={Vars.spacing}>
+                <image icon_name="memory-symbolic" />
+                <levelbar
+                  orientation={Gtk.Orientation.HORIZONTAL}
+                  width_request={200}
+                  value={mem.as(m => m.used/m.total)}
+                >
+                  <label label={mem.as(mem => `${(mem.used/1000).toFixed(2)}GB`)} />
+                </levelbar>
               </box>
-              <box orientation={Gtk.Orientation.VERTICAL}>
-                <slider
-                  sensitive={false}
-                  value={mem.as(m => m.used)}
-                  min={0} max={mem.as(m => m.total)}
-                />
-                <label label={mem.as(mem =>
-                  `${(mem.used/1000).toFixed(2)}/${(mem.total/1000).toFixed(2)} GB`
-                )} />
+              <box spacing={Vars.spacing}>
+                <image icon_name="cpu-symbolic" />
+                <levelbar
+                  orientation={Gtk.Orientation.HORIZONTAL}
+                  width_request={200}
+                  value={cpu_usage(p => (p/100))}
+                >
+                  <label label={cpu_usage.as(p => `${p}%`)} />
+                </levelbar>
               </box>
               <button
                 onClicked={() => {
