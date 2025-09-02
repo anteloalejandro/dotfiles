@@ -37,16 +37,24 @@ window.Runner {
 
       .search-modes {
         button {
-          font-size: 1.3em;
           background-color: transparent;
           color: color.adjust($fg, $lightness: -50%);
-          transition: color 250ms ease;
+          transition:
+            color 250ms ease,
+            font-size 250ms ease,
+            ;
+
+          &:nth-child(1) {
+            font-size: 1.2em;
+            margin-right: 5px;
+          }
 
           &:hover {
             color: color.adjust($fg, $lightness: -30%);
           }
 
           &.selected {
+            transform: scale(1.1);
             color: $fg;
           }
         }

@@ -8,7 +8,7 @@ import Apps from "gi://AstalApps?version=0.1";
 import { Accessor, createState, For, onCleanup, State } from "gnim";
 import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
-import { exec, execAsync } from "ags/process";
+import { execAsync } from "ags/process";
 
 
 type Mode = {
