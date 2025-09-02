@@ -1,7 +1,8 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
-import { timeout } from "ags/time";
-import { Accessor, onCleanup, Setter } from "gnim";
+import { createPoll, interval, timeout } from "ags/time";
+import { Accessor, createState, onCleanup, Setter } from "gnim";
 import GLib from "gi://GLib?version=2.0"
+import { execAsync } from "ags/process";
 
 
 /** empty box that enables sizing of elements that need some content*/
@@ -106,3 +107,15 @@ export function time_fmt(time: number, format = "%H:%M") {
     .new_from_unix_local(time)
     .format(format)!
 }
+
+export const cpu_usage = createPoll(0, 5000, async () => {
+  const out = await execAsync(["bash", "-c", `top -b -n1 | grep "%Cpu(s)" | awk '{print $2 + $4}'`]);
+  return Number(out);
+})
+
+export const mem = createPoll({used: 0, total: 0}, 5000, async () => {
+  const out = await execAsync(["bash", "-c", "free -m | grep Mem: | tr -s ' '"]);
+  const values = out.split(' '); // total, used, free, shared, buff/cache
+  return { used: Number(values[2]), total: Number(values[1]) }
+})
+

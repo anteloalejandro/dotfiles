@@ -42,7 +42,7 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       class="NotificationPopup"
       application={app}
       gdkmonitor={gdkmonitor}
-      layer={Astal.Layer.TOP}
+      layer={Astal.Layer.OVERLAY}
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={BOTTOM | RIGHT}
       $={self => {

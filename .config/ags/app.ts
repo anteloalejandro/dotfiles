@@ -12,8 +12,9 @@ import Osd from "./widget/Osd"
 import Panel from "./widget/Panel"
 import PowerMenu from "./widget/PowerMenu"
 import UiState from './UiState'
+import Resources from "./widget/Resources"
 
-const { show_top, show_runner: bottom_popup, show_panel, show_power, show_runner } = UiState;
+const { show_top, show_runner, show_panel, show_power, show_resources } = UiState;
 
 app.start({
   css: style,
@@ -37,15 +38,12 @@ app.start({
       if (index == 0) Runner(monitor);
 
       PowerMenu(monitor);
+      Resources(monitor);
     })
   },
 
   requestHandler(req, res) {
     switch (req) {
-      case "bottom_popup":
-        bottom_popup[1](b => !b);
-        res(bottom_popup[0].get());
-        break;
       case "show_panel":
         show_panel[1](b => !b);
         res(show_panel[0].get());
@@ -61,6 +59,10 @@ app.start({
       case "show_runner":
         show_runner[1](b => !b);
         res(show_runner[0].get())
+        break;
+      case "show_resources":
+        show_resources[1](b => !b);
+        res(show_resources[0].get())
         break;
       default: res("request not found");
     }

@@ -155,7 +155,10 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         >
           <centerbox class="border-top-bar" height_request={10} >
             <box spacing={Vars.spacing} $type="start">
-              <button icon_name="utilities-system-monitor-symbolic" />
+              <button
+                icon_name="utilities-system-monitor-symbolic"
+                onClicked={() => UiState.show_resources[1](b => !b)}
+              />
               <FocusedClient />
             </box>
             <Workspaces $type="center" />
