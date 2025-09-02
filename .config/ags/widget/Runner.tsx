@@ -8,7 +8,7 @@ import Apps from "gi://AstalApps?version=0.1";
 import { Accessor, createState, For, onCleanup, State } from "gnim";
 import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
-import { exec } from "ags/process";
+import { exec, execAsync } from "ags/process";
 
 
 type Mode = {
@@ -19,7 +19,7 @@ type Mode = {
 
 const modes: Mode[] = [
   { bang: "", label: "󱓞" },
-  // { bang: ">", icon_name: "utilities-terminal-symbolic" },
+  { bang: ">", icon_name: "utilities-terminal-symbolic" },
   // { bang: "=", icon_name: "accessories-calculator-symbolic" },
   { bang: "?", icon_name: "applications-internet-symbolic" },
   // { bang: "games", label: " " }
@@ -86,6 +86,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
               orientation={Gtk.Orientation.VERTICAL}
               valign={Gtk.Align.END}
               spacing={Vars.spacing}
+              visible={app_list.as(xs => xs.length > 0)}
             >
               <For each={app_list.as(xs => xs.toReversed())} >
                 {(app: Apps.Application, i) => 
@@ -172,7 +173,6 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                 }}
                 onActivate={self => {
                   const list = app_list.get();
-                  console.log(mode.get())
                   switch (mode.get().bang) {
                     case "": // case "games":
                       print(list);
@@ -180,8 +180,11 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                       break;
                     case "?":
                       const search = "https://duckduckgo.com/?q=" + self.text.substring(1).trim();
-                      exec(["zen-browser", search]);
+                      execAsync(["zen-browser", search]);
                       break;
+                    case ">":
+                      const cmd = self.text.substring(1).trim().split(' ');
+                      execAsync([...cmd]);
                   }
                   set_reveal(false);
                 }}

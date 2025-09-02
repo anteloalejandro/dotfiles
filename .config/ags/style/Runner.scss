@@ -39,7 +39,6 @@ window.Runner {
         button {
           font-size: 1.3em;
           background-color: transparent;
-          text-align: center;
           color: color.adjust($fg, $lightness: -50%);
           transition: color 250ms ease;
 

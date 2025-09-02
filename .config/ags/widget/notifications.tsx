@@ -101,7 +101,6 @@ export function Notification(props: Props) {
               hexpand
               onClicked={() => {
                 n.invoke(id)
-                console.log(label)
               }}>
               <label label={label} halign={CENTER} hexpand />
             </button>
