@@ -65,4 +65,8 @@ window.BorderTop {
       background-color: $empty;
     }
   }
+
+  .battery-indicator.low-battery {
+    color: coral;
+  }
 }

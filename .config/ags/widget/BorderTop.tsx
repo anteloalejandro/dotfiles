@@ -121,12 +121,14 @@ function Workspaces() {
 function BatteryIndicator() {
   const bat = Battery.get_default();
   return (
-    <box>
+    <box class={createBinding(bat, "percentage").as(p =>
+      "battery-indicator" + (p < 0.15 ? " low-battery" : "")
+    )}>
       <label label={
         createBinding(bat, "percentage")
           .as(p => `${Math.floor(p * 100)}%`)
       } />
-      <image icon_name={createBinding(bat, "icon_name")} />
+      <image icon_name={createBinding(bat, "battery_icon_name")} />
     </box>
   )
 }
