@@ -63,3 +63,11 @@ window.Runner {
   }
 }
 
+window.Runner.fullscreen-client {
+  .runner-container {
+    border-radius: $radius;
+  }
+  corner {
+    opacity: 0;
+  }
+}

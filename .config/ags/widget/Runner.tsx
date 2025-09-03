@@ -1,7 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { CornerOrientation, RoundedCorner } from "./corners";
-import { fileExists, setup_hide_on_escape } from "./utils";
+import { fileExists, setup_hide_on_escape, setup_listen_fullscreen } from "./utils";
 import UiState from "../UiState";
 import { timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";
@@ -41,10 +41,12 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={Astal.WindowAnchor.BOTTOM}
+      layer={Astal.Layer.OVERLAY}
       application={app}
       keymode={Astal.Keymode.EXCLUSIVE}
       resizable
       $={self => {
+        setup_listen_fullscreen(self)
         const key_controller = new Gtk.EventControllerKey();
         setup_hide_on_escape(self, set_reveal, key_controller);
         key_controller.connect('key-pressed', (_, keyval, _keycode, state) => {
