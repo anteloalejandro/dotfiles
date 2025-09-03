@@ -8,7 +8,7 @@ so graphics drivers issues _shouldn't_ be a thing.
 
 ## Features
 
-- Widgets, applets, notifications, and media controls through `hyprpanel`.
+- Widgets, applets, notifications, and media controls through `ags`.
 - Lockscreen/sleep through `hypridle` and `hyprlock`.
 - Wallpapers through `hyprpaper`.
 - `rofi-wayland` as the launcher/runner.
@@ -98,9 +98,8 @@ and set `http://localhost` as the new tab custom URL and configure Firefox to us
 
 ## TO-DO
 
-- [ ] Migrate EWW widgets to AGS
-- [ ] Add more resource monitors
-- [ ] Make lockscreen widgets interactable (e.g.: Add a suspend button)
+- [x] Migrate EWW widgets to AGS
+- [x] Make lockscreen widgets interactable (e.g.: Add a suspend button)
 
 ## Thanks to...
 
