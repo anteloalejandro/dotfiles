@@ -1,7 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { CornerOrientation, RoundedCorner } from "./corners";
-import { fileExists, setup_fix_hidden_window, setup_hide_on_escape, setup_window_resizable } from "./utils";
+import { fileExists, setup_hide_on_escape } from "./utils";
 import UiState from "../UiState";
 import { timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";
@@ -34,7 +34,8 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
 
   return (
     <window
-      visible
+      visible={reveal}
+      namespace="runner"
       name="runner"
       class="Runner"
       gdkmonitor={gdkmonitor}
@@ -44,9 +45,6 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
       keymode={Astal.Keymode.EXCLUSIVE}
       resizable
       $={self => {
-        setup_window_resizable(self, reveal, Gtk.Orientation.VERTICAL);
-        setup_fix_hidden_window(self, reveal);
-
         const key_controller = new Gtk.EventControllerKey();
         setup_hide_on_escape(self, set_reveal, key_controller);
         key_controller.connect('key-pressed', (_, keyval, _keycode, state) => {
@@ -58,7 +56,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
               || (keyval == Gdk.KEY_K && state == Gdk.ModifierType.CONTROL_MASK)
           )
             set_selected(n => n+1 >= len ? n : n+1);
-          
+
           if (
             keyval == Gdk.KEY_Down
               || (keyval == Gdk.KEY_J && state == Gdk.ModifierType.CONTROL_MASK)
@@ -67,142 +65,136 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
         })
       }}
     >
-      <revealer
-        reveal_child={reveal}
-        transition_type={Gtk.RevealerTransitionType.SLIDE_UP}
-        height_request={1}
-      >
-        <box>
-          <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} /></box>
+      <box>
+        <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} /></box>
+        <box
+          width_request={550}
+          class="runner-container"
+          orientation={Gtk.Orientation.VERTICAL}
+          valign={Gtk.Align.END}
+          spacing={Vars.spacing}
+        >
           <box
-            width_request={550}
-            class="runner-container"
+            class="matches app-matches"
             orientation={Gtk.Orientation.VERTICAL}
             valign={Gtk.Align.END}
             spacing={Vars.spacing}
+            visible={app_list.as(xs => xs.length > 0)}
           >
-            <box
-              class="matches app-matches"
-              orientation={Gtk.Orientation.VERTICAL}
-              valign={Gtk.Align.END}
-              spacing={Vars.spacing}
-              visible={app_list.as(xs => xs.length > 0)}
-            >
-              <For each={app_list.as(xs => xs.toReversed())} >
-                {(app: Apps.Application, i) => 
-                  <box
-                    class={selected.as(n => {
-                      const idx = i.get();
-                      const pos = app_list.get().length-1 - n;
-                      return pos == idx ? "item selected" : "item"
-                    })}
-                    spacing={Vars.spacing}
-                  >
-                    <image
-                      class="app-icon"
-                      file={fileExists(app.icon_name) ? app.icon_name : undefined}
-                      icon_name={!fileExists(app.icon_name) ? app.icon_name : undefined}
-                      pixel_size={Vars.spacing * 4}
-                    />
-                    <box
-                      class="app-data"
-                      orientation={Gtk.Orientation.VERTICAL}
-                      homogeneous
-                    >
-                      <label
-                        class="app-name"
-                        label={app.name}
-                        halign={Gtk.Align.START}
-                      />
-                      <label
-                        class="app-description"
-                        visible={
-                          Boolean(app.description)
-                            && (app.description != "")
-                            && (app.name != app.description)
-                        }
-                        label={app.description}
-                        halign={Gtk.Align.START}
-                        max_width_chars={60}
-                        ellipsize={Pango.EllipsizeMode.END}
-                      />
-                    </box>
-                  </box>
-                }
-              </For>
-            </box>
-            <box spacing={Vars.spacing} class="search-box">
-              <entry
-                $={self => {
-                  const handle = reveal.subscribe(() => {
-                    if (reveal.get()) {
-                      self.grab_focus();
-                    } else {
-                      timeout(250, () => {
-                        self.text = "";
-                        set_selected(0);
-                        set_app_list([]);
-                      })
-                    }
-                  })
-                  onCleanup(handle);
-
-                  const key_controller = new Gtk.EventControllerKey();
-                  self.add_controller(key_controller)
-                  key_controller.connect('key-pressed', (_, keyval) => {
-                    if (keyval == Gdk.KEY_Tab) return true; // disable tab navigation
-                  })
-                }}
-                hexpand
-                valign={Gtk.Align.END}
-                placeholder_text={"Search..."}
-                text=""
-                primary_icon_name="search-symbolic"
-                onNotifyText={self => {
-                  if (self.text.length < 2) {
-                    set_app_list([]);
-                    set_mode(modes.slice(1).find(m => self.text.startsWith(m.bang)) ?? modes[0]);
-                    return;
-                  }
-
-                  if (mode.get().bang == "")
-                    set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
-
-                  set_selected(-1); // reset
-                  set_selected(0);
-                }}
-                onActivate={self => {
-                  const list = app_list.get();
-                  switch (mode.get().bang) {
-                    case "": // case "games":
-                      print(list);
-                      list.length && list[selected.get()].launch();
-                      break;
-                    case "?":
-                      const search = "https://duckduckgo.com/?q=" + self.text.substring(1).trim();
-                      execAsync(["zen-browser", search]);
-                      break;
-                    case ">":
-                      const cmd = self.text.substring(1).trim().split(' ');
-                      execAsync([...cmd]);
-                  }
-                  set_reveal(false);
-                }}
-              />
-              <box class="search-modes">
-                {modes.map(m => 
-                  <button
-                    label={m.label}
-                    icon_name={m.icon_name}
-                    class={mode.as(mode => mode.bang == m.bang ? "selected" : "")}
+            <For each={app_list.as(xs => xs.toReversed())} >
+              {(app: Apps.Application, i) => 
+                <box
+                  class={selected.as(n => {
+                    const idx = i.get();
+                    const pos = app_list.get().length-1 - n;
+                    return pos == idx ? "item selected" : "item"
+                  })}
+                  spacing={Vars.spacing}
+                >
+                  <image
+                    class="app-icon"
+                    file={fileExists(app.icon_name) ? app.icon_name : undefined}
+                    icon_name={!fileExists(app.icon_name) ? app.icon_name : undefined}
+                    pixel_size={Vars.spacing * 4}
                   />
-                )}
-              </box>
+                  <box
+                    class="app-data"
+                    orientation={Gtk.Orientation.VERTICAL}
+                    homogeneous
+                  >
+                    <label
+                      class="app-name"
+                      label={app.name}
+                      halign={Gtk.Align.START}
+                    />
+                    <label
+                      class="app-description"
+                      visible={
+                        Boolean(app.description)
+                          && (app.description != "")
+                          && (app.name != app.description)
+                      }
+                      label={app.description}
+                      halign={Gtk.Align.START}
+                      max_width_chars={60}
+                      ellipsize={Pango.EllipsizeMode.END}
+                    />
+                  </box>
+                </box>
+              }
+            </For>
+          </box>
+          <box spacing={Vars.spacing} class="search-box">
+            <entry
+              $={self => {
+                const handle = reveal.subscribe(() => {
+                  if (reveal.get()) {
+                    self.grab_focus();
+                  } else {
+                    timeout(250, () => {
+                      self.text = "";
+                      set_selected(0);
+                      set_app_list([]);
+                    })
+                  }
+                })
+                onCleanup(handle);
+
+                const key_controller = new Gtk.EventControllerKey();
+                self.add_controller(key_controller)
+                key_controller.connect('key-pressed', (_, keyval) => {
+                  if (keyval == Gdk.KEY_Tab) return true; // disable tab navigation
+                })
+              }}
+              hexpand
+              valign={Gtk.Align.END}
+              placeholder_text={"Search..."}
+              text=""
+              primary_icon_name="search-symbolic"
+              onNotifyText={self => {
+                if (self.text.length < 2) {
+                  set_app_list([]);
+                  set_mode(modes.slice(1).find(m => self.text.startsWith(m.bang)) ?? modes[0]);
+                  return;
+                }
+
+                if (mode.get().bang == "")
+                  set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
+
+                set_selected(-1); // reset
+                set_selected(0);
+              }}
+              onActivate={self => {
+                const list = app_list.get();
+                switch (mode.get().bang) {
+                  case "": // case "games":
+                    print(list);
+                    list.length && list[selected.get()].launch();
+                    break;
+                  case "?":
+                    const search = "https://duckduckgo.com/?q=" + self.text.substring(1).trim();
+                    execAsync(["zen-browser", search]);
+                    break;
+                  case ">":
+                    const cmd = self.text.substring(1).trim().split(' ');
+                    execAsync([...cmd]);
+                }
+                set_reveal(false);
+              }}
+            />
+            <box class="search-modes">
+              {modes.map(m => 
+                <button
+                  label={m.label}
+                  icon_name={m.icon_name}
+                  class={mode.as(mode => mode.bang == m.bang ? "selected" : "")}
+                />
+              )}
             </box>
           </box>
-          <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} /></box>
         </box>
-      </revealer>
+        <box valign={Gtk.Align.END}><RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} /></box>
+      </box>
     </window>
   )
 }
