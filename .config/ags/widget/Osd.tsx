@@ -1,6 +1,6 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { fullscreen, setup_fix_hidden_window, setup_listen_fullscreen, setup_window_resizable } from "./utils";
+import { setup_listen_fullscreen } from "./utils";
 import { Accessor, createState, State } from "gnim";
 import Brightness from "../service/brightness";
 import Wp from "gi://AstalWp?version=0.1";
@@ -18,19 +18,14 @@ function OsdSlider(props: {visible: State<boolean>}) {
   const [value, set_value] = createState(0);
   const [icon, set_icon] = createState("");
 
-  let count = -1
+  let show_count = 0;
   function show(v: number, icon: string) {
-    if (count < 0) {
-      count = 0;
-      return;
-    }
-    set_reveal(true);
+    set_reveal(true)
     set_value(v);
     set_icon(icon);
-    count++;
+    show_count++;
     timeout(2000, () => {
-      count--;
-      if (count === 0) set_reveal(false);
+      if (--show_count == 0) set_reveal(false);
     })
   }
 
@@ -81,9 +76,13 @@ function OsdSlider(props: {visible: State<boolean>}) {
 
 export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
   const [reveal, set_reveal] = show_osd;
+  reveal.subscribe(() => {
+    console.log(reveal.get())
+  })
   return (
     <window
-      visible
+      visible={reveal}
+      namespace="osd"
       name="osd"
       class="Osd"
       application={app}
@@ -92,39 +91,31 @@ export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={Astal.WindowAnchor.LEFT}
       $={self => {
-        setup_window_resizable(self, reveal, Gtk.Orientation.HORIZONTAL);
-        setup_fix_hidden_window(self, reveal);
         setup_listen_fullscreen(self);
       }}
     >
-      <revealer
-        reveal_child={reveal}
-        transition_type={Gtk.RevealerTransitionType.SLIDE_RIGHT}
-        width_request={1}
-      >
-        <box orientation={Gtk.Orientation.VERTICAL}>
-          <box valign={Gtk.Align.START}>
-            <RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} />
-          </box>
-          <box
-            class="osd-container"
-            height_request={100}
-            width_request={2*Vars.spacing}
-            $={self => {
-              const controller = new Gtk.GestureClick();
-              self.add_controller(controller);
-              controller.connect('pressed', () => {
-                set_reveal(false);
-              });
-            }}
-          >
-            <OsdSlider visible={show_osd} />
-          </box>
-          <box valign={Gtk.Align.START}>
-            <RoundedCorner orientation={CornerOrientation.TOP_LEFT} />
-          </box>
+      <box orientation={Gtk.Orientation.VERTICAL}>
+        <box valign={Gtk.Align.START}>
+          <RoundedCorner orientation={CornerOrientation.BOTTOM_LEFT} />
         </box>
-      </revealer>
+        <box
+          class="osd-container"
+          height_request={100}
+          width_request={2*Vars.spacing}
+          $={self => {
+            const controller = new Gtk.GestureClick();
+            self.add_controller(controller);
+            controller.connect('pressed', () => {
+              set_reveal(false);
+            });
+          }}
+        >
+          <OsdSlider visible={show_osd} />
+        </box>
+        <box valign={Gtk.Align.START}>
+          <RoundedCorner orientation={CornerOrientation.TOP_LEFT} />
+        </box>
+      </box>
     </window>
   )
 }
