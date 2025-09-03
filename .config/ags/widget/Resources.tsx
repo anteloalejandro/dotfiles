@@ -5,10 +5,17 @@ import UiState from "../UiState";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { execAsync } from "ags/process";
 import Vars from "../Vars";
+import { createState } from "gnim";
 
 export default function Resources(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT } = Astal.WindowAnchor;
   const [ reveal, set_reveal ] = UiState.show_resources;
+  const [ hypridle, set_hypridle ] = createState(true);
+  reveal.subscribe(() => {
+    execAsync(["bash", "-c", "pidof hypridle"])
+      .then(() => set_hypridle(true))
+      .catch(() => set_hypridle(false))
+  })
 
   return (
     <window
@@ -59,6 +66,23 @@ export default function Resources(gdkmonitor: Gdk.Monitor) {
                 <image icon_name="process-stop-symbolic" />
                 <label label="Kill" hexpand justify={Gtk.Justification.CENTER} />
               </box>
+            </button>
+            <button
+              class={hypridle.as(b => "caffeine" + (b ? " enabled" : ""))}
+              icon_name={hypridle.as(b => b ? "caffeine-cup-empty" : "caffeine-cup-full")}
+              onClicked={() => {
+                execAsync(["bash", "-c", "pidof hypridle"])
+                  .then(out => {
+                    execAsync(["kill", out]).catch(() => {});
+                    set_hypridle(false);
+                  })
+                  .catch(() => {
+                    execAsync("hypridle").catch(() => {});
+                    set_hypridle(true);
+                  })
+              }}
+            >
+
             </button>
           </box>
           <box valign={Gtk.Align.START}><RoundedCorner orientation={CornerOrientation.TOP_LEFT} /></box>
