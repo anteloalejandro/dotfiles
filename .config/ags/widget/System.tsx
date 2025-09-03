@@ -7,9 +7,9 @@ import { execAsync } from "ags/process";
 import Vars from "../Vars";
 import { createState } from "gnim";
 
-export default function Resources(gdkmonitor: Gdk.Monitor) {
+export default function System(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT } = Astal.WindowAnchor;
-  const [ reveal, set_reveal ] = UiState.show_resources;
+  const [ reveal, set_reveal ] = UiState.show_system;
   const [ hypridle, set_hypridle ] = createState(true);
   reveal.subscribe(() => {
     execAsync(["bash", "-c", "pidof hypridle"])
@@ -20,9 +20,9 @@ export default function Resources(gdkmonitor: Gdk.Monitor) {
   return (
     <window
       visible={reveal}
-      namespace="resources"
-      name="resources"
-      class="Resources"
+      namespace="system"
+      name="system"
+      class="System"
       application={app}
       gdkmonitor={gdkmonitor}
       layer={Astal.Layer.TOP}

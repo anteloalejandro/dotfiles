@@ -152,7 +152,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
             <box spacing={Vars.spacing} $type="start">
               <button
                 icon_name="utilities-system-monitor-symbolic"
-                onClicked={() => UiState.show_resources[1](b => !b)}
+                onClicked={() => UiState.show_system[1](b => !b)}
               />
               <FocusedClient />
             </box>

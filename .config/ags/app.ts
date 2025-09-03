@@ -12,9 +12,9 @@ import Osd from "./widget/Osd"
 import Panel from "./widget/Panel"
 import PowerMenu from "./widget/PowerMenu"
 import UiState from './UiState'
-import Resources from "./widget/Resources"
+import System from "./widget/System"
 
-const { show_top, show_runner, show_panel, show_power, show_resources } = UiState;
+const { show_top, show_runner, show_panel, show_power, show_system } = UiState;
 
 app.start({
   css: style,
@@ -38,7 +38,7 @@ app.start({
       if (index == 0) Runner(monitor);
 
       PowerMenu(monitor);
-      Resources(monitor);
+      System(monitor);
     })
   },
 
@@ -60,9 +60,9 @@ app.start({
         show_runner[1](b => !b);
         res(show_runner[0].get())
         break;
-      case "show_resources":
-        show_resources[1](b => !b);
-        res(show_resources[0].get())
+      case "show_system":
+        show_system[1](b => !b);
+        res(show_system[0].get())
         break;
       default: res("request not found");
     }
