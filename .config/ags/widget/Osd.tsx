@@ -76,9 +76,6 @@ function OsdSlider(props: {visible: State<boolean>}) {
 
 export default function Osd(gdkmonitor: Gdk.Monitor, show_osd: State<boolean>) {
   const [reveal, set_reveal] = show_osd;
-  reveal.subscribe(() => {
-    console.log(reveal.get())
-  })
   return (
     <window
       visible={reveal}

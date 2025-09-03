@@ -6,7 +6,7 @@ import Gtk from "gi://Gtk?version=4.0";
 import { createState, For } from "gnim";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { Notification } from "./notifications";
-import { setup_window_resizable, setup_fix_hidden_window, setup_listen_fullscreen } from "./utils";
+import { setup_listen_fullscreen } from "./utils";
 import { timeout } from "ags/time";
 import { execAsync } from "ags/process";
 import UiState from "../UiState";
@@ -37,7 +37,8 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
 
   return (
     <window
-      visible
+      visible={reveal}
+      namespace="notification-popup"
       name="notification-popup"
       class="NotificationPopup"
       application={app}
@@ -46,48 +47,40 @@ export function NotificationPopup(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={BOTTOM | RIGHT}
       $={self => {
-        setup_window_resizable(self, reveal, Gtk.Orientation.HORIZONTAL);
-        setup_fix_hidden_window(self, reveal);
         setup_listen_fullscreen(self);
       }}
     >
-      <revealer
-        reveal_child={reveal}
-        transition_type={Gtk.RevealerTransitionType.SLIDE_LEFT}
-        width_request={1}
-      >
-        <box>
-          <box valign={Gtk.Align.END}>
+      <box>
+        <box valign={Gtk.Align.END}>
+          <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
+        </box>
+        <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.END}>
+          <box halign={Gtk.Align.END}>
             <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
           </box>
-          <box orientation={Gtk.Orientation.VERTICAL} valign={Gtk.Align.END}>
-            <box halign={Gtk.Align.END}>
-              <RoundedCorner orientation={CornerOrientation.BOTTOM_RIGHT} />
-            </box>
+          <box
+            class="popup-container"
+            orientation={Gtk.Orientation.VERTICAL}
+            height_request={100} width_request={200}
+            valign={Gtk.Align.END}
+            vexpand
+          >
             <box
-              class="popup-container"
               orientation={Gtk.Orientation.VERTICAL}
-              height_request={100} width_request={200}
-              valign={Gtk.Align.END}
-              vexpand
             >
-              <box
-                orientation={Gtk.Orientation.VERTICAL}
-              >
-                <For each={notifications.as(ns => ns.sort((a, b) => a.time - b.time).slice(0, 3))}>
-                  {(n: Notifd.Notification, _) => <Notification notification={n} />}
-                </For>
-              </box>
-              <button
-                visible={notifications.as(ns => ns.length > 3)}
-                onClicked={() => { execAsync('ags request show_panel') }}
-                halign={Gtk.Align.CENTER}
-                label="..."
-              />
+              <For each={notifications.as(ns => ns.sort((a, b) => a.time - b.time).slice(0, 3))}>
+                {(n: Notifd.Notification, _) => <Notification notification={n} />}
+              </For>
             </box>
+            <button
+              visible={notifications.as(ns => ns.length > 3)}
+              onClicked={() => { execAsync('ags request show_panel') }}
+              halign={Gtk.Align.CENTER}
+              label="..."
+            />
           </box>
         </box>
-      </revealer>
+      </box>
     </window>
   );
 }
