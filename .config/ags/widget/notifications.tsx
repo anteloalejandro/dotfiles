@@ -3,7 +3,7 @@ import Notifd from "gi://AstalNotifd"
 import Pango from "gi://Pango?version=1.0"
 import Vars from "../Vars"
 import Apps from "gi://AstalApps?version=0.1"
-import { fileExists, time_fmt } from "./utils"
+import { fileExists, time_fmt } from "../utils"
 
 const urgency = (n: Notifd.Notification) => {
   const { LOW, NORMAL, CRITICAL } = Notifd.Urgency

@@ -1,15 +1,10 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
-import { createPoll, interval, timeout } from "ags/time";
-import { Accessor, createConnection, createState, onCleanup, Setter } from "gnim";
+import { createPoll, timeout } from "ags/time";
+import { Accessor, createConnection, onCleanup, Setter } from "gnim";
 import GLib from "gi://GLib?version=2.0"
 import { execAsync } from "ags/process";
 import AstalHyprland from "gi://AstalHyprland?version=0.1";
 
-
-/** empty box that enables sizing of elements that need some content*/
-export function Empty() {
-  return <box css="font-size: 0.01px; color: transparent;">.</box>
-}
 
 export type EventBoxProps  = {
   onClicked?: ((source: Gtk.Button) => void);
@@ -19,31 +14,6 @@ export type EventBoxProps  = {
   class?: string;
   height_request?: number | Accessor<number> | undefined;
   width_request?: number | Accessor<number> | undefined;
-}
-
-export function EventBox(props: EventBoxProps)  {
-  const children = props.children;
-
-  return <button
-    cssName="eventbox"
-    $={self => {
-      const motion = new Gtk.EventControllerMotion();
-      self.add_controller(motion);
-
-      props.onHoverLost && motion.connect("leave", m => {
-        props.onHoverLost!(self, m);
-      });
-      props.onHover && motion.connect("enter", m => {
-        props.onHover!(self, m)
-      });
-    }}
-    class={props.class}    
-    height_request={props.height_request}    
-    width_request={props.width_request}
-    onClicked={props.onClicked}
-  >
-    {children ?? <Empty />}
-  </button>
 }
 
 /**

@@ -1,7 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { CornerOrientation, RoundedCorner } from "./corners";
-import { fileExists, setup_hide_on_escape, setup_listen_fullscreen } from "./utils";
+import { fileExists, setup_hide_on_escape, setup_listen_fullscreen } from "../utils";
 import UiState from "../UiState";
 import { timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";

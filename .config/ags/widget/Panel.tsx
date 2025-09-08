@@ -1,7 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { createBinding, For, State } from "gnim";
-import { setup_fix_hidden_window, setup_listen_fullscreen, setup_window_resizable } from "./utils";
+import { setup_listen_fullscreen, } from "../utils";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";

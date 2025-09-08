@@ -1,6 +1,6 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { setup_listen_fullscreen } from "./utils";
+import { setup_listen_fullscreen } from "../utils";
 import { Accessor, createState, State } from "gnim";
 import Brightness from "../service/brightness";
 import Wp from "gi://AstalWp?version=0.1";

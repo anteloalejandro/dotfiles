@@ -2,8 +2,7 @@ import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { exec } from "ags/process";
 import UiState from "../UiState";
-import { setup_hide_on_escape } from "./utils";
-import Vars from "../Vars";
+import { setup_hide_on_escape } from "../utils";
 
 export default function PowerMenu(gdkmonitor: Gdk.Monitor) {
   const [ visible, set_visible ] = UiState.show_power;

@@ -1,6 +1,6 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { cpu_usage, mem } from "./utils";
+import { cpu_usage, mem } from "../utils";
 import UiState from "../UiState";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { execAsync } from "ags/process";
