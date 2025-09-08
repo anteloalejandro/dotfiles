@@ -6,6 +6,7 @@ import { CornerOrientation, RoundedCorner } from "./corners";
 import { execAsync } from "ags/process";
 import Vars from "../Vars";
 import { createState } from "gnim";
+import { CircularLevel } from "./circular_level";
 
 export default function System(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT } = Astal.WindowAnchor;
@@ -49,13 +50,7 @@ export default function System(gdkmonitor: Gdk.Monitor) {
             </box>
             <box spacing={Vars.spacing}>
               <image icon_name="cpu-symbolic" />
-              <levelbar
-                orientation={Gtk.Orientation.HORIZONTAL}
-                width_request={200}
-                value={cpu_usage(p => (p/100))}
-              >
-                <label label={cpu_usage.as(p => `${p}%`)} />
-              </levelbar>
+              <CircularLevel label="CPU" percentage={cpu_usage.as(p => p/100)} />
             </box>
             <button
               onClicked={() => {
