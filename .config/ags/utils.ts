@@ -79,6 +79,20 @@ export const mem = createPoll({used: 0, total: 0}, 5000, async () => {
   return { used: Number(values[2]), total: Number(values[1]) }
 })
 
+export const gpu_usage = createPoll([], 5000, async () => {
+  const out = await execAsync(["bash", "-c", "nvtop -s"]);
+  const data: {
+    device_name: string,
+    gpu_clock: string,
+    mem_clock: string,
+    temp: string,
+    power_draw: string,
+    gpu_util: string,
+    mem_util: string
+  }[] = JSON.parse(out);
+  return data;
+})
+
 const hyprland = AstalHyprland.get_default();
 export const fullscreen = createConnection(
   0,
