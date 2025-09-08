@@ -5,17 +5,6 @@ import GLib from "gi://GLib?version=2.0"
 import { execAsync } from "ags/process";
 import AstalHyprland from "gi://AstalHyprland?version=0.1";
 
-
-export type EventBoxProps  = {
-  onClicked?: ((source: Gtk.Button) => void);
-  onHover?: ((source: Gtk.Button, controller: Gtk.EventControllerMotion) => void)
-  onHoverLost?: ((source: Gtk.Button, controller: Gtk.EventControllerMotion) => void)
-  children?: JSX.Element | Array<JSX.Element>;
-  class?: string;
-  height_request?: number | Accessor<number> | undefined;
-  width_request?: number | Accessor<number> | undefined;
-}
-
 /**
  * WARN: DO NOT put padding on the window itself, as it affects the result of
  * `get_width()` and `get_height()`, but `set_size_request()` does not account for it
