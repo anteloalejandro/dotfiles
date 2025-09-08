@@ -23,12 +23,15 @@ function SysTray() {
   const items = createBinding(tray, "items");
 
   return (
-    <box>
+    <box class="systray" can_focus={false}>
       <For each={items(xs => xs.sort((a, b) => b.id.localeCompare(a.id)))}>
         {(item: Tray.TrayItem, _) => {
           return <menubutton
-            $={self => self.insert_action_group("dbusmenu", item.actionGroup)}
-            tooltip_markup={createBinding(item, "tooltipMarkup")}
+            $={self => {
+              self.insert_action_group("dbusmenu", item.actionGroup);
+              // self.popover.set_has_arrow(false);
+            }}
+            class="systray-item"
             menu_model={createBinding(item, "menuModel")}>
             <image gicon={createBinding(item, "gicon")} />
           </menubutton>
@@ -135,6 +138,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       visible
       name="border-top"
       class="BorderTop"
+      namespace="border-top"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}

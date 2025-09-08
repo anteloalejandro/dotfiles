@@ -69,4 +69,32 @@ window.BorderTop {
   .battery-indicator.low-battery {
     color: coral;
   }
+
+  .systray {
+    background-color: $bg-alt;
+    border-radius: $radius;
+
+    .systray-item {
+      background-color: transparent;
+      border-radius: $radius;
+    }
+
+    popover {
+      margin-top: calc($spacing / 2);
+      arrow {
+        background-color: $bg;
+      }
+      contents {
+        color: $fg;
+        background-color: $bg;
+        border-radius: 0px 0px $radius $radius;
+        box-shadow: 0px 0px 0px transparent;
+
+        modelbutton {
+          border-radius: $radius-inner;
+        }
+      }
+    }
+
+  }
 }

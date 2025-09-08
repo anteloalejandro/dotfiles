@@ -28,6 +28,7 @@ export default function System(gdkmonitor: Gdk.Monitor) {
       layer={Astal.Layer.TOP}
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={TOP | LEFT}
+      can_focus={false}
     >
       <box>
         <box orientation={Gtk.Orientation.VERTICAL}>
@@ -64,7 +65,7 @@ export default function System(gdkmonitor: Gdk.Monitor) {
             >
               <box spacing={Vars.spacing}>
                 <image icon_name="process-stop-symbolic" />
-                <label label="Kill" hexpand justify={Gtk.Justification.CENTER} />
+                <label label="Kill" hexpand />
               </box>
             </button>
             <button
