@@ -40,17 +40,19 @@ export default function System(gdkmonitor: Gdk.Monitor) {
           >
             <box spacing={Vars.spacing}>
               <image icon_name="memory-symbolic" />
-              <levelbar
-                orientation={Gtk.Orientation.HORIZONTAL}
-                width_request={200}
-                value={mem.as(m => m.used/m.total)}
-              >
-                <label label={mem.as(mem => `${(mem.used/1000).toFixed(2)}GB`)} />
-              </levelbar>
+              <CircularLevel
+                label="MEM"
+                value={mem.as(mem => mem.used / mem.total)}
+                transform={() => (mem.get().used / 1000).toFixed(1) + "GB"}
+              />
             </box>
             <box spacing={Vars.spacing}>
               <image icon_name="cpu-symbolic" />
-              <CircularLevel label="CPU" percentage={cpu_usage.as(p => p/100)} />
+              <CircularLevel
+                label="CPU"
+                value={cpu_usage}
+                max={100}
+              />
             </box>
             <button
               onClicked={() => {

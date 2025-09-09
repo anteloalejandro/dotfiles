@@ -2,26 +2,26 @@ import Vars from "../Vars";
 import { Gdk, Gtk } from "ags/gtk4";
 import cairo from "gi://cairo?version=1.0";
 import { Accessor } from "gnim";
+import { extract } from "../utils";
 
 export function CircularLevel(props: {
-  percentage: number | Accessor<number>,
+  value: number | Accessor<number>,
+  max?: number,
   label: string,
+  transform?: (value: number) => string,
   color?: string,
   radius?: number,
   line_width?: number,
 }) {
 
+  const max_value = props.max ?? 1;
+  const transform = props.transform ?? ((value: number) => (value/max_value * 100).toFixed(1) + "%");
   const color = props.color ?? Vars.accent as string;
   const background = Vars["bg-alt"];
-  const r = props.radius ?? 20;
-  const line_width = props.line_width ?? 5;
+  const r = props.radius ?? 30;
+  const line_width = props.line_width ?? Vars.spacing;
   const R = r + line_width;
   const size = (r + line_width) * 2;
-
-  const drawing = new Gtk.DrawingArea({
-    cssName: "rounded-level",
-    hexpand: false, vexpand: false,
-  });
 
   const c = new Gdk.RGBA();
 
@@ -34,9 +34,7 @@ export function CircularLevel(props: {
       vexpand={false}
       $={self => {
         self.set_draw_func((area, cr, _width, _height) => {
-          const percentage = props.percentage instanceof Accessor
-            ? props.percentage.get()
-            : props.percentage;
+          const percentage = extract(props.value) / max_value;
           const min = 5/6 * Math.PI;
           const max = (2 + 1/6) * Math.PI; // +2RAD to simulate 360deg
           const range = [min, ((max-min) * (percentage) + min)];
@@ -64,15 +62,15 @@ export function CircularLevel(props: {
           cr.stroke();
         })
 
-        props.percentage instanceof Accessor && props.percentage.subscribe(() => {
+        props.value instanceof Accessor && props.value.subscribe(() => {
           self.queue_draw();
         })
       }}
     />
     <label
-      label={props.percentage instanceof Accessor
-        ? props.percentage.as(p => (p * 100).toFixed(1))
-        : (props.percentage * 100).toFixed(1)}
+      label={props.value instanceof Accessor
+        ? props.value.as(transform)
+        : transform(props.value)}
       valign={Gtk.Align.CENTER}
       $type="overlay"
     />
