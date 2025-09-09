@@ -79,7 +79,7 @@ export const mem = createPoll({used: 0, total: 0}, 5000, async () => {
   return { used: Number(values[2]), total: Number(values[1]) }
 })
 
-export const gpu_usage = createPoll([], 5000, async () => {
+export const gpu_data = createPoll([], 5000, async () => {
   const out = await execAsync(["bash", "-c", "nvtop -s"]);
   const data: {
     device_name: string,

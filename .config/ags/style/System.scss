@@ -1,29 +1,36 @@
 @use 'vars' as *;
 
 window.System {
-  .resources-container {
+  .system-container {
     background-color: $bg;
     padding: $spacing;
     border-radius: $radius 0px $radius 0px;
   }
-  levelbar {
-    block {
-      border-radius: $radius-inner;
 
-      &.empty {
-        background-color: $bg-alt;
-      }
-
-      &.filled {
-        background-color: $accent;
-        transition: background-color 250ms ease;
-      }
-      &.filled.high {
-        background-color: darkorange;
-      }
-      &.filled.full {
-        background-color: coral;
-      }
-    }
+  .buttons {
+    background-color: $bg-alt;
+    border-radius: $radius-inner;
   }
+
+
+  // levelbar {
+  //   block {
+  //     border-radius: $radius-inner;
+  //
+  //     &.empty {
+  //       background-color: $bg-alt;
+  //     }
+  //
+  //     &.filled {
+  //       background-color: $accent;
+  //       transition: background-color 250ms ease;
+  //     }
+  //     &.filled.high {
+  //       background-color: darkorange;
+  //     }
+  //     &.filled.full {
+  //       background-color: coral;
+  //     }
+  //   }
+  // }
 }

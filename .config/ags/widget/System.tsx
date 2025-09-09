@@ -1,11 +1,11 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
-import { cpu_usage, mem } from "../utils";
+import { cpu_usage, gpu_data, mem } from "../utils";
 import UiState from "../UiState";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { execAsync } from "ags/process";
 import Vars from "../Vars";
-import { createState } from "gnim";
+import { createState, For } from "gnim";
 import { CircularLevel } from "./circular_level";
 
 export default function System(gdkmonitor: Gdk.Monitor) {
@@ -34,54 +34,67 @@ export default function System(gdkmonitor: Gdk.Monitor) {
       <box>
         <box orientation={Gtk.Orientation.VERTICAL}>
           <box
-            class="resources-container"
-            orientation={Gtk.Orientation.VERTICAL}
-            spacing={Vars.spacing}
+            class="system-container"
+            spacing={2 * Vars.spacing}
           >
-            <box spacing={Vars.spacing}>
-              <image icon_name="memory-symbolic" />
-              <CircularLevel
-                label="MEM"
-                value={mem.as(mem => mem.used / mem.total)}
-                transform={() => (mem.get().used / 1000).toFixed(1) + "GB"}
-              />
-            </box>
-            <box spacing={Vars.spacing}>
-              <image icon_name="cpu-symbolic" />
-              <CircularLevel
-                label="CPU"
-                value={cpu_usage}
-                max={100}
-              />
-            </box>
-            <button
-              onClicked={() => {
-                execAsync(["hyprctl", "kill"]);
-                set_reveal(false);
-              }}
+            <box
+              class="buttons"
+              orientation={Gtk.Orientation.VERTICAL}
+              valign={Gtk.Align.START}
             >
-              <box spacing={Vars.spacing}>
-                <image icon_name="process-stop-symbolic" />
-                <label label="Kill" hexpand />
+              <button
+                icon_name="process-stop-symbolic"
+                onClicked={() => {
+                  execAsync(["hyprctl", "kill"]);
+                  set_reveal(false);
+                }}
+              />
+              <button
+                icon_name={hypridle.as(b => b ? "caffeine-cup-empty" : "caffeine-cup-full")}
+                onClicked={() => {
+                  execAsync(["bash", "-c", "pidof hypridle"])
+                    .then(out => {
+                      execAsync(["kill", out]).catch(() => {});
+                      set_hypridle(false);
+                    })
+                    .catch(() => {
+                      execAsync("hypridle").catch(() => {});
+                      set_hypridle(true);
+                    })
+                }}
+              />
+            </box>
+            <box
+              class="resources"
+              spacing={2 * Vars.spacing}
+              orientation={Gtk.Orientation.VERTICAL}
+            >
+              <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing / 2}>
+                <label halign={Gtk.Align.START} label="System" />
+                <box>
+                  <CircularLevel
+                    label="CPU"
+                    value={cpu_usage}
+                    max={100}
+                  />
+                  <CircularLevel
+                    label="MEM"
+                    value={mem.as(mem => mem.used / mem.total)}
+                    transform={() => (mem.get().used / 1000).toFixed(1) + "GB"}
+                  />
+                </box>
               </box>
-            </button>
-            <button
-              class={hypridle.as(b => "caffeine" + (b ? " enabled" : ""))}
-              icon_name={hypridle.as(b => b ? "caffeine-cup-empty" : "caffeine-cup-full")}
-              onClicked={() => {
-                execAsync(["bash", "-c", "pidof hypridle"])
-                  .then(out => {
-                    execAsync(["kill", out]).catch(() => {});
-                    set_hypridle(false);
-                  })
-                  .catch(() => {
-                    execAsync("hypridle").catch(() => {});
-                    set_hypridle(true);
-                  })
-              }}
-            >
-
-            </button>
+              <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing / 2}>
+                <label halign={Gtk.Align.START} label="GPUs" />
+                <box height_request={60} width_request={60}>
+                  <For each={gpu_data} >
+                    {(gpu) => 
+                      <CircularLevel label={gpu.device_name.split(" ")[0]} value={parseFloat(gpu.gpu_util)} max={100} />
+                    }
+                  </For>
+                </box>
+              </box>
+            </box>
           </box>
           <box valign={Gtk.Align.START}><RoundedCorner orientation={CornerOrientation.TOP_LEFT} /></box>
         </box>
