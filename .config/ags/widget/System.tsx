@@ -40,7 +40,7 @@ export default function System(gdkmonitor: Gdk.Monitor) {
             <box
               class="buttons"
               orientation={Gtk.Orientation.VERTICAL}
-              valign={Gtk.Align.START}
+              valign={Gtk.Align.CENTER}
             >
               <button
                 icon_name="process-stop-symbolic"
@@ -69,30 +69,17 @@ export default function System(gdkmonitor: Gdk.Monitor) {
               spacing={2 * Vars.spacing}
               orientation={Gtk.Orientation.VERTICAL}
             >
-              <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing / 2}>
-                <label halign={Gtk.Align.START} label="System" />
-                <box>
-                  <CircularLevel
-                    label="CPU"
-                    value={cpu_usage}
-                    max={100}
-                  />
-                  <CircularLevel
-                    label="MEM"
-                    value={mem.as(mem => mem.used / mem.total)}
-                    transform={() => (mem.get().used / 1000).toFixed(1) + "GB"}
-                  />
-                </box>
-              </box>
-              <box orientation={Gtk.Orientation.VERTICAL} spacing={Vars.spacing / 2}>
-                <label halign={Gtk.Align.START} label="GPUs" />
-                <box height_request={60} width_request={60}>
-                  <For each={gpu_data} >
-                    {(gpu) => 
-                      <CircularLevel label={gpu.device_name.split(" ")[0]} value={parseFloat(gpu.gpu_util)} max={100} />
-                    }
-                  </For>
-                </box>
+              <box>
+                <CircularLevel
+                  label="CPU"
+                  value={cpu_usage}
+                  max={100}
+                />
+                <CircularLevel
+                  label="MEM"
+                  value={mem.as(mem => mem.used / mem.total)}
+                  transform={() => (mem.get().used / 1000).toFixed(1) + "GB"}
+                />
               </box>
             </box>
           </box>
