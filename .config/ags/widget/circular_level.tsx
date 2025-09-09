@@ -9,14 +9,12 @@ export function CircularLevel(props: {
   max?: number,
   label: string,
   transform?: (value: number) => string,
-  color?: string,
   radius?: number,
   line_width?: number,
 }) {
 
   const max_value = props.max ?? 1;
   const transform = props.transform ?? ((value: number) => (value/max_value * 100).toFixed(1) + "%");
-  const color = props.color ?? Vars.accent as string;
   const background = Vars["bg-alt"];
   const r = props.radius ?? 30;
   const line_width = props.line_width ?? Vars.spacing;
@@ -56,7 +54,9 @@ export function CircularLevel(props: {
           cr.stroke();
 
           // draw foreground
-          c.parse(color);
+          if (percentage >= 0.75) c.parse("coral");
+          if (percentage >= 0.25) c.parse("darkorange");
+          else c.parse(Vars.accent);
           cr.arc(R, R, r, range[0], range[1]);
           cr.setSourceRGBA(c.red, c.green, c.blue, 1);
           cr.stroke();
