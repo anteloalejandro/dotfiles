@@ -30,12 +30,13 @@ power_profile.subscribe(() => {
 
 const battery = Battery.get_default();
 const battery_charging = createBinding(battery, "charging");
+const battery_percentage = createBinding(battery, "percentage");
 const [battery_dismissed, set_battery_dismissed] = createState(false);
 battery_charging.subscribe(() => {
   if (!battery_charging.get()) set_battery_dismissed(false);
 })
 const low_battery = createComputed(get => 
-  get(createBinding(battery, "percentage")) < 0.5
+  get(battery_percentage) < 0.15
   && !get(battery_charging)
   && !get(battery_dismissed)
 );
@@ -79,7 +80,7 @@ export function Alerts(gdkmonitor: Gdk.Monitor) {
             <centerbox>
               <label $type="start" label="LOW BATTERY!" />    
               <box $type="end">
-                <label label={createBinding(battery, "percentage").as(p => (p * 100).toFixed(0) + "%")} />    
+                <label label={battery_percentage.as(p => (p * 100).toFixed(0) + "%")} />    
                 <image icon_name={createBinding(battery, "battery_icon_name")} />
               </box>
             </centerbox>
