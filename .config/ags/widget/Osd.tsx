@@ -7,6 +7,7 @@ import Wp from "gi://AstalWp?version=0.1";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { timeout } from "ags/time";
 import Vars from "../Vars";
+import AstalIO from "gi://AstalIO?version=0.1";
 
 function OsdSlider(props: {visible: State<boolean>}) {
   const [, set_reveal] = props.visible;
@@ -18,14 +19,14 @@ function OsdSlider(props: {visible: State<boolean>}) {
   const [value, set_value] = createState(0);
   const [icon, set_icon] = createState("");
 
-  let show_count = 0;
+  let timeout_handle: AstalIO.Time | undefined = undefined;
   function show(v: number, icon: string) {
+    timeout_handle?.cancel();
     set_reveal(true)
     set_value(v);
     set_icon(icon);
-    show_count++;
-    timeout(2000, () => {
-      if (--show_count == 0) set_reveal(false);
+    timeout_handle = timeout(2000, () => {
+      set_reveal(false);
     })
   }
 
