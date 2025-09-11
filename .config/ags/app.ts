@@ -13,6 +13,7 @@ import Panel from "./widget/Panel"
 import PowerMenu from "./widget/PowerMenu"
 import UiState from './UiState'
 import System from "./widget/System"
+import { Alerts } from "./widget/Alerts"
 
 const { show_top, show_runner, show_panel, show_power, show_system } = UiState;
 
@@ -39,6 +40,8 @@ app.start({
 
       PowerMenu(monitor);
       System(monitor);
+
+      Alerts(monitor);
     })
   },
 
