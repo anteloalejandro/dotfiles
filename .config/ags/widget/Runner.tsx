@@ -10,6 +10,7 @@ import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
 import { execAsync } from "ags/process";
 import fetch, { URL, URLSearchParams } from "gnim/fetch";
+import GLib from "gi://GLib?version=2.0";
 
 type Mode = {
   name: string,
@@ -26,26 +27,26 @@ const modes: Mode[] = [
   // { bang: "games", label: " " }
 ];
 
-type Request<T> = {
-  promise: Promise<T>,
-  fn: (arg: T) => void
-}
-class DebouncedRequest<T> {
-  private request?: Request<T>;  
-  constructor(timer = 200) {
-    interval(timer, () => {
-      if (this.request === undefined) return;
-      const { promise, fn } = this.request;
-      promise.then((arg: T) => {
-        fn(arg);
-        this.request = undefined;
-      })
-    })
+class Debouncer {
+  private timeout_handle?: GLib.Source;
+  private timer;
+  constructor(timer = 500) {
+    this.timer = timer;
   }
 
-  set(promise: Promise<T>, fn: (arg: T) => void) {
-    // TODO: try to cancel current request
-    this.request = {promise, fn}
+  debounce(fn: () => void) {
+    if (this.timeout_handle) {
+      clearTimeout(this.timeout_handle);
+    }
+    this.timeout_handle = setTimeout(fn, this.timer);
+  }
+
+  async debounce_promise(promise: Promise<any>) {
+    if (this.timeout_handle) {
+      clearTimeout(this.timeout_handle);
+    }
+
+    this.timeout_handle = setTimeout(async () => await promise, this.timer)
   }
 }
 
@@ -69,7 +70,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
   const [ selected, set_selected ] = createState(0);
   const [ mode, set_mode ] = createState(modes[0].name);
 
-  const debounced = new DebouncedRequest<string[]>();
+  const debouncer = new Debouncer();
 
   return (
     <window
@@ -248,14 +249,14 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                   case "search":
                     set_app_list([]);
                     const text = parse_text(self.text, modes.find(m => mode.get() == m.name)!);
-                    debounced.set(search_suggestions(text), data => {
+                    debouncer.debounce_promise(search_suggestions(text).then(data => {
                       if (text != "" && data[0] != text) {
-                        data = [text].concat(data)
+                        data = [text].concat(data.filter(s => s != text))
                       }
                       set_suggestion_list(data.slice(0,5));
                       set_selected(-1); // reset
                       set_selected(0);
-                    })
+                    }));
                     break;
                 }
 
@@ -273,7 +274,8 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                   case "search": {
                     const list = suggestion_list.get();
                     if (!list.length) break;
-                    const text = list[selected.get()];
+                    const sel = selected.get();
+                    const text = sel == 0 ? self.text : list[sel];
                     const search = "https://duckduckgo.com/?q=" + text;
                     execAsync(["zen-browser", search]);
                     } break;
