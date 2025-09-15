@@ -3,34 +3,73 @@ import app from "ags/gtk4/app";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { fileExists, setup_hide_on_escape, setup_listen_fullscreen } from "../utils";
 import UiState from "../UiState";
-import { timeout } from "ags/time";
+import { interval, timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";
-import { Accessor, createState, For, onCleanup, State } from "gnim";
+import { Accessor, createExternal, createState, For, onCleanup } from "gnim";
 import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
 import { execAsync } from "ags/process";
-
+import fetch, { URL, URLSearchParams } from "gnim/fetch";
 
 type Mode = {
+  name: string,
   bang: string
   icon_name?: string,
   label?: string,
 }
 
 const modes: Mode[] = [
-  { bang: "", label: "󱓞" },
-  { bang: ">", icon_name: "utilities-terminal-symbolic" },
+  { name: "application", bang: "", label: "󱓞" },
+  { name: "command", bang: ">", icon_name: "utilities-terminal-symbolic" },
+  { name: "search", bang: "?", icon_name: "applications-internet-symbolic" },
   // { bang: "=", icon_name: "accessories-calculator-symbolic" },
-  { bang: "?", icon_name: "applications-internet-symbolic" },
   // { bang: "games", label: " " }
 ];
+
+type Request<T> = {
+  promise: Promise<T>,
+  fn: (arg: T) => void
+}
+class DebouncedRequest<T> {
+  private request?: Request<T>;  
+  constructor(timer = 200) {
+    interval(timer, () => {
+      if (this.request === undefined) return;
+      const { promise, fn } = this.request;
+      promise.then((arg: T) => {
+        fn(arg);
+        this.request = undefined;
+      })
+    })
+  }
+
+  set(promise: Promise<T>, fn: (arg: T) => void) {
+    // TODO: try to cancel current request
+    this.request = {promise, fn}
+  }
+}
+
+function parse_text(text: string, mode: Mode) {
+  return text.substring(mode.bang.length).trim();
+}
+
+async function search_suggestions(str: string) {
+  const url = new URL("https://duckduckgo.com/ac/");
+  url.searchParams.set("q", str);
+  const res = await fetch(url.toString());
+  const json = await res.json() as {phrase: string}[];
+  return json.map(o => o.phrase);
+}
 
 export default function Runner(gdkmonitor: Gdk.Monitor) {
   const [ reveal, set_reveal ] = UiState.show_runner;
   const apps  = new Apps.Apps();
   const [ app_list, set_app_list ] = createState<Apps.Application[]>([])
+  const [ suggestion_list, set_suggestion_list ] = createState<string[]>([]);
   const [ selected, set_selected ] = createState(0);
-  const [ mode, set_mode ]: State<Mode> = createState(modes[0]);
+  const [ mode, set_mode ] = createState(modes[0].name);
+
+  const debounced = new DebouncedRequest<string[]>();
 
   return (
     <window
@@ -50,7 +89,11 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
         const key_controller = new Gtk.EventControllerKey();
         setup_hide_on_escape(self, set_reveal, key_controller);
         key_controller.connect('key-pressed', (_, keyval, _keycode, state) => {
-          const len = app_list.get().length;
+          let list = [];
+          if (app_list.get().length) list = app_list.get();
+          else if (suggestion_list.get().length) list = suggestion_list.get();
+
+          const len = list.length;
           keyval = Gdk.keyval_to_upper(keyval); // Gdk.KEY_ enums are in uppercase
 
           if (
@@ -77,6 +120,40 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
           spacing={Vars.spacing}
         >
           <box
+            class="matches search-matches"
+            orientation={Gtk.Orientation.VERTICAL}
+            valign={Gtk.Align.END}
+            spacing={Vars.spacing}
+            visible={suggestion_list.as(xs => xs.length > 0)}
+          >
+            <For each={suggestion_list.as(xs => xs.toReversed())} >
+              {(suggestion: string, i) => 
+                <box
+                  class={selected.as(n => {
+                    const idx = i.get();
+                    const pos = suggestion_list.get().length-1 - n;
+                    return pos == idx ? "item selected" : "item"
+                  })}
+                  spacing={Vars.spacing}
+                >
+                  <box
+                    class="search-data data"
+                    orientation={Gtk.Orientation.VERTICAL}
+                    homogeneous
+                  >
+                    <label
+                      class="title"
+                      label={suggestion}
+                      halign={Gtk.Align.START}
+                      max_width_chars={60}
+                      ellipsize={Pango.EllipsizeMode.END}
+                    />
+                  </box>
+                </box>
+              }
+            </For>
+          </box>
+          <box
             class="matches app-matches"
             orientation={Gtk.Orientation.VERTICAL}
             valign={Gtk.Align.END}
@@ -100,17 +177,17 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                     pixel_size={Vars.spacing * 4}
                   />
                   <box
-                    class="app-data"
+                    class="app-data data"
                     orientation={Gtk.Orientation.VERTICAL}
                     homogeneous
                   >
                     <label
-                      class="app-name"
+                      class="title"
                       label={app.name}
                       halign={Gtk.Align.START}
                     />
                     <label
-                      class="app-description"
+                      class="description"
                       visible={
                         Boolean(app.description)
                           && (app.description != "")
@@ -156,40 +233,64 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
               onNotifyText={self => {
                 if (self.text.length < 2) {
                   set_app_list([]);
-                  set_mode(modes.slice(1).find(m => self.text.startsWith(m.bang)) ?? modes[0]);
+                  set_suggestion_list([]);
+                  set_mode(modes[0].name);
                   return;
                 }
 
-                if (mode.get().bang == "")
-                  set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
+                const m = modes.slice(1).find(m => self.text.startsWith(m.bang)) ?? modes[0];
+                set_mode(m.name);
+
+                switch (m.name) {
+                  case "application":
+                    set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
+                    break;
+                  case "search":
+                    set_app_list([]);
+                    const text = parse_text(self.text, modes.find(m => mode.get() == m.name)!);
+                    debounced.set(search_suggestions(text), data => {
+                      if (text != "" && data[0] != text) {
+                        data = [text].concat(data)
+                      }
+                      set_suggestion_list(data.slice(0,5));
+                      set_selected(-1); // reset
+                      set_selected(0);
+                    })
+                    break;
+                }
 
                 set_selected(-1); // reset
                 set_selected(0);
               }}
               onActivate={self => {
-                const list = app_list.get();
-                switch (mode.get().bang) {
-                  case "": // case "games":
-                    print(list);
+                const m = modes.find(m => mode.get() == m.name)!;
+                switch (mode.get()) {
+                  case "application": {
+                    const list = app_list.get();
                     list.length && list[selected.get()].launch();
-                    break;
-                  case "?":
-                    const search = "https://duckduckgo.com/?q=" + self.text.substring(1).trim();
+                  } break;
+
+                  case "search": {
+                    const list = suggestion_list.get();
+                    if (!list.length) break;
+                    const text = list[selected.get()];
+                    const search = "https://duckduckgo.com/?q=" + text;
                     execAsync(["zen-browser", search]);
-                    break;
-                  case ">":
-                    const cmd = self.text.substring(1).trim().split(' ');
+                    } break;
+                  case "command":
+                    const text = parse_text(self.text, m);
+                    const cmd = text.split(' ');
                     execAsync([...cmd]);
                 }
                 set_reveal(false);
               }}
             />
             <box class="search-modes">
-              {modes.map(m => 
+              {modes.map(m =>
                 <button
                   label={m.label}
                   icon_name={m.icon_name}
-                  class={mode.as(mode => mode.bang == m.bang ? "selected" : "")}
+                  class={mode.as(mode => mode == m.name ? "selected" : "")}
                 />
               )}
             </box>

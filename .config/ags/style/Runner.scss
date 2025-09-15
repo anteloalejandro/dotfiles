@@ -15,10 +15,10 @@ window.Runner {
         background-color: $bg-alt;
       }
 
-      .app-name {
+      .title {
         font-size: 1.1em;
       }
-      .app-description {
+      .description {
         font-size: 0.9em;
         color: color.adjust($fg, $lightness: -20%);
       }
