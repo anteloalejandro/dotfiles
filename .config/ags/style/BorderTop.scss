@@ -66,6 +66,9 @@ window.BorderTop {
     }
   }
 
+  .battery-indicator button {
+    all: inherit;
+  }
   .battery-indicator.low-battery {
     color: coral;
   }
@@ -79,22 +82,23 @@ window.BorderTop {
       border-radius: $radius;
     }
 
-    popover {
-      margin-top: calc($spacing / 2);
-      arrow {
-        background-color: $bg;
-      }
-      contents {
-        color: $fg;
-        background-color: $bg;
-        border-radius: $radius;
-        box-shadow: 0px 0px 0px transparent;
+  }
 
-        modelbutton {
-          border-radius: $radius-inner;
-        }
+  popover {
+    padding: calc($spacing / 2);
+    arrow {
+      background-color: $bg;
+    }
+    contents {
+      color: $fg;
+      background-color: $bg;
+      border-radius: $radius;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
+      modelbutton {
+        border-radius: $radius-inner;
       }
     }
-
   }
+
 }

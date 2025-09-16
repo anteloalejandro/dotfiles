@@ -3,13 +3,13 @@ import app from "ags/gtk4/app";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import { fileExists, setup_hide_on_escape, setup_listen_fullscreen } from "../utils";
 import UiState from "../UiState";
-import { interval, timeout } from "ags/time";
+import { timeout } from "ags/time";
 import Apps from "gi://AstalApps?version=0.1";
-import { Accessor, createExternal, createState, For, onCleanup } from "gnim";
+import { Accessor, createState, For, onCleanup } from "gnim";
 import Vars from "../Vars";
 import Pango from "gi://Pango?version=1.0";
 import { execAsync } from "ags/process";
-import fetch, { URL, URLSearchParams } from "gnim/fetch";
+import fetch, { URL } from "gnim/fetch";
 import GLib from "gi://GLib?version=2.0";
 
 type Mode = {

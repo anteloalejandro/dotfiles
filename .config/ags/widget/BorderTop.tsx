@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import { Accessor, createBinding, createState, For } from "gnim"
-import { fullscreen, setup_window_resizable } from "../utils"
+import { fullscreen, setup_window_resizable, time_fmt } from "../utils"
 import { EventBox } from "./eventbox"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
@@ -118,15 +118,20 @@ function Workspaces() {
 function BatteryIndicator() {
   const bat = Battery.get_default();
   return (
-    <box class={createBinding(bat, "percentage").as(p =>
+    <menubutton class={createBinding(bat, "percentage").as(p =>
       "battery-indicator" + (p < 0.15 ? " low-battery" : "")
     )}>
-      <label label={
-        createBinding(bat, "percentage")
+      <box spacing={2}>
+        <label label={
+          createBinding(bat, "percentage")
           .as(p => `${Math.floor(p * 100)}%`)
-      } />
-      <image icon_name={createBinding(bat, "battery_icon_name")} />
-    </box>
+        } />
+        <image icon_name={createBinding(bat, "battery_icon_name")} />
+      </box>
+      <popover>
+        <label label={createBinding(bat, "time_to_empty").as(t => time_fmt(t, "%kh and %Mm left"))} />
+      </popover>
+    </menubutton>
   )
 }
 
