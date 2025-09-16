@@ -1,7 +1,7 @@
 import { Astal, Gdk, Gtk } from "ags/gtk4";
 import app from "ags/gtk4/app";
 import { createBinding, For, State } from "gnim";
-import { setup_listen_fullscreen, } from "../utils";
+import { setup_hide_on_escape, setup_listen_fullscreen, } from "../utils";
 import { CornerOrientation, RoundedCorner } from "./corners";
 import Notifd from "gi://AstalNotifd?version=0.1";
 import { Notification } from "./notifications";
@@ -10,7 +10,7 @@ import UiState from "../UiState";
 
 export default function Panel(gdkmonitor: Gdk.Monitor) {
   const {RIGHT, BOTTOM, TOP} = Astal.WindowAnchor;
-  const [ reveal ] = UiState.show_panel;
+  const [ reveal, set_reveal ] = UiState.show_panel;
   const notifd = Notifd.get_default();
   const notifications = createBinding(notifd, "notifications");
   const dnd = createBinding(notifd, "dont_disturb");
@@ -24,9 +24,21 @@ export default function Panel(gdkmonitor: Gdk.Monitor) {
       class="Panel"
       layer={Astal.Layer.OVERLAY}
       exclusivity={Astal.Exclusivity.NORMAL}
+      keymode={Astal.Keymode.EXCLUSIVE}
       anchor={RIGHT | BOTTOM | TOP}
+      can_focus={false}
       $={self => {
         setup_listen_fullscreen(self);
+        const key_controller = new Gtk.EventControllerKey();
+        self.add_controller(key_controller);
+        key_controller.connect('key-pressed', (_, keyval, _keycode, _state) => {
+          keyval = Gdk.keyval_to_upper(keyval);
+          if (keyval == Gdk.KEY_Escape) set_reveal(false);
+          if (keyval == Gdk.KEY_D) notifd.dont_disturb = !notifd.dont_disturb;
+          if (keyval == Gdk.KEY_C) for (const n of notifd.notifications) {
+            n.dismiss();
+          }
+        })
       }}
     >
       <box>
