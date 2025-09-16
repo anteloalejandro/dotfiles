@@ -1,6 +1,6 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
-import { Accessor, createBinding, createState, For } from "gnim"
+import { Accessor, createBinding, createComputed, createState, For } from "gnim"
 import { fullscreen, setup_window_resizable, time_fmt } from "../utils"
 import { EventBox } from "./eventbox"
 import Tray from "gi://AstalTray"
@@ -117,6 +117,11 @@ function Workspaces() {
 
 function BatteryIndicator() {
   const bat = Battery.get_default();
+  const bat_time = createComputed(get =>
+    get(createBinding(bat, "charging"))
+      ? get(createBinding(bat, "time_to_full"))
+      : get(createBinding(bat, "time_to_empty"))
+  ).as(t => time_fmt(t, "%kh and %Mm left"));
   return (
     <menubutton class={createBinding(bat, "percentage").as(p =>
       "battery-indicator" + (p < 0.15 ? " low-battery" : "")
@@ -129,7 +134,7 @@ function BatteryIndicator() {
         <image icon_name={createBinding(bat, "battery_icon_name")} />
       </box>
       <popover>
-        <label label={createBinding(bat, "time_to_empty").as(t => time_fmt(t, "%kh and %Mm left"))} />
+        <label label={bat_time} />
       </popover>
     </menubutton>
   )
