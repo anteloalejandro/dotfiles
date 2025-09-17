@@ -100,14 +100,16 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
           if (
             keyval == Gdk.KEY_Up
               || (keyval == Gdk.KEY_K && state == Gdk.ModifierType.CONTROL_MASK)
-          )
+          ) {
             set_selected(n => n+1 >= len ? n : n+1);
+          }
 
           if (
             keyval == Gdk.KEY_Down
               || (keyval == Gdk.KEY_J && state == Gdk.ModifierType.CONTROL_MASK)
-          )
+          ) {
             set_selected(n => n-1 < 0 ? 0 : n-1);
+          }
         })
       }}
     >

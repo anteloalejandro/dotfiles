@@ -1,7 +1,7 @@
 import app from "ags/gtk4/app"
 import { Astal, Gtk, Gdk } from "ags/gtk4"
 import { Accessor, createBinding, createComputed, createState, For } from "gnim"
-import { fullscreen, setup_window_resizable, time_fmt } from "../utils"
+import { fullscreen, parse_class_name, setup_window_resizable, time_fmt } from "../utils"
 import { EventBox } from "./eventbox"
 import Tray from "gi://AstalTray"
 import Hyprland from "gi://AstalHyprland?version=0.1"
@@ -46,10 +46,6 @@ function FocusedClient() {
   const hyprland = Hyprland.get_default();
   const apps = new Apps.Apps();
 
-  function parse_class_name(s: string) {
-    return s.substring(s.lastIndexOf(".")+1);
-  }
-
   return (
     <box
       spacing={Vars.spacing/2}
@@ -63,12 +59,15 @@ function FocusedClient() {
         const client = hyprland.focused_client;
         if (!client) return "desktop-symbolic";
         if (!client.initial_class) return "";
-        const class_name = parse_class_name(client.initial_class);
-        const query = apps.fuzzy_query(class_name);
-        for (const q of query) {
-          if (q && q.icon_name != "") return q.icon_name;
-        }
-        return "";
+        const application = apps.exact_query(
+          client.initial_title.trim() == ""
+            ? parse_class_name(client.initial_class)
+            : client.initial_title
+        )[0];
+
+        return application
+          ? (application.icon_name ?? "")
+          : "";
       })}
       />
       <label
