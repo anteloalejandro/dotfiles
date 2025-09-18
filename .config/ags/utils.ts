@@ -115,3 +115,6 @@ export function setup_listen_fullscreen(window: Astal.Window) {
 export function extract<T>(value: T | Accessor<T>) {
   return value instanceof Accessor ? value.get() : value;
 }
+export function parse_class_name(s: string) {
+  return s.substring(s.lastIndexOf(".")+1);
+}

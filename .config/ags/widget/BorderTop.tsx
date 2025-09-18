@@ -44,7 +44,10 @@ function SysTray() {
 
 function FocusedClient() {
   const hyprland = Hyprland.get_default();
-  const apps = new Apps.Apps();
+  const apps = new Apps.Apps({
+    name_multiplier: 2,
+    entryMultiplier: 2,
+  });
 
   return (
     <box
@@ -59,11 +62,7 @@ function FocusedClient() {
         const client = hyprland.focused_client;
         if (!client) return "desktop-symbolic";
         if (!client.initial_class) return "";
-        const application = apps.exact_query(
-          client.initial_title.trim() == ""
-            ? parse_class_name(client.initial_class)
-            : client.initial_title
-        )[0];
+        const application = apps.exact_query(client.initial_class)[0];
 
         return application
           ? (application.icon_name ?? "")
