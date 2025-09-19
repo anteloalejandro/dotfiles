@@ -1,6 +1,9 @@
-theme = GruvboxDark
+theme = Gruvbox Dark
 font-family = UbuntuMono Nerd Font
 font-size = 16
+
+resize-overlay = never
+app-notifications = config-reload, no-clipboard-copy
 
 cursor-invert-fg-bg = true
 cursor-style = bar
