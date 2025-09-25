@@ -11,11 +11,11 @@ import { CircularLevel } from "./circular_level";
 export default function System(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT } = Astal.WindowAnchor;
   const [ reveal, set_reveal ] = UiState.show_system;
-  const [ hypridle, set_hypridle ] = createState(true);
+  const [ caffeine, set_caffeine ] = createState(true);
   reveal.subscribe(() => {
-    execAsync(["bash", "-c", "pidof hypridle"])
-      .then(() => set_hypridle(true))
-      .catch(() => set_hypridle(false))
+    execAsync(["bash", "-c", "pidof vigiland"])
+      .then(() => set_caffeine(true))
+      .catch(() => set_caffeine(false))
   })
 
   return (
@@ -50,16 +50,16 @@ export default function System(gdkmonitor: Gdk.Monitor) {
                 }}
               />
               <button
-                icon_name={hypridle.as(b => b ? "caffeine-cup-empty" : "caffeine-cup-full")}
+                icon_name={caffeine.as(b => b ? "caffeine-cup-full" : "caffeine-cup-empty")}
                 onClicked={() => {
-                  execAsync(["bash", "-c", "pidof hypridle"])
+                  execAsync(["bash", "-c", "pidof vigiland"])
                     .then(out => {
                       execAsync(["kill", out]).catch(() => {});
-                      set_hypridle(false);
+                      set_caffeine(false);
                     })
                     .catch(() => {
-                      execAsync("hypridle").catch(() => {});
-                      set_hypridle(true);
+                      execAsync(["bash", "-c", "vigiland & disown"]).catch(() => {});
+                      set_caffeine(true);
                     })
                 }}
               />
