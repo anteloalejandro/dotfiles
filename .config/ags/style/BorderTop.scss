@@ -42,27 +42,46 @@ window.BorderTop {
     transition: background-color 50ms ease;
   }
 
-  .workspace-indicator {
+  .workspaces {
     $size: 5px;
-    $empty: color.adjust($accent, $saturation: -90%);
-    all: unset;
     background-color: transparent;
-    border: 2px solid $accent;
-    min-height: $size;
-    min-width: $size;
     border-radius: $size;
+    min-width: 2 * $size;
+    min-height: $size;
+    transition: background-color 250ms ease-out;
 
-    transition: min-width 250ms ease-out;
+    .workspace-indicator {
+      all: unset;
+      min-height: $size;
+      min-width: $size;
+      border: 2px solid transparent;
+      &.focused {
+        min-width: $size * 2;
+      }
+    }
+    &.normal .workspace-indicator {
+      $empty: color.adjust($accent, $saturation: -90%);
+      background-color: transparent;
+      border: 2px solid $accent;
+      border-radius: $size;
 
-    &.empty {
-      border-color: $empty;
+      transition: min-width 250ms ease-out;
+
+      &.empty {
+        border-color: $empty;
+      }
+      &.focused {
+        background-color: $accent;
+      }
+      &.focused.empty {
+        background-color: $empty;
+      }
     }
-    &.focused {
-      background-color: $accent;
-      min-width: $size * 2;
-    }
-    &.focused.empty {
-      background-color: $empty;
+
+    &.special {
+      min-width: 2 * $size;
+      min-height: $size;
+      background-color: $secondary;
     }
   }
 

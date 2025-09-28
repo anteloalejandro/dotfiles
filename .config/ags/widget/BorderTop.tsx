@@ -90,6 +90,14 @@ function Workspaces() {
   return (
     <box
       spacing={5}
+      valign={Gtk.Align.CENTER}
+      class={hypr_event.as(() =>
+        (hyprland.focused_client == null
+          || hyprland.focused_client.workspace == null
+          || hyprland.focused_client.workspace.id >= 0)
+          ? "workspaces normal"
+          : "workspaces special"
+      )}
     >
       <For each={workspaces(wss => wss
         .filter(ws => !(ws.id >= -99 && ws.id <= -2)) // filter out special wss
