@@ -20,3 +20,5 @@ mouse-hide-while-typing = true
 mouse-scroll-multiplier = 0.2
 
 keybind = ctrl+alt+,=reload_config
+keybind = ctrl+enter=unbind
+keybind = ctrl+shift+enter=unbind
