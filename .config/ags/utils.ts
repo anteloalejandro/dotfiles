@@ -4,6 +4,8 @@ import { Accessor, createConnection, onCleanup, Setter } from "gnim";
 import GLib from "gi://GLib?version=2.0"
 import { execAsync } from "ags/process";
 import AstalHyprland from "gi://AstalHyprland?version=0.1";
+import AstalApps from "gi://AstalApps?version=0.1";
+import { readFile, readFileAsync, writeFileAsync } from "ags/file";
 
 /**
  * WARN: DO NOT put padding on the window itself, as it affects the result of
@@ -117,4 +119,15 @@ export function extract<T>(value: T | Accessor<T>) {
 }
 export function parse_class_name(s: string) {
   return s.substring(s.lastIndexOf(".")+1);
+}
+
+export function launch(application: AstalApps.Application) {
+  const path = "~/.cache/astal/apps-frequents.json";
+  const { entry } = application;
+  execAsync(["bash", "-c", `cd ~; gtk-launch ${entry}`]);
+  readFileAsync(path).then(data => {
+    const frequents: any = JSON.parse(data);
+    frequents[entry] = frequents[entry] ? Number(frequents[entry])+1 : 1;
+    writeFileAsync(path, JSON.stringify(frequents));
+  });
 }
