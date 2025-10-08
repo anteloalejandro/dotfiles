@@ -98,8 +98,11 @@ and set `http://localhost` as the new tab custom URL and configure Firefox to us
 
 ## TO-DO
 
-- [x] Migrate EWW widgets to AGS
-- [x] Make lockscreen widgets interactable (e.g.: Add a suspend button)
+- [ ] Make popup widgets render behind borders
+- [ ] Make lockscreen widgets interactable (e.g.: Add a suspend button)
+- [ ] Add shadows to make desktop widgets pop more
+  - [ ] Shadows on the borders (**must not** go over windows)
+  - [ ] Shadows arround popup widgets (**must** go over windows)
 
 ## Thanks to...
 
