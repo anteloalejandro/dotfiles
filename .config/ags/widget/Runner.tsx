@@ -64,7 +64,6 @@ async function search_suggestions(str: string) {
 
 export default function Runner(gdkmonitor: Gdk.Monitor) {
   const [ reveal, set_reveal ] = UiState.show_runner;
-  const apps  = new Apps.Apps();
   const [ app_list, set_app_list ] = createState<Apps.Application[]>([])
   const [ suggestion_list, set_suggestion_list ] = createState<string[]>([]);
   const [ selected, set_selected ] = createState(0);
@@ -246,6 +245,7 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
 
                 switch (m.name) {
                   case "application":
+                    const apps = new Apps.Apps();
                     set_app_list(apps.fuzzy_query(self.text).slice(0, 5));
                     break;
                   case "search":
