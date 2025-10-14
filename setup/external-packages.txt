@@ -10,6 +10,12 @@ hyprshot
 hyprsysteminfo
 image-roll
 iwgtk
+libastal-apps-git
+libastal-battery-git
+libastal-hyprland-git
+libastal-notifd-git
+libastal-tray-git
+libastal-wireplumber-git
 libinput-gestures
 nvidia-prime-rtd3pm
 nwg-displays
