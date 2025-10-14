@@ -46,7 +46,7 @@ app.start({
   },
 
   requestHandler(req, res) {
-    switch (req) {
+    switch (req.join(" ")) {
       case "show_panel":
         show_panel[1](b => !b);
         res(show_panel[0].get());
