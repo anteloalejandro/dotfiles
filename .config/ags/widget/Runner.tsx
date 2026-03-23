@@ -278,9 +278,9 @@ export default function Runner(gdkmonitor: Gdk.Monitor) {
                     const list = suggestion_list.get();
                     if (!list.length) break;
                     const sel = selected.get();
-                    const text = sel == 0 ? self.text : list[sel];
+                    const text = sel == 0 ? self.text.split(" ").slice(1).join(" ") : list[sel];
                     const search = "https://duckduckgo.com/?q=" + text;
-                    execAsync(["zen-browser", search]);
+                    execAsync(["xdg-open", search]);
                     } break;
                   case "command":
                     const text = parse_text(self.text, m);
