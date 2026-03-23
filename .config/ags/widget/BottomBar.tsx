@@ -10,6 +10,7 @@ export default function BottomBar(gdkmonitor: Gdk.Monitor) {
       visible
       name="border-bottom"
       class="BorderBottom border"
+      namespace="border-bottom"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={BOTTOM | LEFT | RIGHT}

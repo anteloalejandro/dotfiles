@@ -10,6 +10,7 @@ export default function LeftBar(gdkmonitor: Gdk.Monitor) {
       visible
       name="border-left"
       class="BorderLeft border"
+      namespace="border-left"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | BOTTOM}
