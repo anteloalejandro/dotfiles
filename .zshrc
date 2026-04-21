@@ -26,11 +26,11 @@ zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
-# Add in snippets
-zinit snippet OMZP::git
-zinit snippet OMZP::archlinux
+# Add in ohmyzsh plugins
+zinit snippet OMZP::git # git snippets
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::colored-man-pages
+zinit snippet OMZP::direnv # direnv hook
 
 # Load completions
 autoload -Uz compinit && compinit
@@ -102,4 +102,4 @@ fi
 
 # Shell integrations
 eval "$(fzf --zsh)"
-source "$HOME/.eww-completions.zsh"
+# source "$HOME/.eww-completions.zsh"
