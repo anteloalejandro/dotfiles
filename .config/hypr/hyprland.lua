@@ -5,7 +5,7 @@ hl.monitor({
   output = "",
   mode = "preferred",
   position = "auto",
-  scale = "auto"
+  scale = "1"
 })
 
 -- bindings
@@ -153,7 +153,7 @@ hl.config({
 
 hl.config({
   dwindle = {
-    pseudotile = true,
+    -- pseudotile = true,
     preserve_split = true,
     force_split = 2,
   }
@@ -196,7 +196,7 @@ hl.window_rule({
 
 -- ROG control
 hl.window_rule({
-  title = "ROG Control",
+  match = { title = "ROG Control" },
   size = { 900, 500 },
   dim_around = true,
 })

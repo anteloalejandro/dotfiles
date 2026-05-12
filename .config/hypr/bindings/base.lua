@@ -52,11 +52,10 @@ hl.bind(mod .. " + K", hl.dsp.focus({ direction = "up" }))
 hl.bind(mod .. " + J", hl.dsp.focus({ direction = "down" }))
 
 for i = 1, 10, 1 do
-  local workspace = hl.get_workspaces()[i%10]
   -- switch workspaces with mod + (0..9)
-  hl.bind(mod .. " + " .. i, hl.dsp.workspace({ workspace = workspace }))
+  hl.bind(mod .. " + " .. i % 10, hl.dsp.focus({ workspace = i }))
   -- move active window to a workspace with mod + SHIFT + (0..9)
-  hl.bind(mod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = workspace }))
+  hl.bind(mod .. " + SHIFT + " .. i % 10, hl.dsp.window.move({ workspace = i }))
 end
 
 -- switch and move workspaces with mod + ... + J/K
@@ -65,18 +64,22 @@ hl.bind(mod .. " + K", hl.dsp.exec_cmd("hyprnome -p"))
 hl.bind(mod .. " + J", hl.dsp.exec_cmd("hyprnome"))
 hl.bind(mod .. " + SHIFT + K", hl.dsp.exec_cmd("hyprnome -p -m"))
 hl.bind(mod .. " + SHIFT + J", hl.dsp.exec_cmd("hyprnome -m"))
-hl.bind(mod .. " + CTRL + SHIFT + J", hl.dsp.window.move({ monitor = hl.get_monitor(math.max(0, hl.get_active_monitor().id - 1)) }))
-hl.bind(mod .. " + CTRL + SHIFT + K", hl.dsp.window.move({ monitor = hl.get_monitor(hl.get_active_monitor().id + 1) }))
+hl.bind(mod .. " + CTRL + SHIFT + J", hl.dsp.window.move({ monitor = "-1", follow = true }))
+hl.bind(mod .. " + CTRL + SHIFT + K", hl.dsp.window.move({ monitor = "+1", follow = true }))
 
 -- special workspace
 hl.bind(mod .. " + W", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mod .. " + SHIFT + W", hl.dsp.window.move({ workspace = hl.get_workspace("magic") }))
+hl.bind(mod .. " + SHIFT + W", function ()
+  -- TODO: not working?
+  local ws =  hl.get_active_workspace()
+  local target_ws = (ws ~= nil and ws.name == "magic") and "previous" or "special:magic"
+  hl.dsp.window.move({ workspace = target_ws })
+end)
 
--- TODO: Window stacking
-
+-- Window stacking
 hl.bind(mod .. " + S", hl.dsp.group.toggle())
-hl.bind(mod .. "+ left", hl.dsp.group.active({ index = hl.dsp.group.prev() }))
-hl.bind(mod .. "+ right", hl.dsp.group.active({ index = hl.dsp.group.next() }))
+hl.bind(mod .. "+ left", hl.dsp.group.prev())
+hl.bind(mod .. "+ right", hl.dsp.group.next())
 
 -- submaps
 require("bindings.edit-mode")
