@@ -1,4 +1,3 @@
-local vars = require("variables")
 local style = require("style")
 
 -- monitor setup
@@ -160,7 +159,6 @@ hl.config({
   }
 })
 
-
 hl.window_rule({
   persistent_size = true,
   no_blur = true,
@@ -224,8 +222,50 @@ hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, rounding = 0 }
 hl.window_rule({ match = { float = false, workspace = "f[1]" }, border_size = 0 })
 hl.window_rule({ match = { float = false, workspace = "f[1]" }, rounding = 0 })
 
--- TODO: Animations
+hl.animation({
+  leaf = "fadeLayersIn",
+  enabled = false
+})
 
--- TODO: layer rules
+local ags_widgets = {
+  "osd", "notification-popup", "panel", "runner", "system", "alerts"
+}
+for _, widget in ipairs(ags_widgets) do
+  local animation = (widget == "system" or widget == "alerts") and "slide top" or "slide"
+  hl.layer_rule({
+    match = { namespace = widget },
+    animation = animation
+  })
+end
+for _, layer in ipairs(ags_widgets) do
+  hl.layer_rule({
+    match = { namespace = layer },
+    order = 1
+  })
+end
+hl.layer_rule({
+  match = { namespace = "border-.*" },
+  order = 0
+})
+
+hl.layer_rule({
+  match = { namespace = "power-menu" },
+  blur = true,
+  ignore_alpha = 0.5
+})
+
+hl.layer_rule({
+  match = { namespace = "alerts" },
+  blur = true,
+  ignore_alpha = 0.2
+})
+
+-- TODO: enable widgets on overlay layer
+local lockscreen_widgets = {}
+for _, widget in ipairs(lockscreen_widgets) do
+  hl.layer_rule({
+    match = { namespace = widget }
+  })
+end
 
 -- TODO: Plugins
