@@ -30,5 +30,10 @@ hl.define_submap("edit", function ()
   hl.bind("mouse:272", hl.dsp.window.drag(), { mouse = true })
   hl.bind("mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-  -- TODO: window stacking
+  -- window stacking
+  hl.bind("S", hl.dsp.window.move({ out_of_group = true }))
+  hl.bind("left", hl.dsp.group.move_window({ forward = false }))
+  hl.bind("right", hl.dsp.group.move_window({ forward = true }))
+  hl.bind(mod .. " + left", hl.dsp.window.move({ into_group = "left" }))
+  hl.bind(mod .. " + right", hl.dsp.window.move({ into_group = "right" }))
 end)

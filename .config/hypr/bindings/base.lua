@@ -74,6 +74,10 @@ hl.bind(mod .. " + SHIFT + W", hl.dsp.window.move({ workspace = hl.get_workspace
 
 -- TODO: Window stacking
 
+hl.bind(mod .. " + S", hl.dsp.group.toggle())
+hl.bind(mod .. "+ left", hl.dsp.group.active({ index = hl.dsp.group.prev() }))
+hl.bind(mod .. "+ right", hl.dsp.group.active({ index = hl.dsp.group.next() }))
+
 -- submaps
 require("bindings.edit-mode")
 require("bindings.extra")
