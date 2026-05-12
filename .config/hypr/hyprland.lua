@@ -18,6 +18,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("hypridle")
   hl.exec_cmd("blueman-applet")
+  hl.exec_cmd("nm-applet")
   hl.exec_cmd("brighnessctl -- restore")
   hl.exec_cmd("wl-paste --watch cliphist store")
   hl.exec_cmd("cliphist wipe")
@@ -43,8 +44,8 @@ hl.env("XCURSOR_SIZE","24")
 hl.env("XCURSOR_THEME","Simp1e-Dark")
 hl.env("HYPRCURSOR_SIZE","24")
 hl.env("HYPRCURSOR_THEME","Simp1e-Dark")
-hl.env("HYPRSHOT_DIR"," $HOME/Pictures/Screenshots")
-hl.env("GTK_THEME"," adw-gtk3-dark")
+hl.env("HYPRSHOT_DIR","$HOME/Pictures/Screenshots")
+hl.env("GTK_THEME","adw-gtk3-dark")
 hl.env("QT_QPA_PLATFORMTHEME","kde")
 hl.env("XDG_CURRENT_DESKTOP","Hyprland")
 hl.env("XDG_SESSION_TYPE","wayland")
@@ -143,6 +144,7 @@ hl.config({
   decoration = {
     rounding = style.radius,
     shadow = { color = "#1a1a1aee" },
+    dim_inactive = hl.get_current_submap() == "edit",
     blur = {
       enabled = true,
       size = 4,
@@ -225,6 +227,13 @@ hl.window_rule({ match = { float = false, workspace = "f[1]" }, rounding = 0 })
 hl.animation({
   leaf = "fadeLayersIn",
   enabled = false
+})
+hl.animation({
+  leaf = "workspaces",
+  enabled = true,
+  speed = 6.0,
+  bezier = "default",
+  style = "slidevert"
 })
 
 local ags_widgets = {

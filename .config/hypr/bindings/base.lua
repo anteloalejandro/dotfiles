@@ -1,8 +1,6 @@
 local vars = require("variables")
 local mod = vars.mod
 
-local floating_workspaces = { }
-
 -- Launch apps
 hl.bind(mod .. " + T", hl.dsp.exec_cmd(vars.terminal))
 hl.bind(mod .. " + F", hl.dsp.exec_cmd(vars.fileManager))
@@ -20,7 +18,7 @@ hl.bind(mod .. " + tab", hl.dsp.exec_cmd(vars.launcher .. " window"))
 hl.bind(mod .. " + SHIFT + C", hl.dsp.exec_cmd(vars.launcher .. " calc"))
 hl.bind(mod .. " + A", hl.dsp.exec_cmd("ags request show_runner"))
 hl.bind(mod .. " + SHIFT + H", hl.dsp.exec_cmd("cliphist list | " .. vars.runner .. " cliphist decode | wl-copy"))
-hl.bind(mod .. " + SHIFT + CTRL + H", hl.dsp.exec_cmd( "cliphist list | $runner | cut -f1 | cliphist delete"))
+hl.bind(mod .. " + SHIFT + CTRL + H", hl.dsp.exec_cmd("cliphist list | " .. vars.runner .. " | cut -f1 | cliphist delete"))
 
 -- Control windows
 hl.bind(mod .. " + Q", hl.dsp.window.close(hl.get_active_window()))
@@ -28,7 +26,8 @@ hl.bind(mod .. " + SHIFT + Q", hl.dsp.exit())
 hl.bind(mod .. " + M", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 hl.bind(mod .. " + SHIFT + M", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mod .. " + G", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mod .. " + G", function ()
+local floating_workspaces = { }
+hl.bind(mod .. " + SHIFT +  G", function ()
   local workspace = hl.get_active_workspace()
   assert(workspace ~= nil)
   local windows = hl.get_workspace_windows(workspace)
@@ -41,7 +40,7 @@ hl.bind(mod .. " + G", function ()
     floating_workspaces[workspace.id] = true
   end
   for _, window in ipairs(windows) do
-    hl.dsp.window.float({ action = action, window = window })
+    hl.dispatch(hl.dsp.window.float({ action = action, window = window }))
   end
 end)
 
@@ -59,21 +58,53 @@ for i = 1, 10, 1 do
 end
 
 -- switch and move workspaces with mod + ... + J/K
--- NOTE: these should be bindl, what did bindl do?
-hl.bind(mod .. " + K", hl.dsp.exec_cmd("hyprnome -p"))
-hl.bind(mod .. " + J", hl.dsp.exec_cmd("hyprnome"))
-hl.bind(mod .. " + SHIFT + K", hl.dsp.exec_cmd("hyprnome -p -m"))
-hl.bind(mod .. " + SHIFT + J", hl.dsp.exec_cmd("hyprnome -m"))
-hl.bind(mod .. " + CTRL + SHIFT + J", hl.dsp.window.move({ monitor = "-1", follow = true }))
-hl.bind(mod .. " + CTRL + SHIFT + K", hl.dsp.window.move({ monitor = "+1", follow = true }))
+-- TODO: Move to the next workspace WITH WINDOWS
+local function workspace_with_windows(offset)
+  local workspaces = hl.get_workspaces()
+  if offset == 0 then
+    return hl.get_active_workspace()
+  end
+
+  local index = hl.get_active_workspace().id
+  for i, ws in ipairs(workspaces) do
+    if ws.id == hl.get_active_workspace().id then index = i end
+  end
+
+  local start
+  local finish
+  local step
+  if offset < 0 then
+    start = index - 1
+    finish = 1
+    step = -1
+  else
+    start = index + 1
+    finish = #workspaces
+    step = 1
+  end
+  for i = start, finish, step do
+    local ws = workspaces[i]
+    if ws.special then goto continue end
+    if ws.windows > 0 then return ws end
+    ::continue::
+  end
+
+  return hl.get_active_workspace()
+end
+hl.bind(mod .. " + CTRL + J", hl.dsp.focus({ workspace = "+1" }))
+hl.bind(mod .. " + CTRL + K", hl.dsp.focus({ workspace = "-1" }))
+hl.bind(mod .. " + SHIFT + J", hl.dsp.window.move({ workspace = "+1" }))
+hl.bind(mod .. " + SHIFT + K", hl.dsp.window.move({ workspace = "-1" }))
+hl.bind(mod .. " + ALT + SHIFT + J", hl.dsp.window.move({ monitor = "+1", follow = true }))
+hl.bind(mod .. " + ALT + SHIFT + K", hl.dsp.window.move({ monitor = "-1", follow = true }))
 
 -- special workspace
 hl.bind(mod .. " + W", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mod .. " + SHIFT + W", function ()
-  -- TODO: not working?
-  local ws =  hl.get_active_workspace()
-  local target_ws = (ws ~= nil and ws.name == "magic") and "previous" or "special:magic"
-  hl.dsp.window.move({ workspace = target_ws })
+  local special_ws = hl.get_active_special_workspace()
+  local special_is_active = special_ws ~= nil and special_ws.active and special_ws.name == "special:magic"
+  local target_ws = (special_is_active) and hl.get_active_workspace() or "special:magic"
+  hl.dispatch(hl.dsp.window.move({ workspace = target_ws, follow = true }))
 end)
 
 -- Window stacking

@@ -29,6 +29,3 @@ hl.bind("CTRL + ALT + PRINT", hl.dsp.exec_cmd("hyprshot -z -m window --clipboard
 -- # Keyboard backlight
 hl.bind("XF86KbdBrightnessUp", hl.dsp.exec_cmd("asusctl leds next"), { repeating = true })
 hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("asusctl leds prev"), { repeating = true })
-
--- bind =, XF86Launch4, exec, asusctl profile next
--- bind =, XF86Launch1, exec, pidof rog-control-center && killall rog-control-center || rog-control-center

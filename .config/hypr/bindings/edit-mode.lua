@@ -1,11 +1,23 @@
 local mod = require("variables").mod
 
-hl.bind(mod .. "+ RETURN", hl.dsp.submap("edit"))
+-- TODO: hl.config does not get applied instantly
+local function edit()
+  hl.config({ decoration = { dim_inactive = true } })
+  hl.dispatch(hl.dsp.submap("edit"))
+end
+
+local function reset()
+  hl.config({ decoration = { dim_inactive = false } })
+  hl.dispatch(hl.dsp.submap("reset"))
+end
+
+hl.bind(mod .. "+ RETURN", edit)
 
 hl.define_submap("edit", function ()
+  -- NOTE: catchall does not catch keys with modifiers (like SUPER + key)
   hl.bind("catchall", function () end)
-  hl.bind("escape", hl.dsp.submap("reset"))
-  hl.bind("RETURN", hl.dsp.submap("reset"))
+  hl.bind("escape", reset)
+  hl.bind("RETURN", reset)
 
   hl.bind("H", hl.dsp.window.swap({ direction = "left" }))
   hl.bind("J", hl.dsp.window.swap({ direction = "down" }))
