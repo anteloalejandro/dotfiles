@@ -68,6 +68,10 @@ hl.bind(mod .. " + SHIFT + J", hl.dsp.exec_cmd("hyprnome -m"))
 hl.bind(mod .. " + CTRL + SHIFT + J", hl.dsp.window.move({ monitor = hl.get_monitor(math.max(0, hl.get_active_monitor().id - 1)) }))
 hl.bind(mod .. " + CTRL + SHIFT + K", hl.dsp.window.move({ monitor = hl.get_monitor(hl.get_active_monitor().id + 1) }))
 
+-- special workspace
+hl.bind(mod .. " + W", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mod .. " + SHIFT + W", hl.dsp.window.move({ workspace = hl.get_workspace("magic") }))
+
 -- TODO: Window stacking
 
 -- submaps
