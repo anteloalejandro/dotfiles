@@ -1,4 +1,5 @@
 local vars = require("variables")
+local style = require("style")
 
 -- monitor setup
 hl.monitor({
@@ -51,3 +52,180 @@ hl.env("XDG_SESSION_TYPE","wayland")
 hl.env("XDG_SESSION_DESKTOP","Hyprland")
 hl.env("GTK_IM_MODULE","simple")
 hl.env("SIGNAL_PASSWORD_STORE","gnome-libsecret")
+
+hl.config({
+  general = {
+    gaps_in = style.half_spacing,
+    gaps_out = style.spacing,
+    border_size = 2,
+    resize_on_border = true,
+    allow_tearing = false,
+    layout = "dwindle",
+    col = {
+      active_border = style.accent,
+      inactive_border = "#595959aa"
+    }
+  }
+})
+
+hl.config({
+  misc = {
+    force_default_wallpaper = 1, -- Set to 0 or 1 to disable the anime mascot wallpapers
+    disable_hyprland_logo = true, -- If true disables the random hyprland logo / anime girl background. :(
+    disable_autoreload = false, -- Disable config reload on save
+    focus_on_activate = true, -- Focus on apps that request it
+    on_focus_under_fullscreen = 2, -- # Exits fullscreen when opening a window
+    font_family = "Ubuntu",
+  }
+})
+
+hl.config({
+  input = {
+    kb_layout = "es",
+    kb_variant = "deadtilde",
+    follow_mouse = 2, -- Change keyboard focus when clicking
+    sensitivity = 0.0, -- -1.0 - 1.0, 0 means no modification.
+    touchpad = {
+      natural_scroll = false
+    }
+  }
+})
+
+hl.config({
+  gestures = {
+    workspace_swipe_distance = 100,
+    workspace_swipe_invert = false,
+  }
+})
+hl.gesture({
+  fingers = 4,
+  direction = "vertical",
+  action = "workspace"
+})
+hl.gesture({
+  fingers = 3,
+  direction = "swipe",
+  action = "move"
+})
+hl.gesture({
+  fingers = 3,
+  direction = "pinch",
+  action = "resize"
+})
+
+hl.config({
+  group = {
+    drag_into_group = 2, -- only when dragging into de groupbar 
+    col = {
+      border_active = style.secondary,
+      border_inactive = "#595959aa"
+    },
+    groupbar = {
+      font_family = "Ubuntu Mono",
+      font_size = 12,
+      scrolling = false,
+      height = 20,
+      indicator_height = 0,
+      gradients = true,
+      gradient_rounding = style.spacing,
+      gradient_round_only_edges = true,
+      gaps_out = style.spacing,
+      gaps_in = style.spacing,
+      keep_upper_gap = false,
+      col = {
+        active = style.bg,
+        inactive = style.bg_alt,
+      }
+    }
+  }
+})
+
+hl.config({
+  decoration = {
+    rounding = style.radius,
+    shadow = { color = "#1a1a1aee" },
+    blur = {
+      enabled = true,
+      size = 4,
+      passes = 1
+    }
+  }
+})
+
+hl.config({
+  dwindle = {
+    pseudotile = true,
+    preserve_split = true,
+    force_split = 2,
+  }
+})
+
+
+hl.window_rule({
+  persistent_size = true,
+  no_blur = true,
+})
+
+-- fullscreen mode decorations
+hl.window_rule({
+  match = { fullscreen = true },
+  dim_around = true,
+  idle_inhibit = "fullscreen"
+})
+
+-- float specific windows
+local floating_windows = {
+  { title = "Bulk Rename - Rename Multiple Files" },
+  { class = "nwg-displays" },
+  { class = "blueman-manager" },
+  { class = "nm-connection-editor" },
+  { class = "org.pulseaudio.pavucontrol" },
+  { class = "rustdesk" },
+  { class = "org.kde.kdeconnect.app" },
+  { class = "org.kde.kdeconnect-settings" },
+}
+for _, match in ipairs(floating_windows) do
+  hl.window_rule({
+    match = match,
+    float = true
+  })
+end
+hl.window_rule({
+  match = { class = "org.kde.kdeconnect-settings" },
+  float = true,
+  size = { 950, 600 },
+})
+
+-- ROG control
+hl.window_rule({
+  title = "ROG Control",
+  size = { 900, 500 },
+  dim_around = true,
+})
+
+hl.window_rule({
+  match = {
+    class = "steam" ,
+    title = "Steam Big Picture Mode"
+  },
+  fullscreen = true,
+})
+
+hl.workspace_rule({
+  workspace = "name:.*",
+  persistent = false
+})
+
+-- smart gaps
+hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
+hl.workspace_rule({ workspace = "f[1]", gaps_out = 0, gaps_in = 0 })
+hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, border_size = 0 })
+hl.window_rule({ match = { float = false, workspace = "w[tv1]" }, rounding = 0 })
+hl.window_rule({ match = { float = false, workspace = "f[1]" }, border_size = 0 })
+hl.window_rule({ match = { float = false, workspace = "f[1]" }, rounding = 0 })
+
+-- TODO: Animations
+
+-- TODO: layer rules
+
+-- TODO: Plugins
