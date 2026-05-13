@@ -9,7 +9,7 @@ hl.monitor({
 })
 
 -- bindings
-require("bindings.base")
+require("bindings")
 
 -- autostart
 hl.on("hyprland.start", function ()
