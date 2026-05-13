@@ -201,6 +201,7 @@ hl.window_rule({
   match = { title = "ROG Control" },
   size = { 900, 500 },
   dim_around = true,
+  float = true,
 })
 
 hl.window_rule({
