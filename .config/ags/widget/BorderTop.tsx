@@ -137,9 +137,7 @@ function BatteryIndicator() {
           createBinding(bat, "percentage")
           .as(p => `${Math.floor(p * 100)}%`)
         } />
-        <image icon_name={createComputed(get =>
-          get(createBinding(bat, "icon_name")).replace(/-symbolic$/, "")
-        )} />
+        <image icon_name={createBinding(bat, "icon_name")} />
       </box>
       <popover>
         <label label={bat_time} />
