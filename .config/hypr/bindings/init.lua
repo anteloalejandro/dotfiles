@@ -46,45 +46,64 @@ for i = 1, 10, 1 do
 end
 
 -- switch and move workspaces with mod + ... + J/K
--- TODO: Move to the next workspace WITH WINDOWS
-local function workspace_with_windows(offset)
-  local workspaces = hl.get_workspaces()
-  if offset == 0 then
-    return hl.get_active_workspace()
+local function index_of_workspace(workspace_id)
+  for i, w in ipairs(hl.get_workspaces()) do
+    if w.id == workspace_id then
+      return i
+    end
   end
 
-  local index = hl.get_active_workspace().id
-  for i, ws in ipairs(workspaces) do
-    if ws.id == hl.get_active_workspace().id then index = i end
-  end
-
-  local start
-  local finish
-  local step
-  if offset < 0 then
-    start = index - 1
-    finish = 1
-    step = -1
-  else
-    start = index + 1
-    finish = #workspaces
-    step = 1
-  end
-  for i = start, finish, step do
-    local ws = workspaces[i]
-    if ws.special then goto continue end
-    if ws.windows > 0 then return ws end
-    ::continue::
-  end
-
-  return hl.get_active_workspace()
+  return nil
 end
-hl.bind(mod .. " + CTRL + J", hl.dsp.focus({ workspace = "+1" }))
-hl.bind(mod .. " + CTRL + K", hl.dsp.focus({ workspace = "-1" }))
-hl.bind(mod .. " + SHIFT + J", hl.dsp.window.move({ workspace = "+1" }))
-hl.bind(mod .. " + SHIFT + K", hl.dsp.window.move({ workspace = "-1" }))
-hl.bind(mod .. " + ALT + SHIFT + J", hl.dsp.window.move({ monitor = "+1", follow = true }))
-hl.bind(mod .. " + ALT + SHIFT + K", hl.dsp.window.move({ monitor = "-1", follow = true }))
+
+local function next_workspace()
+  local index = index_of_workspace(hl.get_active_workspace().id)
+  if index == nil then return "+1" end
+
+  local workspaces = hl.get_workspaces()
+  while index < #workspaces do
+    index = index + 1
+    if workspaces[index].windows > 0 then
+      return workspaces[index]
+    end
+  end
+
+  return "+1"
+end
+
+local function prev_workspace()
+  local index = index_of_workspace(hl.get_active_workspace().id)
+  if index == nil then return "-1" end
+
+  local workspaces = hl.get_workspaces()
+  while index > 1 do
+    index = index - 1
+    if workspaces[index].windows > 0 then
+      return workspaces[index]
+    end
+  end
+
+  return "-1"
+end
+
+hl.bind(mod .. " + CTRL + J", function()
+  hl.dispatch(hl.dsp.focus({ workspace = next_workspace() }))
+end)
+hl.bind(mod .. " + CTRL + K", function()
+	hl.dispatch(hl.dsp.focus({ workspace = prev_workspace() }))
+end)
+hl.bind(mod .. " + SHIFT + J", function ()
+  hl.dispatch(hl.dsp.window.move({ workspace = next_workspace() }))
+end)
+hl.bind(mod .. " + SHIFT + K", function ()
+  hl.dispatch(hl.dsp.window.move({ workspace = prev_workspace() }))
+end)
+hl.bind(mod .. " + ALT + SHIFT + J", function ()
+  hl.dispatch(hl.dsp.window.move({ monitor = next_workspace(), follow = true }))
+end)
+hl.bind(mod .. " + ALT + SHIFT + K", function ()
+  hl.dispatch(hl.dsp.window.move({ monitor = prev_workspace(), follow = true }))
+end)
 
 -- special workspace
 hl.bind(mod .. " + W", hl.dsp.workspace.toggle_special("magic"))

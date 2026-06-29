@@ -18,9 +18,10 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl --min-value=10 s
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set 10%+"), { repeating = true })
 
 -- # Screenshots
-hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m active -m output"))
-hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -z -m region"))
-hl.bind("ALT + PRINT", hl.dsp.exec_cmd("hyprshot -z -m window"))
+local screenshot_folder = "Pictures/Screenshots"
+hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m active -m output -o " .. screenshot_folder))
+hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -z -m region -o " .. screenshot_folder))
+hl.bind("ALT + PRINT", hl.dsp.exec_cmd("hyprshot -z -m window -o" .. screenshot_folder))
 
 hl.bind("CTRL + PRINT", hl.dsp.exec_cmd("hyprshot -m active -m output --clipboard-only"))
 hl.bind("CTRL + SHIFT + PRINT", hl.dsp.exec_cmd("hyprshot -z -m region --clipboard-only"))

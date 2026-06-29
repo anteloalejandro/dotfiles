@@ -1,6 +1,5 @@
 local mod = require("variables").mod
 
--- TODO: hl.config does not get applied instantly
 local function edit()
   hl.config({ decoration = { dim_inactive = true } })
   hl.dispatch(hl.dsp.submap("edit"))
@@ -46,6 +45,6 @@ hl.define_submap("edit", function ()
   hl.bind("S", hl.dsp.window.move({ out_of_group = true }))
   hl.bind("left", hl.dsp.group.move_window({ forward = false }))
   hl.bind("right", hl.dsp.group.move_window({ forward = true }))
-  hl.bind(mod .. " + left", hl.dsp.window.move({ into_group = "left" }))
-  hl.bind(mod .. " + right", hl.dsp.window.move({ into_group = "right" }))
+  hl.bind(mod .. " + left", hl.dsp.window.move({ direction = "left", group_aware = true }))
+  hl.bind(mod .. " + right", hl.dsp.window.move({ direction = "right", group_aware = true }))
 end)

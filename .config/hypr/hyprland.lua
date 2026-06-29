@@ -13,7 +13,7 @@ require("bindings")
 
 -- autostart
 hl.on("hyprland.start", function ()
-  hl.exec_cmd("hyprpm reload")
+  -- hl.exec_cmd("hyprpm reload")
   hl.exec_cmd("ags run &")
   hl.exec_cmd("hyprpaper")
   hl.exec_cmd("hypridle")
@@ -40,18 +40,24 @@ hl.on("hyprland.shutdown", function ()
 end)
 
 -- env vars
-hl.env("XCURSOR_SIZE","24")
-hl.env("XCURSOR_THEME","Simp1e-Dark")
-hl.env("HYPRCURSOR_SIZE","24")
-hl.env("HYPRCURSOR_THEME","Simp1e-Dark")
-hl.env("HYPRSHOT_DIR","$HOME/Pictures/Screenshots")
-hl.env("GTK_THEME","adw-gtk3-dark")
+-- hl.env("XCURSOR_SIZE","24")
+-- hl.env("XCURSOR_THEME","Simp1e-Dark")
+-- hl.env("HYPRCURSOR_SIZE","24")
+-- hl.env("HYPRCURSOR_THEME","Simp1e-Dark")
+-- hl.env("GTK_THEME","adw-gtk3-dark")
 hl.env("QT_QPA_PLATFORMTHEME","kde")
+hl.env("HYPRSHOT_DIR","$HOME/Pictures/Screenshots")
 hl.env("XDG_CURRENT_DESKTOP","Hyprland")
 hl.env("XDG_SESSION_TYPE","wayland")
 hl.env("XDG_SESSION_DESKTOP","Hyprland")
 hl.env("GTK_IM_MODULE","simple")
-hl.env("SIGNAL_PASSWORD_STORE","gnome-libsecret")
+-- hl.env("SIGNAL_PASSWORD_STORE","gnome-libsecret")
+
+hl.config({
+  debug = {
+    disable_logs = false
+  }
+})
 
 hl.config({
   general = {
@@ -277,5 +283,3 @@ for _, widget in ipairs(lockscreen_widgets) do
     match = { namespace = widget }
   })
 end
-
--- TODO: Plugins
