@@ -27,12 +27,17 @@ hl.on("hyprland.start", function ()
 
   hl.exec_cmd("systemctl --user start hyprpolkitagent")
 
-  hl.exec_cmd("hydroxide serve")
+  -- hl.exec_cmd("hydroxide serve")
 
+  -- fix screensharing
   hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
   hl.exec_cmd("systemctl --user start xdg-desktop-portal-hyprland")
 
+  -- fix wine traybar showing as a standalone window
+  hl.exec_cmd("xembedsniproxy")
+
   hl.exec_cmd("asusctl profile -P Quiet")
+
 end)
 
 hl.on("hyprland.shutdown", function ()
